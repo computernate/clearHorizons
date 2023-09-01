@@ -1,0 +1,122 @@
+{% extends "wrapper.html" %}
+
+{% block head %}
+<script>
+var map;
+var marker;
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 40.511744, lng: -111.841186},
+    zoom: 11
+  });
+
+  var geocoder = new google.maps.Geocoder();
+
+  map.addListener('click', function(event) {
+    geocoder.geocode({
+      location: event.latLng
+    }, function(results, status) {
+      if (status === 'OK') {
+        if (results[0]) {
+          document.getElementById('selected_address').value = results[0].formatted_address;
+          document.getElementById('latitude').value = results[0].geometry.location.lat();
+          document.getElementById('longitude').value = results[0].geometry.location.lng();
+          document.getElementById('address').innerHTML = results[0].formatted_address;
+          $("#submit").removeClass("disabled")
+
+          // Clear existing marker, if any
+          if (marker) {
+            marker.setMap(null);
+          }
+
+          // Add a new marker
+          marker = new google.maps.Marker({
+            position: event.latLng,
+            map: map,
+            title: results[0].formatted_address
+          });
+        }
+      }
+    });
+  });
+}
+$(document).ready(function () {
+    $(".estimate-button").click(function () {
+        const formType = $(this).attr('data-form');
+
+        $(this).toggleClass("active")
+        $("#fields-" + formType).toggleClass("active")
+
+    });
+});
+function toggleStep(){
+    $("#step-1").toggleClass("current")
+    $("#step-2").toggleClass("current")
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9et5_WfSEq-uxAGLvEirLzbc4_ILCg3U&callback=initMap" async defer></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="generic-head">
+    <div>
+        <h1>Free Quote</h1>
+    </div>
+</div>
+
+<form id="estimate" action="/estimate" method="post">
+    <div id="step-1" class="current">
+        <h2>1. Select what kind of windows you have</h2>
+        <div class="estimate-buttons">
+            <button type="button" class="estimate-button" data-form="ww">Window Well Standard</button>
+            <button type="button" class="estimate-button" data-form="gl">First Story Standard</button>
+            <button type="button" class="estimate-button" data-form="agl">2+ Story Standard</button>
+            <button type="button" class="estimate-button" data-form="glf">First Story French</button>
+            <button type="button" class="estimate-button" data-form="aglf">2+ Story French</button>
+            <button type="button" class="estimate-button" data-form="s">Screens</button>
+        </div>
+        <h2>2. Select your quantity of each window</h2>
+        <div class="estimate-fields">
+            <div class="estimate-field" id="fields-ww">
+                <label>Window Well Standard</label>
+                <input name="ww" id="ww" value="0" />
+            </div>
+            <div class="estimate-field" id="fields-gl">
+                <label>First Story Standard</label>
+                <input name="gl" id="gl" value="0" />
+            </div>
+            <div class="estimate-field" id="fields-agl">
+                <label>2+ Story Standard</label>
+                <input name="agl" id="agl" value="0" />
+            </div>
+            <div class="estimate-field" id="fields-glf">
+                <label>First Story French</label>
+                <input name="glf" id="glf" value="0" />
+            </div>
+            <div class="estimate-field" id="fields-aglf">
+                <label>2+ Story French</label>
+                <input name="aglf" id="aglf" value="0" />
+            </div>
+            <div class="estimate-field" id="fields-s">
+                <label>Screens</label>
+                <input name="s" id="s" value="0" />
+            </div>
+        </div>
+        <button type="button" class="generic-button" onclick="toggleStep()">Go To Next Step</button>
+    </div>
+
+    <div id="step-2">
+        <p>Select your address</p>
+        <div id="map"></div>
+        <p id="address"></p>
+        <input type="hidden" name="selected_address" id="selected_address">
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+        <button type="button" class="generic-button" onclick="toggleStep()">Go To previous Step</button>
+        <button class="generic-button disabled" id='submit' onclick="toggleStep()">Submit</button>
+    </div>
+</form>
+
+{% endblock %}
