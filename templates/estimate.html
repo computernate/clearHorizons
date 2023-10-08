@@ -2,120 +2,391 @@
 
 {% block head %}
 <script>
-var map;
-var marker;
-function initMap() {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 40.511744, lng: -111.841186},
-    zoom: 11
-  });
 
-  var geocoder = new google.maps.Geocoder();
+    const price_per_deep_french = 20;
+    const price_per_deep_standard = 10;
 
-  map.addListener('click', function(event) {
-    geocoder.geocode({
-      location: event.latLng
-    }, function(results, status) {
-      if (status === 'OK') {
-        if (results[0]) {
-          document.getElementById('selected_address').value = results[0].formatted_address;
-          document.getElementById('latitude').value = results[0].geometry.location.lat();
-          document.getElementById('longitude').value = results[0].geometry.location.lng();
-          document.getElementById('address').innerHTML = results[0].formatted_address;
-          $("#submit").removeClass("disabled")
+    var map;
+    var marker;
+    var step = 1;
+    var floors = 0;
 
-          // Clear existing marker, if any
-          if (marker) {
-            marker.setMap(null);
-          }
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 40.511744, lng: -111.841186},
+            zoom: 11
+        });
 
-          // Add a new marker
-          marker = new google.maps.Marker({
-            position: event.latLng,
-            map: map,
-            title: results[0].formatted_address
-          });
+        var autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('search-input')
+        );
+
+        // Set the data fields to return when the user selects a place.
+        autocomplete.setFields(['address_components', 'geometry', 'name']);
+
+        // Add a listener for the place_changed event
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+
+            if (!place.geometry) {
+                window.alert("No details available for the selected location.");
+                return;
+            }
+
+            // Move the map's center to the selected place
+            map.setCenter(place.geometry.location);
+        });
+
+        google.maps.event.addDomListener(window, 'load', initMap);
+
+        var geocoder = new google.maps.Geocoder();
+
+        map.addListener('click', function (event) {
+            geocoder.geocode({
+                location: event.latLng
+            }, function (results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        document.getElementById('selected_address').value = results[0].formatted_address;
+                        document.getElementById('latitude').value = results[0].geometry.location.lat();
+                        document.getElementById('longitude').value = results[0].geometry.location.lng();
+                        document.getElementById('address').innerHTML = results[0].formatted_address;
+                        $("#submit").removeClass("disabled")
+
+                        // Clear existing marker, if any
+                        if (marker) {
+                            marker.setMap(null);
+                        }
+
+                        // Add a new marker
+                        marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map,
+                            title: results[0].formatted_address
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+    $(document).ready(function () {
+
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        $(".estimate-button").click(function () {
+            const formType = $(this).attr('data-form');
+
+            $(this).toggleClass("active")
+            $("#fields-" + formType).toggleClass("active")
+
+        });
+
+        $('.floor-number').hover(function () {
+            let num = $(this).attr("num")
+            $('.floors-house').attr('active-floors', num)
+        })
+
+        function update_extra() {
+            let standard = $("#standard-pane-deep-count").html()
+            let french = $("#standard-french-pane-deep-count").html()
+            let price = (standard * price_per_deep_standard) + (french * price_per_deep_french)
+            $('#price_increase').html(`$${price}.00`)
         }
-      }
-    });
-  });
-}
-$(document).ready(function () {
-    $(".estimate-button").click(function () {
-        const formType = $(this).attr('data-form');
 
-        $(this).toggleClass("active")
-        $("#fields-" + formType).toggleClass("active")
+        $('.increase').click(function () {
+            let pointer = $(this).attr("pointer")
+            let num = $("#" + pointer).html()
+            num++;
+            $("#" + pointer).html(num)
+            if (pointer == 'standard-pane-deep-count' || pointer == 'standard-french-pane-deep-count') {
+                update_extra()
+            }
 
+        })
+        $('.decrease').click(function () {
+            let pointer = $(this).attr("pointer")
+            let num = parseInt($("#" + pointer).html())
+            if (num > 0)
+                num--;
+            $("#" + pointer).html(num)
+            if (pointer == 'standard-pane-deep-count' || pointer == 'standard-french-pane-deep-count') {
+                update_extra()
+            }
+        })
     });
-});
-function toggleStep(){
-    $("#step-1").toggleClass("current")
-    $("#step-2").toggleClass("current")
-}
+
+    function goToStep(step) {
+        $("#step-1").removeClass("current")
+        $("#step-2").removeClass("current")
+        $("#step-3").removeClass("current")
+        $("#step-4").removeClass("current")
+        $("#step-too-high").removeClass("current")
+        $("#step-" + step).addClass("current")
+    }
+
+    function setFloors(floor) {
+        floors = floor;
+        if (floor < 4)
+            goToStep(2);
+        else
+            goToStep("too-high")
+    }
+
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9et5_WfSEq-uxAGLvEirLzbc4_ILCg3U&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9et5_WfSEq-uxAGLvEirLzbc4_ILCg3U&callback=initMap&libraries=places"
+        async defer></script>
+
+<link rel="stylesheet" href="static/styles/estimate.css"/>
+
+
 {% endblock %}
 
 {% block content %}
 
-<div class="generic-head">
-    <div>
-        <h1>Free Quote</h1>
-    </div>
-</div>
-
 <form id="estimate" action="/estimate" method="post">
-    <div id="step-1" class="current">
-        <h2>1. Select what kind of windows you have</h2>
-        <div class="estimate-buttons">
-            <button type="button" class="estimate-button" data-form="ww">Window Well Standard</button>
-            <button type="button" class="estimate-button" data-form="gl">First Story Standard</button>
-            <button type="button" class="estimate-button" data-form="agl">2+ Story Standard</button>
-            <button type="button" class="estimate-button" data-form="glf">First Story French</button>
-            <button type="button" class="estimate-button" data-form="aglf">2+ Story French</button>
-            <button type="button" class="estimate-button" data-form="s">Screens</button>
+
+    <div id="step-1" class="current step">
+        <h1>How many stories do you have?</h1>
+        <div class="floors-wrapper">
+            <div></div>
+            <div class="floor-numbers">
+                <div class="floor-number" num="4" onclick="setFloors(4)">4+</div>
+                <div class="floor-number" num="3" onclick="setFloors(3)">3</div>
+                <div class="floor-number" num="2" onclick="setFloors(2)">2</div>
+                <div class="floor-number" num="1" onclick="setFloors(1)">1</div>
+            </div>
+            <div class="floors-house" active-floors="1">
+                <div class="house-floor house-4"><img src="static/images/top-floor.png"/></div>
+                <div class="house-floor house-3"><img src="static/images/middle-floor.png"/></div>
+                <div class="house-floor house-2"><img src="static/images/middle-floor.png"/></div>
+                <div class="house-floor house-1"><img src="static/images/bottom-floor.png"/></div>
+            </div>
+            <div></div>
         </div>
-        <h2>2. Select your quantity of each window</h2>
-        <div class="estimate-fields">
-            <div class="estimate-field" id="fields-ww">
-                <label>Window Well Standard</label>
-                <input name="ww" id="ww" value="0" />
-            </div>
-            <div class="estimate-field" id="fields-gl">
-                <label>First Story Standard</label>
-                <input name="gl" id="gl" value="0" />
-            </div>
-            <div class="estimate-field" id="fields-agl">
-                <label>2+ Story Standard</label>
-                <input name="agl" id="agl" value="0" />
-            </div>
-            <div class="estimate-field" id="fields-glf">
-                <label>First Story French</label>
-                <input name="glf" id="glf" value="0" />
-            </div>
-            <div class="estimate-field" id="fields-aglf">
-                <label>2+ Story French</label>
-                <input name="aglf" id="aglf" value="0" />
-            </div>
-            <div class="estimate-field" id="fields-s">
-                <label>Screens</label>
-                <input name="s" id="s" value="0" />
-            </div>
-        </div>
-        <button type="button" class="generic-button" onclick="toggleStep()">Go To Next Step</button>
     </div>
 
-    <div id="step-2">
-        <p>Select your address</p>
-        <div id="map"></div>
-        <p id="address"></p>
-        <input type="hidden" name="selected_address" id="selected_address">
-        <input type="hidden" name="latitude" id="latitude">
-        <input type="hidden" name="longitude" id="longitude">
-        <button type="button" class="generic-button" onclick="toggleStep()">Go To previous Step</button>
-        <button class="generic-button disabled" id='submit' onclick="toggleStep()">Submit</button>
+    <div id="step-too-high" class="step">
+        <h1 class="blue-text">It looks like this job is a little bit bigger than we are used to, but that doesn’t mean
+            we can’t do it!
+            If you would like to receive an in person quote please click below!</h1>
+        <div class="bottom-buttons">
+            <a class="next-button" onclick="goToStep(1)">No Thanks</a>
+            <a class="next-button" href="/contact">Get Quote</a>
+        </div>
+    </div>
+
+    <div id="step-2" class="step">
+        <h1>Count your individual window panes</h1>
+        <table class="step-2-grid main-content">
+            <tr>
+                <td style="position:relative">
+                    <div class="generic-panes">
+                        <h2>1st Story Window Panes</h2>
+                        <img src="static/images/first-story-panes.png"/>
+                        <div class="panes-count-1">
+                            <h3>Standard Pane</h3>
+                            <img src="static/images/standard-pane.png"/>
+                            <div class="count-options">
+                                <a class="clear-button decrease" pointer='standard-pane-count'>-</a>
+                                <div id="standard-pane-count">0</div>
+                                <a class="clear-button increase" pointer='standard-pane-count'>+</a>
+                            </div>
+                        </div>
+                        <div class="panes-count-2">
+                            <h3>French Pane</h3>
+                            <img src="static/images/french-pane.png"/>
+                            <div class="count-options">
+                                <a class="clear-button decrease" pointer="standard-french-pane-count">-</a>
+                                <div id="standard-french-pane-count">0</div>
+                                <a class="clear-button increase" pointer="standard-french-pane-count">+</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="white-square-blocker"></div>
+                </td>
+                <td>
+                    <div class="generic-panes">
+                        <h2>2nd+ Story Window Panes</h2>
+                        <img src="static/images/high-story-panes.png"/>
+                        <div class="panes-count-1">
+                            <h3>Standard Pane</h3>
+                            <img src="static/images/standard-pane.png"/>
+                            <div class="count-options">
+                                <a class="clear-button decrease" pointer="high-pane-count">-</a>
+                                <div id="high-pane-count">0</div>
+                                <a class="clear-button increase" pointer="high-pane-count">+</a>
+                            </div>
+                        </div>
+                        <div class="panes-count-2">
+                            <h3>French Pane</h3>
+                            <img src="static/images/french-pane.png"/>
+                            <div class="count-options">
+                                <a class="clear-button decrease" pointer="high-french-pane-count">-</a>
+                                <div id="high-french-pane-count">0</div>
+                                <a class="clear-button increase" pointer="high-french-pane-count">+</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="pane-image">
+                        <h2>Window Well Panes</h2>
+                        <img src="static/images/window-well-pane.png"/>
+                        <div class="count-options">
+                            <a class="clear-button decrease" pointer="window-well-panes">-</a>
+                            <div id="window-well-panes">0</div>
+                            <a class="clear-button increase" pointer="window-well-panes">+</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="pane-image">
+                        <h2>Screens</h2>
+                        <img src="static/images/screen.png"/>
+                        <div class="count-options">
+                            <a class="clear-button decrease" pointer="screens">-</a>
+                            <div id="screens">0</div>
+                            <a class="clear-button increase" pointer="screens">+</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="btn-row">
+            <div class="next-button" onclick="goToStep(1)">Previous</div>
+
+                <div class="progress-bar">
+                  <div class="step-progress completed">
+                    <div class="bubble">1</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">2</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">3</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">4</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">5</div>
+                  </div>
+                </div>
+
+            <div class="next-button" onclick="goToStep(3)">Next</div>
+        </div>
+    </div>
+
+    <div id="step-3" class="step">
+        <h1>Job Site Address</h1>
+        <div class="main-content">
+            <div class="map-wrapper">
+                <p>Select or type your address below</p>
+                <div id="map"></div>
+                <p>Type Address:<input id="search-input" type="text" placeholder="Enter an address"></p>
+            </div>
+            <p id="address"></p>
+            <input type="hidden" name="selected_address" id="selected_address">
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+        </div>
+        <div class="btn-row">
+            <div class="next-button" onclick="goToStep(2)">Previous</div>
+
+                <div class="progress-bar">
+                  <div class="step-progress completed">
+                    <div class="bubble">1</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">2</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">3</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">4</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">5</div>
+                  </div>
+                </div>
+
+            <div class="next-button" onclick="goToStep(4)">Next</div>
+        </div>
+    </div>
+    <div id="step-4" class="step">
+        <h1>Do any of your panes need a deeper clean?</h1>
+            <div class="main-content">
+                <div class="panes-display">
+                <div class="panes-count-1">
+                    <h3>Standard Pane</h3>
+                    <img src="static/images/standard-pane.png"/>
+                    <div class="count-options">
+                        <a class="clear-button decrease" pointer='standard-pane-deep-count'>-</a>
+                        <div id="standard-pane-deep-count">0</div>
+                        <a class="clear-button increase" pointer='standard-pane-deep-count'>+</a>
+                    </div>
+                </div>
+                <div class="panes-count-2">
+                    <h3>French Pane</h3>
+                    <img src="static/images/french-pane.png"/>
+                    <div class="count-options">
+                        <a class="clear-button decrease" pointer="standard-french-pane-deep-count">-</a>
+                        <div id="standard-french-pane-deep-count">0</div>
+                        <a class="clear-button increase" pointer="standard-french-pane-deep-count">+</a>
+                    </div>
+                </div>
+            </div>
+            <p>Price Increase: <span id="price_increase">$0.00</span></p>
+            <h3>Only add panes that have tough stains and require a deeper clean. Common types of stains that require
+                more attention are concrete, paint, tree sap or <span style="text-decoration:underline">hard water</span>.
+                Panes with tough stains that aren’t added here will not receive our deeper clean service.</h3>
+        </div>
+
+        <div class="btn-row">
+            <div class="next-button" onclick="goToStep(3)">Previous</div>
+
+                <div class="progress-bar">
+                  <div class="step-progress completed">
+                    <div class="bubble">1</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">2</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">3</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">4</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">5</div>
+                  </div>
+                </div>
+
+            <div class="next-button" onclick="goToStep(4)">Next</div>
+        </div>
     </div>
 </form>
 

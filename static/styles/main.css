@@ -30,6 +30,14 @@ body, html{
 /****************************************
         NAVIGATION
 *****************************************/
+
+.navbar{
+    background-color:#B3B3B3;
+}
+.navbar-brand img{
+    width:150px;
+    margin-left:50px;
+}
 #nav{
     background-color:#545454;
     display:flex;
@@ -393,18 +401,6 @@ body, html{
         Estimate
 *****************************************/
 
-#estimate{
-    width:60%;
-    margin:0 auto;
-    background-color:#485F6E;
-    border-radius:15px;
-}
-#estimate h2{
-    text-align:center;
-    color:white;
-    margin-top:30px;
-    margin-bottom:20px;
-}
 
 .estimate-button.active{
     border-radius:40px;
@@ -453,14 +449,6 @@ body, html{
     display:block;
 }
 
-#step-1, #step-2, #step-1 .active{
-    visibility:hidden;
-    height:0;
-}
-#step-1.current, #step-2.current, #step-1.current .active{
-    visibility:visible;
-    height:auto;
-}
 gmp-map, #map{
     height:600px;
 }
