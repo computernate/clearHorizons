@@ -11,6 +11,15 @@
     var step = 1;
     var floors = 0;
 
+    var wfp=false;
+    var quoteData={}
+
+    var formatter = Intl.NumberFormat('en-US',{
+      style:'currency',
+      currency:'USD'
+    })
+
+
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 40.511744, lng: -111.841186},
@@ -97,6 +106,12 @@
             let french = $("#standard-french-pane-deep-count").html()
             let price = (standard * price_per_deep_standard) + (french * price_per_deep_french)
             $('#price_increase').html(`$${price}.00`)
+            let excluded_panes = $("#exclude-panes-count").html();
+            console.log(excluded_panes)
+            $("#well-savings").html(formatter.format(excluded_panes * 25))
+            let excluded_french = $("#exclude-french-count").html();
+            $("#french-savings").html(formatter.format(excluded_french * 25))
+
         }
 
         $('.increase').click(function () {
@@ -104,10 +119,7 @@
             let num = $("#" + pointer).html()
             num++;
             $("#" + pointer).html(num)
-            if (pointer == 'standard-pane-deep-count' || pointer == 'standard-french-pane-deep-count') {
-                update_extra()
-            }
-
+            update_extra()
         })
         $('.decrease').click(function () {
             let pointer = $(this).attr("pointer")
@@ -115,17 +127,17 @@
             if (num > 0)
                 num--;
             $("#" + pointer).html(num)
-            if (pointer == 'standard-pane-deep-count' || pointer == 'standard-french-pane-deep-count') {
-                update_extra()
-            }
+            update_extra()
         })
     });
 
     function goToStep(step) {
+        $("#step-0").removeClass("current")
         $("#step-1").removeClass("current")
         $("#step-2").removeClass("current")
         $("#step-3").removeClass("current")
         $("#step-4").removeClass("current")
+        $("#step-5").removeClass("current")
         $("#step-too-high").removeClass("current")
         $("#step-" + step).addClass("current")
     }
@@ -133,9 +145,122 @@
     function setFloors(floor) {
         floors = floor;
         if (floor < 4)
-            goToStep(2);
+            goToStep(1);
         else
             goToStep("too-high")
+    }
+
+    function submitData(){
+        goToStep(4)
+        let form_data = {
+            standard_pane: parseInt($("#standard-pane-count").html()),
+            standard_french_pane: parseInt($("#standard-french-pane-count").html()),
+            high_pane: parseInt($("#high-pane-count").html()),
+            high_french_pane: parseInt($("#high-french-pane-count").html()),
+            standard_deep: parseInt($("#standard-pane-deep-count").html()),
+            french_deep: parseInt($("#standard-french-pane-deep-count").html()),
+            window_well: parseInt($("#window-well-panes").html()),
+            screen: parseInt($("#screens").html()),
+            latitude: document.getElementById('latitude').value,
+            longitude: document.getElementById('longitude').value
+        }
+        $.ajax({
+            type: "POST",
+            url: "/estimate",
+            data: JSON.stringify(form_data),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(response) {
+                quoteData = response
+                $('#exterior-single').html(formatter.format(response['exterior_single_service']))
+                $('#exterior-bi').html(formatter.format(response['exterior_biannual_service']))
+                $('#exterior-multi').html(formatter.format(response['exterior_multi_service']))
+                $('#interior-single').html(formatter.format(response['interior_single_service']))
+                $('#interior-bi').html(formatter.format(response['interior_biannual_service']))
+                $('#interior-multi').html(formatter.format(response['interior_multi_service']))
+                $('#screen-single').html(formatter.format(response['screen_single_service']))
+                $('#screen-bi').html(formatter.format(response['screen_biannual_service']))
+                $('#screen-multi').html(formatter.format(response['screen_multi_service']))
+                $('#wfp-savings').html(formatter.format(response['exterior_single_service']-response['exterior_wfp_single_service']))
+            },
+            error: function(error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+
+    function toggleWfp(){
+        console.log(wfp)
+        if(!wfp){
+            wfp=true
+            $('#exterior-single').html(`
+                <div class="strike-and-button">
+                    <span class="strike">
+                        ${formatter.format(quoteData['exterior_single_service'])}
+                    </span>
+                    <span>
+                        ${formatter.format(quoteData['exterior_wfp_single_service'])}
+                    </span>
+                </div>
+            `)
+            $('#exterior-bi').html(`
+                <div class="strike-and-button">
+                    <span class="strike">
+                        ${formatter.format(quoteData['exterior_biannual_service'])}
+                    </span>
+                    <span>
+                        ${formatter.format(quoteData['exterior_wfp_biannual_service'])}
+                    </span>
+                </div>
+            `)
+            $('#exterior-multi').html(`
+                <div class="strike-and-button">
+                    <span class="strike">
+                        ${formatter.format(quoteData['exterior_multi_service'])}
+                    </span>
+                    <span>
+                        ${formatter.format(quoteData['exterior_wfp_multi_service'])}
+                    </span>
+                </div>
+            `)
+        }
+        else{
+            wfp=false
+            $('#exterior-single').html(formatter.format(quoteData['exterior_single_service']))
+            $('#exterior-bi').html(formatter.format(quoteData['exterior_biannual_service']))
+            $('#exterior-multi').html(formatter.format(quoteData['exterior_multi_service']))
+        }
+    }
+
+    function submitAll(){
+        all_data = {
+            standard_pane: parseInt($("#standard-pane-count").html()),
+            standard_french_pane: parseInt($("#standard-french-pane-count").html()),
+            high_pane: parseInt($("#high-pane-count").html()),
+            high_french_pane: parseInt($("#high-french-pane-count").html()),
+            standard_deep: parseInt($("#standard-pane-deep-count").html()),
+            french_deep: parseInt($("#standard-french-pane-deep-count").html()),
+            window_well: parseInt($("#window-well-panes").html()),
+            screen: parseInt($("#screens").html()),
+            latitude: document.getElementById('latitude').value,
+            longitude: document.getElementById('longitude').value,
+            selectedSingle: '',
+            selectedInterior: '',
+            selectedScreens: '',
+            exclude_window_well_panes_count: parseInt($("#exclude-panes-count").html()),
+            exclude_window_well_panes: $("#exclude-panes-count").val(),
+            exclude_french_panes_count: parseInt($("#exclude-french-count").html()),
+            exclude_french_panes: $("#exclude-french").val(),
+            wfp_selected:$("#wfp").val(),
+            own_screen_selected: $("#screen-replace").val(),
+            screen_repair: $('#screen-repair').val(),
+            screen_replacement: $("#screen-replacement").val(),
+            first_name: $("#first-name").val(),
+            last_name: $("#last-name").val(),
+            phone: $("#phone").val(),
+            email: $("#email").val()
+        }
+        console.log(all_data)
     }
 
 </script>
@@ -152,7 +277,7 @@
 
 <form id="estimate" action="/estimate" method="post">
 
-    <div id="step-1" class="current step">
+    <div id="step-0" class="current step">
         <h1>How many stories do you have?</h1>
         <div class="floors-wrapper">
             <div></div>
@@ -182,85 +307,178 @@
         </div>
     </div>
 
-    <div id="step-2" class="step">
+    <div id="step-1" class="step">
         <h1>Count your individual window panes</h1>
-        <table class="step-2-grid main-content">
-            <tr>
-                <td style="position:relative">
-                    <div class="generic-panes">
-                        <h2>1st Story Window Panes</h2>
-                        <img src="static/images/first-story-panes.png"/>
-                        <div class="panes-count-1">
-                            <h3>Standard Pane</h3>
-                            <img src="static/images/standard-pane.png"/>
-                            <div class="count-options">
-                                <a class="clear-button decrease" pointer='standard-pane-count'>-</a>
-                                <div id="standard-pane-count">0</div>
-                                <a class="clear-button increase" pointer='standard-pane-count'>+</a>
+        <div class="main-content">
+            <table class="step-2-grid">
+                <tr>
+                    <td style="position:relative">
+                        <div class="generic-panes">
+                            <h2>1st Story Window Panes
+                                <div class="info-container">
+                                    <div class="info-icon">
+                                        i
+                                    </div>
+                                    <div class="info-content">
+                                        This is the relevant info
+                                    </div>
+                                </div>
+                            </h2>
+                            <img src="static/images/first-story-panes.png"/>
+                            <div class="panes-count-1">
+                                <h3>Standard Pane
+                                <div class="info-container">
+                                    <div class="info-icon">
+                                        i
+                                    </div>
+                                    <div class="info-content">
+                                        This is the relevant info
+                                    </div>
+                                </div></h3>
+                                <img src="static/images/standard-pane.png"/>
+                                <div class="count-options">
+                                    <a class="clear-button decrease" pointer='standard-pane-count'>-</a>
+                                    <div id="standard-pane-count">0</div>
+                                    <a class="clear-button increase" pointer='standard-pane-count'>+</a>
+                                </div>
+                            </div>
+                            <div class="panes-count-2">
+                                <h3>French Pane
+                                <div class="info-container">
+                                    <div class="info-icon">
+                                        i
+                                    </div>
+                                    <div class="info-content">
+                                        This is the relevant info
+                                    </div>
+                                </div></h3>
+                                <img src="static/images/french-pane.png"/>
+                                <div class="count-options">
+                                    <a class="clear-button decrease" pointer="standard-french-pane-count">-</a>
+                                    <div id="standard-french-pane-count">0</div>
+                                    <a class="clear-button increase" pointer="standard-french-pane-count">+</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="panes-count-2">
-                            <h3>French Pane</h3>
-                            <img src="static/images/french-pane.png"/>
-                            <div class="count-options">
-                                <a class="clear-button decrease" pointer="standard-french-pane-count">-</a>
-                                <div id="standard-french-pane-count">0</div>
-                                <a class="clear-button increase" pointer="standard-french-pane-count">+</a>
+                        <div class="white-square-blocker"></div>
+                    </td>
+                    <td>
+                        <div class="generic-panes">
+                            <h2>2nd+ Story Window Panes
+                                <div class="info-container">
+                                    <div class="info-icon">
+                                        i
+                                    </div>
+                                    <div class="info-content">
+                                        This is the relevant info
+                                    </div>
+                                </div></h2>
+                            <img src="static/images/high-story-panes.png"/>
+                            <div class="panes-count-1">
+                                <h3>Standard Pane
+                                <div class="info-container">
+                                    <div class="info-icon">
+                                        i
+                                    </div>
+                                    <div class="info-content">
+                                        This is the relevant info
+                                    </div>
+                                </div></h3>
+                                <img src="static/images/standard-pane.png"/>
+                                <div class="count-options">
+                                    <a class="clear-button decrease" pointer="high-pane-count">-</a>
+                                    <div id="high-pane-count">0</div>
+                                    <a class="clear-button increase" pointer="high-pane-count">+</a>
+                                </div>
+                            </div>
+                            <div class="panes-count-2">
+                                <h3>French Pane
+                                <div class="info-container">
+                                    <div class="info-icon">
+                                        i
+                                    </div>
+                                    <div class="info-content">
+                                        This is the relevant info
+                                    </div>
+                                </div></h3>
+                                <img src="static/images/french-pane.png"/>
+                                <div class="count-options">
+                                    <a class="clear-button decrease" pointer="high-french-pane-count">-</a>
+                                    <div id="high-french-pane-count">0</div>
+                                    <a class="clear-button increase" pointer="high-french-pane-count">+</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="white-square-blocker"></div>
-                </td>
-                <td>
-                    <div class="generic-panes">
-                        <h2>2nd+ Story Window Panes</h2>
-                        <img src="static/images/high-story-panes.png"/>
-                        <div class="panes-count-1">
-                            <h3>Standard Pane</h3>
-                            <img src="static/images/standard-pane.png"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="pane-image">
+                            <h2>Window Well Panes</h2>
+                            <img src="static/images/window-well-pane.png"/>
                             <div class="count-options">
-                                <a class="clear-button decrease" pointer="high-pane-count">-</a>
-                                <div id="high-pane-count">0</div>
-                                <a class="clear-button increase" pointer="high-pane-count">+</a>
+                                <a class="clear-button decrease" pointer="window-well-panes">-</a>
+                                <div id="window-well-panes">0</div>
+                                <a class="clear-button increase" pointer="window-well-panes">+</a>
                             </div>
                         </div>
-                        <div class="panes-count-2">
-                            <h3>French Pane</h3>
-                            <img src="static/images/french-pane.png"/>
+                    </td>
+                    <td>
+                        <div class="pane-image">
+                            <h2>Screens</h2>
+                            <img src="static/images/screen.png"/>
                             <div class="count-options">
-                                <a class="clear-button decrease" pointer="high-french-pane-count">-</a>
-                                <div id="high-french-pane-count">0</div>
-                                <a class="clear-button increase" pointer="high-french-pane-count">+</a>
+                                <a class="clear-button decrease" pointer="screens">-</a>
+                                <div id="screens">0</div>
+                                <a class="clear-button increase" pointer="screens">+</a>
                             </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="pane-image">
-                        <h2>Window Well Panes</h2>
-                        <img src="static/images/window-well-pane.png"/>
-                        <div class="count-options">
-                            <a class="clear-button decrease" pointer="window-well-panes">-</a>
-                            <div id="window-well-panes">0</div>
-                            <a class="clear-button increase" pointer="window-well-panes">+</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="pane-image">
-                        <h2>Screens</h2>
-                        <img src="static/images/screen.png"/>
-                        <div class="count-options">
-                            <a class="clear-button decrease" pointer="screens">-</a>
-                            <div id="screens">0</div>
-                            <a class="clear-button increase" pointer="screens">+</a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="btn-row">
+            <div class="next-button" onclick="goToStep(0)">Previous</div>
+
+                <div class="progress-bar">
+                  <div class="step-progress completed">
+                    <div class="bubble">1</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">2</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">3</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">4</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">5</div>
+                  </div>
+                </div>
+
+            <div class="next-button" onclick="goToStep(2)">Next</div>
+        </div>
+    </div>
+
+    <div id="step-2" class="step">
+        <h1>Job Site Address</h1>
+        <div class="main-content">
+            <div class="map-wrapper">
+                <p>Select or type your address below</p>
+                <div id="map"></div>
+                <p>Type Address:<input id="search-input" type="text" placeholder="Enter an address"></p>
+            </div>
+            <p id="address"></p>
+            <input type="hidden" name="selected_address" id="selected_address">
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+        </div>
         <div class="btn-row">
             <div class="next-button" onclick="goToStep(1)">Previous</div>
 
@@ -268,7 +486,7 @@
                   <div class="step-progress completed">
                     <div class="bubble">1</div>
                   </div>
-                  <div class="step-progress">
+                  <div class="step-progress completed">
                     <div class="line"></div>
                     <div class="bubble">2</div>
                   </div>
@@ -289,49 +507,7 @@
             <div class="next-button" onclick="goToStep(3)">Next</div>
         </div>
     </div>
-
     <div id="step-3" class="step">
-        <h1>Job Site Address</h1>
-        <div class="main-content">
-            <div class="map-wrapper">
-                <p>Select or type your address below</p>
-                <div id="map"></div>
-                <p>Type Address:<input id="search-input" type="text" placeholder="Enter an address"></p>
-            </div>
-            <p id="address"></p>
-            <input type="hidden" name="selected_address" id="selected_address">
-            <input type="hidden" name="latitude" id="latitude">
-            <input type="hidden" name="longitude" id="longitude">
-        </div>
-        <div class="btn-row">
-            <div class="next-button" onclick="goToStep(2)">Previous</div>
-
-                <div class="progress-bar">
-                  <div class="step-progress completed">
-                    <div class="bubble">1</div>
-                  </div>
-                  <div class="step-progress completed">
-                    <div class="line"></div>
-                    <div class="bubble">2</div>
-                  </div>
-                  <div class="step-progress">
-                    <div class="line"></div>
-                    <div class="bubble">3</div>
-                  </div>
-                  <div class="step-progress">
-                    <div class="line"></div>
-                    <div class="bubble">4</div>
-                  </div>
-                  <div class="step-progress">
-                    <div class="line"></div>
-                    <div class="bubble">5</div>
-                  </div>
-                </div>
-
-            <div class="next-button" onclick="goToStep(4)">Next</div>
-        </div>
-    </div>
-    <div id="step-4" class="step">
         <h1>Do any of your panes need a deeper clean?</h1>
             <div class="main-content">
                 <div class="panes-display">
@@ -361,7 +537,7 @@
         </div>
 
         <div class="btn-row">
-            <div class="next-button" onclick="goToStep(3)">Previous</div>
+            <div class="next-button" onclick="goToStep(2)">Previous</div>
 
                 <div class="progress-bar">
                   <div class="step-progress completed">
@@ -385,7 +561,246 @@
                   </div>
                 </div>
 
-            <div class="next-button" onclick="goToStep(4)">Next</div>
+            <div class="next-button" onclick="submitData()">Next</div>
+        </div>
+    </div>
+    <div id="step-4" class="step">
+        <div class="main-content">
+            <h1>Services and Plans</h1>
+            <table class="display-table">
+                <tr>
+                    <th></th>
+                    <th>Single Service</th>
+                    <th>Bi-Seasonal Service</th>
+                    <th>Multi Service</th>
+                </tr>
+                <tr>
+                    <td>Exterior</td>
+                    <td id="exterior-single">Loading...</td>
+                    <td id="exterior-bi">Loading...</td>
+                    <td id="exterior-multi">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Interior</td>
+                    <td id="interior-single">Loading...</td>
+                    <td id="interior-bi">Loading...</td>
+                    <td id="interior-multi">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Screens</td>
+                    <td id="screen-single">Loading...</td>
+                    <td id="screen-bi">Loading...</td>
+                    <td id="screen-multi">Loading...</td>
+                </tr>
+            </table>
+            <h1>More ways to save</h1>
+            <table class="display-table">
+                <tr>
+                    <th></th>
+                    <th>QTY</th>
+                    <th>Savings</th>
+                    <th>Check</th>
+                </tr>
+                <tr>
+                    <td>Exclude my window well panes</td>
+                    <td>
+                        <div class="count-options">
+                            <a class="clear-button decrease" pointer='exclude-panes-count'>-</a>
+                            <div id="exclude-panes-count">0</div>
+                            <a class="clear-button increase" pointer='exclude-panes-count'>+</a>
+                        </div>
+                    </td>
+                    <td>You'd save <span id="well-savings">$0</span></td>
+                    <td>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="exclude-window-well" id="exclude-window-well" class="checkbox-input" />
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Exclude my french well panes</td>
+                    <td>
+                        <div class="count-options">
+                            <a class="clear-button decrease" pointer='exclude-french-count'>-</a>
+                            <div id="exclude-french-count">0</div>
+                            <a class="clear-button increase" pointer='exclude-french-count'>+</a>
+                        </div>
+                    </td>
+                    <td>You'd save <span id="french-savings">$0</span></td>
+                    <td>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="exclude-french" id="exclude-french" class="checkbox-input" />
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Water Fed Pole Exterior
+                        <div class="info-container">
+                            <div class="info-icon">
+                                i
+                            </div>
+                            <div class="info-content">
+                                This is the relevant info
+                            </div>
+                        </div>
+                    </td>
+                    <td>N/A</td>
+                    <td>You'd save <span id="wfp-savings"></span></td>
+                    <td>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="wfp" id="wfp" class="checkbox-input" />
+                            <span class="checkmark" onclick="toggleWfp()"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>I will remove and replace my own screens</td>
+                    <td>N/A</td>
+                    <td>You'd save $25</td>
+                    <td>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="wfp" id="screen-replace" class="checkbox-input" />
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <h1>Additional Services</h1>
+            <table class="display-table">
+                <tr>
+                    <th></th>
+                    <th>Select a bubble to get in contact about a quote</th>
+                </tr>
+                <tr>
+                    <td>Screen Repair
+                        <div class="info-container">
+                            <div class="info-icon">
+                                i
+                            </div>
+                            <div class="info-content">
+                                This is the relevant info
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="screen-repair" id="screen-repair" class="checkbox-input" />
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Screen Replacement
+                        <div class="info-container">
+                            <div class="info-icon">
+                                i
+                            </div>
+                            <div class="info-content">
+                                This is the relevant info
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="screen-replacement" id="screen-replacement" class="checkbox-input" />
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h1 class="no-print">Need some time to think about it?</h1>
+        <div class="save-or-print no-print">
+            <p>Save or Print a copy of your quote and reach out when you are ready to schedule!</p>
+            <div class="next-button" onclick="window.print()">Print</div>
+        </div>
+        <div class="btn-row no-print">
+            <div class="next-button" onclick="goToStep(3)">Previous</div>
+
+                <div class="progress-bar">
+                  <div class="step-progress completed">
+                    <div class="bubble">1</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">2</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">3</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">4</div>
+                  </div>
+                  <div class="step-progress">
+                    <div class="line"></div>
+                    <div class="bubble">5</div>
+                  </div>
+                </div>
+
+            <div class="next-button" onclick="goToStep(5)">Schedule</div>
+        </div>
+    </div>
+    <div id="step-5" class="step">
+
+        <h1>Customer Information</h1>
+        <div class="main-content">
+            <div class="final-form">
+                <div class="label-and-input">
+                    <label>First Name</label>
+                    <input id="first-name" name="first-name" />
+                </div>
+                <div class="label-and-input">
+                    <label>Last Name</label>
+                    <input id="last-name" name="last-name" />
+                </div>
+                <div class="label-and-input">
+                    <label>Phone Number</label>
+                    <input id="phone" name="phone" />
+                </div>
+                <div class="label-and-input">
+                    <label>Email</label>
+                    <input id="email" name="email" />
+                </div>
+            </div>
+            <div class="final-form">
+                <embed src="/static/pdfs/test_pdf.pdf" width="500px" height="600px" />
+                <div class="label-and-input">
+                    <label>Client Agreement Signature</label>
+                    <input id="signature" name="signature" placeholder="Please type your full name" />
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row no-print">
+            <div class="next-button" onclick="goToStep(3)">Previous</div>
+
+                <div class="progress-bar">
+                  <div class="step-progress completed">
+                    <div class="bubble">1</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">2</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">3</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">4</div>
+                  </div>
+                  <div class="step-progress completed">
+                    <div class="line"></div>
+                    <div class="bubble">5</div>
+                  </div>
+                </div>
+
+            <div class="next-button" onclick="submitAll(5)">Schedule</div>
         </div>
     </div>
 </form>

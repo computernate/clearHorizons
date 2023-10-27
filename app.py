@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+from flask_mail import Mail, Message
 import requests
 
 app = Flask(__name__)
@@ -16,14 +17,15 @@ def estimate():
 @app.route('/estimate', methods=['POST'])
 def estimateSummary():
     # USER INPUTS
-    ww=int(request.form.get('ww'))
-    gl=int(request.form.get('gl'))
-    agl=int(request.form.get('agl'))
-    glf=int(request.form.get('glf'))
-    aglf=int(request.form.get('aglf'))
-    s=int(request.form.get('s'))
-    latitude = request.form.get('latitude')
-    longitude = request.form.get('longitude')
+    data_received = request.json
+    ww=int(data_received['window_well'] )
+    gl=int(data_received['standard_pane'])
+    agl=int(data_received['high_pane'])
+    glf=int(data_received['standard_french_pane'])
+    aglf=int(data_received['high_french_pane'])
+    s=int(data_received['screen'])
+    latitude = data_received['latitude']
+    longitude = data_received['longitude']
 
     #System Inputs
         #Window durations
@@ -137,13 +139,50 @@ def estimateSummary():
         "screen_multi_service": screen_total * profit_margin_monthly,
         "rain_warrenty":(exterior_total + fixed_cost)*rw
     }
-    return render_template('estimate_results.html', context=final_presentation)
+    return jsonify(final_presentation)
 
 
 
+@app.route('/send_estimate', methods=['POST'])
+def sendEstimate():
+    data_received = request.json
+    data = {
+        "standard_pane":data_received['standard_pane'],
+        "standard_french_pane":data_received['standard_french_pane'],
+        "high_pane":data_received['high_pane'],
+        "high_french_pane":data_received['high_french_pane'],
+        "standard_deep":data_received['standard_deep'],
+        "french_deep":data_received['french_deep'],
+        "window_well":data_received['window_well'],
+        "screen":data_received['screen'],
 
+        "latitude":data_received['latitude'],
+        "longitude":data_received['longitude'],
 
+        "selectedSingle":data_received['selectedSingle'],
+        "selectedInterior":data_received['selectedInterior'],
+        "selectedScreens":data_received['selectedScreens'],
 
+        "exclude_window_well_panes_count":data_received['exclude_window_well_panes_count'],
+        "exclude_window_well_panes":data_received['exclude_window_well_panes'],
+        "exclude_french_panes_count":data_received['exclude_french_panes_count'],
+        "exclude_french_panes":data_received['exclude_french_panes'],
+        "wfp_selected":data_received['wfp_selected'],
+        "own_screen_selected":data_received['own_screen_selected'],
+        "screen_repair":data_received['screen_repair'],
+        "screen_replacement":data_received['screen_replacement'],
+
+        "first_name":data_received['first_name'],
+        "last_name":data_received['last_name'],
+        "phone":data_received['phone'],
+        "email":data_received['email'],
+    }
+
+    html_content = render_template('quote_email.html', data=data)
+    msg = Message('Subject of the Email', sender='nateroskelley@gmail.com', recipients=[data.email, 'nateroskelley@gmail.com'])
+    msg.html = html_content
+
+    Mail.send(msg)
 
 
 @app.errorhandler(404)
@@ -152,6 +191,12 @@ def notfound(e):
 
 
 if __name__ == '__main__':
+    app.config['MAIL_SERVER'] = 'your_mail_server'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USERNAME'] = 'your_username'
+    app.config['MAIL_PASSWORD'] = 'your_password'
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USE_SSL'] = False
     app.run()
 
 

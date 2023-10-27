@@ -478,3 +478,43 @@ gmp-map, #map{
 .new-price{
     color:#AAFFAA;
 }
+
+
+@media only screen and (max-width: 1000px) {
+
+    #home-1{
+        height:50%;
+    }
+
+    #about-us{
+        flex-direction:column;
+    }
+    #about-all-info{
+        justify-content: space-around;
+    }
+    #faq{
+        flex-direction: column;
+    }
+    .faq-img div{
+        background-position: center center;
+    }
+
+    #our-services{
+        height:50%;
+    }
+
+    #savings-2{
+        display:none;
+    }
+
+    .dropdown-item{
+        text-align:center;
+    }
+    a.nav-link{
+        text-align:center;
+    }
+    .navbar-toggler
+    {
+        margin-right:20px;
+    }
+}
