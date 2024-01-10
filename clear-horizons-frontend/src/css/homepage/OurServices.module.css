@@ -1,0 +1,33 @@
+
+.ourServices{
+    color:white;
+    background: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("/public/homepage/home_our_services.png");
+    background-size: 100% auto;
+    background-position:25%, 50%;
+    background-repeat:no-repeat;
+    height:75vh;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.ourServicesSlider{
+    width:90%;
+}
+
+.servicesCard{
+    background-color:white;
+    text-align:center;
+    border-radius:25px;
+    color:black;
+    height:200px;
+    margin:20px;
+}
+
+@media (max-width: 768px) {
+
+    .ourServices {
+        background-size: 200% auto;
+    }
+}

@@ -1,0 +1,72 @@
+
+
+.floorsWrapper{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.floorNumbers{
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+}
+
+.floorsHouse {
+    position: relative;
+    display:grid;
+    grid-template-columns:1fr;
+    transition:height 0.5s, grid-template-rows 0.5s;
+    overflow:hidden;
+    width:212px;
+}
+.floorsHouse[activeFloors="1"]{
+    height:139px;
+    grid-template-rows:139px 0px 0px 0px;
+}
+.floorsHouse[activeFloors="2"]{
+    height:240px;
+    grid-template-rows:139px 0px 0px 101px;
+}
+.floorsHouse[activeFloors="3"]{
+    height:317px;
+    grid-template-rows:139px 0px 77px 101px;
+}
+.floorsHouse[activeFloors="4"]{
+    height:394px;
+    grid-template-rows:139px 77px 77px 101px;
+}
+
+.houseFloor {
+    background-color: #f0f0f0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.houseFloor img {
+    width:100%;
+    height:100%;
+}
+
+.house4{
+    grid-row:1/2;
+}
+.house3{
+    grid-row:2/3;
+}
+.house2{
+    grid-row:3/4;
+}
+.house1{
+    grid-row:4/5;
+}
+#stepTooHigh{
+    width:50%;
+    margin: 0 auto;
+}
+#stepTooHigh div{
+    display:flex;
+    justify-content: space-between;
+}

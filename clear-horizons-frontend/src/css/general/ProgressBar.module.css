@@ -1,0 +1,30 @@
+
+
+.progressBar{
+    width:20px;
+    height:500px;
+    position:relative;
+}
+
+.completedProgress{
+    width:100%;
+    background-color:var(--head-main);
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+}
+
+.uncompletedProgress{
+    width:100%;
+    background-color:var(--head-highlight);
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+}
+
+.slider{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url('/public/utah_logo.png');
+  background-size: 20px 20px; /* Adjust this to your desired visible size */
+  background-repeat: no-repeat;
+}

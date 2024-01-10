@@ -1,0 +1,42 @@
+
+.savingsProgram{
+    display:flex;
+    height:75vh;
+    align-items: center;
+}
+.savingsone h2{
+    font-size:75px;
+}
+.savingsone{
+    color:white;
+    background: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("/public/homepage/home_savings_1.png");
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center top;
+    height:80%;
+    flex:2;
+    display:flex;
+    justify-content: space-around;
+    flex-direction: column;
+    padding:40px;
+}
+.savingstwo{
+    background: url("/public/homepage/home_savings_2.png");
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: center top;
+    flex:1;
+    border-bottom-left-radius: 150px;
+    border:5px white solid;
+    height:100%;
+}
+
+@media (max-width:769px){
+    .savingstwo{
+        display:none;
+    }
+    .savingsone{
+        background: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("/public/homepage/home_savings_2.png");
+        background-size: 100% auto;
+    }
+}

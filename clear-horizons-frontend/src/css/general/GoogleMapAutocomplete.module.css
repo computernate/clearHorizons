@@ -1,0 +1,10 @@
+.container{
+    width:400px;
+    padding:20px;
+    background-color:var(--div-highlight);
+    border-radius:5px;
+}
+
+.header{
+    color:white;
+}

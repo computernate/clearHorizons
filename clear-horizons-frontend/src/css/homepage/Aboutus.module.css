@@ -1,0 +1,57 @@
+
+.aboutUs {
+    margin: 80px auto;
+    width: 95%;
+    display: flex;
+    height: 75vh;
+}
+
+.aboutUs > div {
+    flex: 1;
+}
+
+.aboutInfo{
+    display: flex;
+    justify-content: space-around;
+}
+.aboutInfo h2{
+    text-align:center;
+    color:#30799B;
+}
+
+.aboutAllInfo{
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+}
+
+.imageStack {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(12, 1fr);
+}
+
+.imageStack__item__bottom {
+    background: url("/public/homepage/home_about_2.png");
+    grid-column: 3 / 12;
+    grid-row: 1 / 9;
+}
+
+.imageStack__item__top {
+    background: url("/public/homepage/home_about_1.png");
+    grid-row: 5 / 12;
+    grid-column: 1 / 10;
+    z-index: 1;
+}
+
+.imageStack__item img {
+    height: 100%;
+}
+
+.imageStack__item {
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: center top;
+    border-top-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+}

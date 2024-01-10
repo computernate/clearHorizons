@@ -1,0 +1,17 @@
+
+.sidebar{
+    width:200px;
+    height:100%;
+    background-color:#666;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+@media (max-width:1000px){
+    .sidebar{
+        height:150px;
+        width:100%;
+    }
+}

@@ -1,0 +1,47 @@
+{% extends "wrapper.html" %}
+{% block head %}
+<link rel="stylesheet" href="static/styles/dashboard.css"/>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <!-- Houses Section -->
+        <div class="section">
+            <h2>Houses</h2>
+            <div class="card-container">
+                {% for house in context.houses %}
+                    <div class="card">
+                        <h3>{{ house.address }}</h3>
+                        <a href="/clean-windows/{{ house.id }}" class="button">Clean Windows</a>
+                    </div>
+                {% endfor %}
+                <div class="card">
+                    <h3>NEW</h3>
+                    <a href="/estimate" class="button">New House</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoices Section -->
+        <div class="section">
+            <h2>Invoices</h2>
+            <div class="card-container">
+                {% for invoice in context.invoices %}
+                    <div class="card">
+                        <p>Status: <span class="{{ 'status-paid' if invoice.paid else 'status-unpaid' }}">{{ 'Paid' if invoice.paid else 'Unpaid' }}</span></p>
+                        <p>Cleanings Left: {{ invoice.cleanings_left }}</p>
+                        <a href="/schedule/{{ invoice.id }}" class="button">Get Scheduled</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Schedule Section -->
+        <div class="section">
+            <h2>Schedule</h2>
+            <!-- Schedule content goes here -->
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,251 @@
+{% extends "wrapper.html" %}
+
+{% block head %}
+
+<script>
+$(window).scroll(function() {
+   let hT = $('#why-cards-1').offset().top,
+       hH = $('#why-cards-1').outerHeight(),
+       wH = $(window).height(),
+       wS = $(this).scrollTop();
+   if (wS > (hT+hH-wH)){
+       $('#why-cards-1 .why-card').each(function(index){
+           window.setTimeout(()=>{
+               $(this).addClass("is-visible")
+           }, 150*index)
+       });
+   }
+   let hT2 = $('#why-cards-2').offset().top,
+       hH2 = $('#why-cards-2').outerHeight(),
+       wH2 = $(window).height(),
+       wS2 = $(this).scrollTop();
+   if (wS2 > (hT2+hH2-wH2)){
+       $('#why-cards-2 .why-card').each(function(index){
+           window.setTimeout(()=>{
+               $(this).addClass("is-visible")
+           }, 150*index)
+       });
+   }
+});
+$(document).ready(function() {
+    var slider = $("#lightSlider").lightSlider({
+        autoWidth: false,
+        auto: false,
+        loop: false,
+    });
+    $('#lightSlider-back').click(function(){
+        slider.goToPrevSlide();
+    });
+    $('#lightSlider-forward').click(function(){
+        slider.goToNextSlide();
+    });
+});
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div id="home-1">
+    <div>
+        <h3>Greetings from us at</h3>
+        <h1>Clear Horizon</h1>
+        <h4>At Clear Horizons, we are the one-stop solution to all of your exterior and interior window cleaning needs.
+            We offer services that exceed our customers' expectations at a reasonable price.</h4>
+        <div>
+            <button class="generic-button">Read More</button>
+            <button class="generic-button clear">Contact Us</button>
+        </div>
+    </div>
+</div>
+
+<div id="why-us">
+    <div class='get-estimate'>
+        <p>GET YOUR <span class="orange-text">FREE ESTIMATE</span><span class="blue-text"> HERE</span></p>
+        <button class="generic-button">Estimate</button>
+    </div>
+    <h3>Why <span class="blue-text">Choose</span> us?</h3>
+    <h4>Honestly, I just had eye surgery and the quality of the video is pretty bad. I can't figure out what it says here</h4>
+    <div class="why-cards" id="why-cards-1">
+        <div class="why-card">
+            <i class="fa-solid fa-award"></i>
+            <h3>High-quality products</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum volutpat lorem, lacinia convallis dolor vestibulum non. Maecenas nec dolor magna. In fermentum lectus gravida tortor placerat, quis aliquam mi euismod. Sed nisi turpis, tincidunt eget gravida ac, interdum non diam.</p>
+        </div>
+        <div class="why-card">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+            <h3>Cost-effetive</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum volutpat lorem, lacinia convallis dolor vestibulum non. Maecenas nec dolor magna. In fermentum lectus gravida tortor placerat, quis aliquam mi euismod. Sed nisi turpis, tincidunt eget gravida ac, interdum non diam.</p>
+        </div>
+        <div class="why-card">
+            <i class="fa-solid fa-people-group"></i>
+            <h3>Customer Oriented</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum volutpat lorem, lacinia convallis dolor vestibulum non. Maecenas nec dolor magna. In fermentum lectus gravida tortor placerat, quis aliquam mi euismod. Sed nisi turpis, tincidunt eget gravida ac, interdum non diam.</p>
+        </div>
+    </div>
+    <div class="why-cards" id="why-cards-2">
+        <div class="why-card">
+            <i class="fa-solid fa-hand-sparkles"></i>
+            <h3>Professional Staff</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum volutpat lorem, lacinia convallis dolor vestibulum non. Maecenas nec dolor magna. In fermentum lectus gravida tortor placerat, quis aliquam mi euismod. Sed nisi turpis, tincidunt eget gravida ac, interdum non diam.</p>
+        </div>
+        <div class="why-card">
+            <i class="fa-solid fa-thumbs-up"></i>
+            <h3>6+ Years of Experience</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum volutpat lorem, lacinia convallis dolor vestibulum non. Maecenas nec dolor magna. In fermentum lectus gravida tortor placerat, quis aliquam mi euismod. Sed nisi turpis, tincidunt eget gravida ac, interdum non diam.</p>
+        </div>
+        <div class="why-card">
+            <i class="fa-solid fa-rocket"></i>
+            <h3>State of the Art Equipment</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum volutpat lorem, lacinia convallis dolor vestibulum non. Maecenas nec dolor magna. In fermentum lectus gravida tortor placerat, quis aliquam mi euismod. Sed nisi turpis, tincidunt eget gravida ac, interdum non diam.</p>
+        </div>
+    </div>
+</div>
+
+<div id="about-us">
+    <div class="image-stack">
+        <div class="image-stack__item image-stack__item--top">
+        </div>
+        <div class="image-stack__item image-stack__item--bottom">
+        </div>
+    </div>
+    <div id="about-all-info">
+        <h2>About Us</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum volutpat lorem, lacinia convallis dolor vestibulum non. Maecenas nec dolor magna. In fermentum lectus gravida tortor placerat, quis aliquam mi euismod. Sed nisi turpis, tincidunt eget gravida ac, interdum non diam.</p>
+        <div id="about-info">
+            <div>
+                <h2>6+</h2>
+                <p>Years Experience</p>
+            </div>
+            <div>
+                <h2>500+</h2>
+                <p>Houses Cleaned</p>
+            </div>
+        </div>
+        <button class="generic-button">See more</button>
+    </div>
+</div>
+
+<div id="our-services">
+    <div class="services-spacer"></div>
+    <h2>Our Services</h2>
+    <div class="services-holder">
+        <ul id="lightSlider">
+            <li>
+                <div>
+                    <h3>First Slide</h3>
+                    <p>Lorem ipsum Cupidatat quis pariatur anim.</p>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h3>First Slide</h3>
+                    <p>Lorem ipsum Cupidatat quis pariatur anim.</p>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h3>First Slide</h3>
+                    <p>Lorem ipsum Cupidatat quis pariatur anim.</p>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h3>First Slide</h3>
+                    <p>Lorem ipsum Cupidatat quis pariatur anim.</p>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h3>First Slide</h3>
+                    <p>Lorem ipsum Cupidatat quis pariatur anim.</p>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h3>First Slide</h3>
+                    <p>Lorem ipsum Cupidatat quis pariatur anim.</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="services-buttons">
+        <button class="generic-button" id="lightSlider-back"><<</button>
+        <button class="generic-button" id="lightSlider-forward">>></button>
+    </div>
+    <button class="generic-button">See All</button>
+    <div class="services-spacer"></div>
+</div>
+
+<div id="faq">
+    <div class="faq-img">
+        <div>
+        </div>
+    </div>
+    <div id="faq-wrapper">
+        <h2>FAQs</h2>
+        <h3>We have listed down some of our frequently asked <span class="blue-text">Questions</span> for your assistance</h3>
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                What are the prices of your cleaning services?
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Are the cleaning products you use safe?
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                What is your process for cleaning the windows?
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                How often should I get my windows cleaned?
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<div id="savings-program">
+    <div id="savings-1">
+        <h2>Make sure to sign up for our <span class="orange-text">Savings Program</span> by clicking here</h2>
+        <div><button class="generic-button">Save Today</button></div>
+    </div>
+    <div id="savings-2">
+
+    </div>
+</div>
+
+{% endblock %}

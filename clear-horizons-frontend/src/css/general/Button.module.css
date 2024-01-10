@@ -1,0 +1,32 @@
+
+.gradient{
+    border-radius:40px;
+    color:white;
+    background-image: linear-gradient(to right, #fc5000 0%, #fc9300 51%, #fc5000 100%);
+    border:0px;
+    transition: 0.25s;
+    background-size: 200% auto;
+    font-size:25px;
+    padding:5px 20px 5px 20px;
+    display:inline;
+    text-align:center;
+}
+.gradient:hover{
+    background-position: right center;
+}
+
+.solid{
+    background-color:#FFA629;
+    width:100px;
+    text-align:center;
+    color:white;
+    font-size:40px;
+    border-radius:5px;
+    margin-bottom:20px;
+}
+.solid.active{
+    background-color:#83A9D9;
+}
+.solid:hover{
+    background-color:#83A9D9;
+}

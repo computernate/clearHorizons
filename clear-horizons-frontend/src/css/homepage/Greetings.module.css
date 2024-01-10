@@ -1,0 +1,38 @@
+.container {
+    background: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("/public/homepage/home_house.png");
+    background-size: 150%;
+    background-position: 25%, 50%;
+    background-repeat: no-repeat;
+    height: 85vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.items{
+    width:80%;
+}
+
+.items *{
+    text-align:left;
+    margin:20px;
+}
+
+.buttonRow{
+    text-align:center;
+}
+
+
+@media (max-width: 768px) {
+    .container{
+        background-size: 200%;
+    }
+    .items *{
+        text-align:center;
+    }
+}

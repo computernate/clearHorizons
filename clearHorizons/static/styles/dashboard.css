@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.card-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    min-width: 200px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+
+.button {
+    background-image: linear-gradient(to right, #fc5000 0%, #fc9300 51%, #fc5000 100%);
+    transition: 0.25s;
+    background-size: 200% auto;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+.button:hover{
+    background-position: right center;
+}
+
+.status-paid {
+    color: green;
+}
+
+.status-unpaid {
+    color: red;
+}
+
+/* Additional styles can be added as needed */

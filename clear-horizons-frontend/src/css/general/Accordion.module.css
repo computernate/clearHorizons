@@ -1,0 +1,35 @@
+
+
+
+.accordionItem{
+
+}
+
+.accordionIcon{
+    transform: rotate(180deg);
+    transition:transform 0.4s ease;
+}
+.accordionIconActive{
+    transform: rotate(0deg);
+}
+
+.accordionHeader{
+    border:1px solid black;
+    border-top-right-radius:5px;
+    border-top-left-radius:5px;
+    margin-bottom:0px;
+    margin-top:0px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left:10px;
+    padding-right:10px;
+}
+.accordionItemContent{
+    height:0;
+    overflow:hidden;
+    transition: height 0.4s ease;
+}
+.accordionItemContent.accordionItemActive{
+    height:auto;
+}

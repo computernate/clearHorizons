@@ -1,0 +1,29 @@
+
+.faq{
+    margin:80px auto;
+    width:80%;
+    display:flex;
+    height:75vh;
+}
+.faqImg{
+    padding:20px;
+}
+.faqImg div{
+    background: url("/public/homepage/home_faq.png");
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center top;
+    height:80%;
+    width:auto;
+    border-bottom-left-radius: 150px;
+}
+
+.faq>div{
+    flex:1;
+}
+
+@media (max-width:768px){
+    .faqImg{
+        display:none;
+    }
+}

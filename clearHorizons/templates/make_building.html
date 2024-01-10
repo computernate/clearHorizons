@@ -1,0 +1,201 @@
+{% extends "wrapper.html" %}
+
+{% block head %}
+<script>
+
+    var map;
+    var marker;
+    let currentStep = "address";
+
+
+    var submitData = {
+        floors:0,
+        latitude:0,
+        longitude:0,
+        address:"",
+        standard:0,
+        french:0,
+        standardHigh:0,
+        frenchHigh:0,
+        well:0,
+        screen:0
+    }
+
+    var formatter = Intl.NumberFormat('en-US',{
+      style:'currency',
+      currency:'USD'
+    })
+
+    function loadStep(step) {
+       $.get(`/get_build_step/${step}`, function(data) {
+           if(step=='panes'&&submitData.floors==4){
+               loadStep("high")
+               return;
+           }
+
+          $("#step-container").html(data);
+
+          if(step=='address')
+              initMap()
+           else if(step=='floors'){
+            $('.floor-number').hover(function () {
+                if(submitData.floors==0){
+                    let num = $(this).attr("num")
+                    $('.floors-house').attr('active-floors', num)
+                }
+            })
+          }
+
+           else if(step=="panes"){
+            $('.increase').click(function () {
+                let pointer = $(this).attr("pointer")
+                let num = $("#" + pointer).html()
+                num++;
+                $("#" + pointer).html(num)
+                updateExtra()
+            })
+            $('.decrease').click(function () {
+                let pointer = $(this).attr("pointer")
+                let num = parseInt($("#" + pointer).html())
+                if (num > 0)
+                    num--;
+                $("#" + pointer).html(num)
+                updateExtra()
+            })
+          }
+           else if(step=="shortquote"){
+            $.ajax({
+                type: "POST",
+                url: "/building_estimate",
+                data: JSON.stringify(submitData),
+                contentType: "application/json",
+                dataType: "json",
+                success: function(response) {
+                    console.log(response)
+                    $('#wash-quote').html(formatter.format(response['wash_quote']))
+                    $('#save-info').html(formatter.format(response['wash_quote']-response['save_info']))
+                    $('#house_id').html(response['house_id'])
+                },
+                error: function(error) {
+                    console.error("Error:", error);
+                }
+            });
+          }
+       });
+    }
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 40.511744, lng: -111.841186},
+            zoom: 11
+        });
+
+        var autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('search-input')
+        );
+
+        // Set the data fields to return when the user selects a place.
+        autocomplete.setFields(['address_components', 'geometry', 'name']);
+
+        // Add a listener for the place_changed event
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+
+            if (!place.geometry) {
+                window.alert("No details available for the selected location.");
+                return;
+            }
+
+            // Move the map's center to the selected place
+            map.setCenter(place.geometry.location);
+        });
+
+        google.maps.event.addDomListener(window, 'load', initMap);
+
+        var geocoder = new google.maps.Geocoder();
+
+        map.addListener('click', function (event) {
+            geocoder.geocode({
+                location: event.latLng
+            }, function (results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        submitData.address=results[0].formatted_address
+                        submitData.longitude = results[0].geometry.location.lng()
+                        submitData.latitude = results[0].geometry.location.lat()
+                        $('#search-input').val(results[0].formatted_address);
+                        $("#submit").removeClass("disabled")
+
+                        // Clear existing marker, if any
+                        if (marker) {
+                            marker.setMap(null);
+                        }
+
+                        // Add a new marker
+                        marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map,
+                            title: results[0].formatted_address
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+    $(document).ready(function () {
+        loadStep(currentStep);
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        $(".estimate-button").click(function () {
+            const formType = $(this).attr('data-form');
+            $(this).toggleClass("active")
+            $("#fields-" + formType).toggleClass("active")
+        });
+    });
+
+    function setFloors(floor) {
+        submitData.floors = floor;
+        $('.floors-house').attr('active-floors', floor)
+        $('.floor-number.active').removeClass('active');
+        $('.floor-number[num='+floor+']').addClass('active')
+    }
+
+    function updateExtra(){
+        submitData = {
+            ...submitData,
+            standard:parseInt($('#standard-pane-count').html()),
+            french:parseInt($('#standard-french-pane-count').html()),
+            standardHigh:parseInt($('#high-pane-count').html()),
+            frenchHigh:parseInt($('#high-french-pane-count').html()),
+            well:parseInt($('#window-well-panes').html()),
+            screen:parseInt($('#screens').html()),
+        }
+    }
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9et5_WfSEq-uxAGLvEirLzbc4_ILCg3U&callback=initMap&libraries=places"
+        async defer></script>
+
+<link rel="stylesheet" href="static/styles/estimate.css"/>
+
+
+{% endblock %}
+
+{% block content %}
+
+<form id="estimate" action="/estimate" method="post">
+    <div id="step-container" class="step">
+
+    </div>
+    <div class="btn-row">
+    </div>
+</form>
+
+{% endblock %}
