@@ -2,7 +2,7 @@ import React from 'react';
 import styles from 'css/general/ProgressBar.module.css'; // Import your CSS file
 
 const ProgressBar = ({ total, current }) => {
-  const progressPercentage = (current / total) * 100;
+  const progressPercentage = ((current+1) / total) * 100;
 
   return (
     <div className={styles.progressBar}>

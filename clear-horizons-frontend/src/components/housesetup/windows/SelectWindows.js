@@ -3,12 +3,10 @@ import NumericSelector from "components/general/NumericSelector";
 import styles from 'css/housesetup/SelectWindows.module.css'; // Assuming you have styles for the icon
 
 const SelectWindows = ({updateForm}) => {
-    let [standardPanes, setStandardPanes] = useState(1)
-    let [frenchPanes, setFrenchPanes] = useState(1)
-    let [highPanes, setHighPanes] = useState(1)
-    let [highFrenchPanes, setHighFrenchPanes] = useState(1)
-    let [wellPanes, setWellPanes] = useState(1)
-    let [screens, setScreens] = useState(1)
+    let [standardPanes, setStandardPanes] = useState(0)
+    let [frenchPanes, setFrenchPanes] = useState(0)
+    let [highPanes, setHighPanes] = useState(0)
+    let [highFrenchPanes, setHighFrenchPanes] = useState(0)
 
     const updateStandardPanes = (newData) => {
         setStandardPanes(newData)

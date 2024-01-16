@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, jsonify, redirect
 from flask_mail import Mail, Message
+from flask_cors import CORS
 
-from clearHorizons.db_functions import create_building
-from clearHorizons.quotes import building_all, building_short_quote
+from db_functions import create_building
+from quotes import building_all, building_short_quote
 import requests
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 CLIENT_ID = os.getenv('JOBBER_CLIENT_ID')
 CLIENT_SECRET = os.getenv('JOBBER_CLIENT_SECRET')
@@ -17,52 +19,14 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/get_build_step/<step>')
-def get_build_step(step):
-    print(step)
-    return render_template(f'form-steps/step-build-{step}.html')
-
-
-@app.route('/dashboard')
-def dashboard():
-    context = {
-        "houses":[{'address':"123 strt strt", "id":1},{'address':"456 strt strt", "id":2}],
-        "invoices":[
-            {
-                "paid":"false",
-                "house":1,
-                "cleanings_left":2,
-                "id":1
-            },
-
-            {
-                "paid": "true",
-                "house": 2,
-                "cleanings_left": 0,
-                "id": 2
-            }
-        ]
-    }
-    return render_template("dashboard.html", context=context)
-
-
 @app.route('/building_estimate', methods=['POST'])
 def get_build_short_estimate():
     data_received = request.json
     final_presentation = building_short_quote(data_received)
-    house_id = create_building(data_received)
-    final_presentation['house_id']=house_id
+    #house_id = create_building(data_received)
+    #final_presentation['house_id']=house_id
     return jsonify(final_presentation)
 
-
-@app.route('/get_quote_step/<int:step>')
-def get_quote_step(step):
-   return render_template(f'form-steps/step-quote-{step}.html')
-
-
-@app.route('/estimate', methods=['GET'])
-def estimate():
-    return render_template('make_building.html')
 
 @app.route('/estimate', methods=['POST'])
 def estimateSummary():
@@ -113,52 +77,6 @@ def sendEstimate():
 
     Mail.send(msg)
 
-
-@app.route('/authorize')
-def authorize():
-    # Redirect user to Jobber's authorization endpoint
-    return redirect(
-        f"https://api.getjobber.com/api/oauth/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&state=some_random_state"
-    )
-
-
-@app.route('/callback')
-def callback():
-    code = request.args.get('code')
-    state = request.args.get('state')
-
-    # Exchange code for access token
-    response = requests.post(
-        'https://api.getjobber.com/api/oauth/token',
-        data={
-            'client_id': CLIENT_ID,
-            'client_secret': CLIENT_SECRET,
-            'grant_type': 'authorization_code',
-            'code': code,
-            'redirect_uri': REDIRECT_URI
-        }
-    )
-
-    if response.status_code == 200:
-        data = response.json()
-        access_token = data['access_token']
-        refresh_token = data['refresh_token']
-
-        print(access_token)
-        print(refresh_token)
-        print("SUCCESS!")
-
-        return jsonify({'message': 'User authorized successfully'}), 200
-    else:
-        return jsonify({'error': 'Failed to obtain access token'}), response.status_code
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
-@app.errorhandler(404)
-def notfound(e):
-    return render_template('404.html')
 
 
 if __name__ == '__main__':

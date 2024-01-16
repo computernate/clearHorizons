@@ -7,7 +7,7 @@ const Sidebar = ({goToNextStep, total, currentPage, currentStep, steps}) => {
 
     return (
         <div className={styles.sidebar}>
-            <ProgressBar total={total} current={currentPage} />
+            <ProgressBar total={total} current={currentStep} />
             <Button callback={goToNextStep}>NEXT STEP</Button>
         </div>
     );

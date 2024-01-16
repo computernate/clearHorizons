@@ -3,8 +3,8 @@ import NumericSelector from "components/general/NumericSelector";
 import styles from 'css/housesetup/SelectWindows.module.css'; // Assuming you have styles for the icon
 
 const SelectExtras = ({updateForm}) => {
-    let [wellPanes, setWells] = useState(1)
-    let [screens, setScreens] = useState(1)
+    let [wellPanes, setWells] = useState(0)
+    let [screens, setScreens] = useState(0)
 
     const updateWells = (newData) => {
         setWells(newData)

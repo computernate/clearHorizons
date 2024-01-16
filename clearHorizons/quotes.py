@@ -7,7 +7,7 @@ dp_agl = .14
 dp_glf = .11
 dp_aglf = .21
 dp_s = .07
-# WFP
+# Water Fed Pole Durations
 dp_gl_wfp = .05
 dp_agl_wfp = .05
 dp_glf_wfp = .05
@@ -61,6 +61,21 @@ for i in taxes:
     tax_list.append(taxes[i])
 tax_sum = sum(tax_list)
 
+def get_driving_cost_address(address):
+    api_url = "https://maps.googleapis.com/maps/api/geocode/json"
+    params = {
+        "address": address,
+        "key": "AIzaSyC9et5_WfSEq-uxAGLvEirLzbc4_ILCg3U"
+    }
+    response = requests.get(api_url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        lat = data['results'][0]['geometry']['location']['lat']
+        lng = data['results'][0]['geometry']['location']['lng']
+        return get_driving_cost(lat, lng)
+    else:
+        return 0
+
 
 def get_driving_cost(latitude, longitude):
     directions_url = f"https://maps.googleapis.com/maps/api/directions/json?origin=40.508282,-111.846528&destination={latitude},{longitude}&key=AIzaSyC9et5_WfSEq-uxAGLvEirLzbc4_ILCg3U"
@@ -72,13 +87,12 @@ def get_driving_cost(latitude, longitude):
 
 
 def building_short_quote(data):
-    ww=int(data['well'] )
-    gl=int(data['standard'])
-    agl=int(data['standardHigh'])
-    glf=int(data['french'])
-    aglf=int(data['frenchHigh'])
-    latitude = data['latitude']
-    longitude = data['longitude']
+    gl=int(data.get('standardPanes', 0))
+    agl=int(data.get('highPanes', 0))
+    glf=int(data.get('frenchPanes', 0))
+    aglf=int(data.get('highFrenchPanes', 0))
+    ww=int(data.get('wells', 0))
+    address = data['address']
 
     # Durations
     exterior_duration = (ww*dp_ww)+\
@@ -104,7 +118,7 @@ def building_short_quote(data):
     exterior_wfp_total = (exterior_wfp_duration*wage*(1+tax_sum))+(exterior_wfp_duration*per_hour_cost)
     interior_total = (interior_duration*wage*(1+tax_sum))+(interior_duration*per_hour_cost)
 
-    fixed_cost = get_driving_cost(latitude, longitude)
+    fixed_cost = get_driving_cost_address(address)
 
     return {
         "wash_quote": (exterior_total + fixed_cost) * profit_margin_single + (interior_total * profit_margin_single),

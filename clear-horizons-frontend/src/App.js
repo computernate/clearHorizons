@@ -3,6 +3,7 @@ import Header from './components/general/Header.js'
 import Homepage from 'components/homepage/Homepage'
 import Dashboard from 'components/dashboard/Dashboard'
 import HouseSetup from 'components/housesetup/HouseSetup'
+import Contact from 'components/pages/Contact'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/" element={<Homepage />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/quote" element={<HouseSetup />} />
+                    <Route path="/contact" element={<Contact />} />
                 </Routes>
             </div>
         </Router>

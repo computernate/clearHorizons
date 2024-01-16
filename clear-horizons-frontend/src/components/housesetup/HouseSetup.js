@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import styles from 'css/housesetup/HouseSetup.module.css'
+
 import InitialSetup from 'components/housesetup/InitialSetup'
 import Sidebar from 'components/housesetup/Sidebar'
+import Results from 'components/housesetup/Results'
+
 import SelectFloors from 'components/housesetup/windows/SelectFloors'
 import SelectWindows from 'components/housesetup/windows/SelectWindows'
 import SelectExtra from 'components/housesetup/windows/SelectExtra'
@@ -10,7 +13,16 @@ const HouseSetup = () => {
 
     const [currentStep, setCurrentStep] = useState(0)
     const [currentPage, setCurrentPage] = useState("initial")
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState({
+        address:'',
+        floors:1,
+        standardPanes:0, 
+        frenchPanes:0, 
+        highPanes: 0, 
+        highFrenchPanes: 0,
+        wells:0,
+        screens:0
+    })
 
     const updateFormData = (data) =>{
         setFormData({ ...formData, ...data });
@@ -23,6 +35,7 @@ const HouseSetup = () => {
             steps:[
                 {
                     title: "Job Site and Services",
+                    //updates: address
                     component: (<InitialSetup updateForm={updateFormData} />)
                 },
             ],
@@ -33,15 +46,28 @@ const HouseSetup = () => {
             steps: [
                 {
                     title: "Floors in house",
+                    //updates: floors
                     component: (<SelectFloors updateForm={updateFormData} />)
                 },
                 {
                     title: "Windows",
+                    //updates: standardPanes, frenchPanes, highPanes, highFrenchPanes
                     component: (<SelectWindows updateForm={updateFormData} />)
                 },
                 {
                     title: "Extra",
+                    //updates: wells, screens
                     component: (<SelectExtra updateForm={updateFormData} />)
+                },
+            ],
+        },
+        "results": {
+            id: 'results',
+            active: true,
+            steps: [
+                {
+                    title: "Results",
+                    component: (<Results  data={formData} />)
                 },
             ],
         }
