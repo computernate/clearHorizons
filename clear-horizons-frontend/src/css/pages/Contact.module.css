@@ -1,0 +1,44 @@
+.container {
+    background: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("/public/homepage/home_house.png");
+    background-size: 150%;
+    background-position: 25%, 50%;
+    background-repeat: no-repeat;
+    height: 45vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.iconsWrapper{
+    display:flex;
+    justify-content: space-around;
+    margin-top:50px;
+}
+
+.contactLink{
+    text-decoration:none;
+    color:#30799B;
+}
+.contactBubble{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--general-orange);
+}
+.contactBubble:hover{
+    background-color: var(--general-blue);
+}
+.icon{
+    color:white;
+    font-size:50px;
+}

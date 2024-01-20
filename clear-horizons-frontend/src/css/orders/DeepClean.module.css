@@ -1,0 +1,86 @@
+.wrapper{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+.mainContent{
+    display:grid;
+    place-content: center;
+    gap: 10px;
+    background-color:var(--general-blue);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    width:95%;
+}
+
+.head{
+    color:var(--general-orange);
+    border-bottom:5px solid var(--general-blue);
+}
+
+.imageWrapper{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.firstStory{
+    background-color:white;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.upperStory{
+    background-color:white;
+    grid-column: 2/3;
+    grid-row: 1/2;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.genericPanes{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.genericPanes div{
+    flex:1;
+}
+
+.houseImg{
+    width:200px;
+    height:400px;
+}
+
+.imgAndSelector{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.imgAndSelector>img{
+    width:100px;
+    height:150px;
+}
+
+.genericStandard .imgAndSelector>img{
+    width:100px;
+    height:150px;
+}
+
+.genericFrench .imgAndSelector>img{
+    width:100px;
+    height:150px;
+}
+
+.note{
+    width:75%;
+    color:var(--general-blue);
+    text-align:center;
+    font-size:15px;
+}

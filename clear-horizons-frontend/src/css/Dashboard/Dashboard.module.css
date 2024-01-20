@@ -1,0 +1,23 @@
+.wrapper h2{
+    color:var(--general-orange);
+    border-bottom:3px solid var(--general-blue);
+}
+.houses{
+    display:flex;
+    justify-content: center;
+}
+.house{
+    border:1px solid black;
+    border-radius:5px;
+    display:flex;
+    flex-direction: column;
+    width:300px;
+    text-align:center;
+    padding:20px;
+}
+.house *{
+    margin-bottom:20px;
+}
+.address{
+    font-size:30px;
+}

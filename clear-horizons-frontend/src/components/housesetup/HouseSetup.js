@@ -16,9 +16,9 @@ const HouseSetup = () => {
     const [formData, setFormData] = useState({
         address:'',
         floors:1,
-        standardPanes:0, 
-        frenchPanes:0, 
-        highPanes: 0, 
+        standardPanes:0,
+        frenchPanes:0,
+        highPanes: 0,
         highFrenchPanes: 0,
         wells:0,
         screens:0
