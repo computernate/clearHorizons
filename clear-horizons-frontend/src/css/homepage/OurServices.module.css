@@ -5,11 +5,12 @@
     background-size: 100% auto;
     background-position:25%, 50%;
     background-repeat:no-repeat;
-    height:75vh;
+    height:80vh;
     display:flex;
     flex-direction:column;
     align-items: center;
     justify-content: space-around;
+    min-height:700px;
 }
 
 .ourServicesSlider{
@@ -21,13 +22,14 @@
     text-align:center;
     border-radius:25px;
     color:black;
-    height:200px;
+    height:300px;
     margin:20px;
+    padding:20px;
 }
 
 @media (max-width: 768px) {
 
     .ourServices {
-        background-size: 200% auto;
+        background-size: 300% auto;
     }
 }

@@ -12,9 +12,9 @@ const Header = () => {
 
     const items = [
         {url: '/', name: 'Home'},
-        {url: '/quote', name: 'Free Quote'},
+        //{url: '/quote', name: 'Free Quote'},
         {url: '/contact', name: 'Contact Us'},
-        {url: '/dashboard', name: 'Dashboard'},
+        //{url: '/dashboard', name: 'Dashboard'},
     ]
 
     return (

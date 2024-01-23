@@ -11,7 +11,7 @@ const AccordionItem = ({item}) => {
     }
 
     return (
-        <div className={styles.accordionItem} onClick={toggleOpen}>
+        <div className={styles.accordionItem} onClick={toggleOpen} onMouseEnter={()=>setIsOpen(true)} onMouseLeave={()=>setIsOpen(false)}>
             <div className={styles.accordionHeader}>
                 <h5>{item.header}</h5>
                 <i className={`fa-solid fa-chevron-up ${styles.accordionIcon} ${isOpen? styles.accordionIconActive: ''}`}></i>
