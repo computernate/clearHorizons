@@ -3,6 +3,7 @@ import React from 'react';
 import styles from 'css/homepage/Whyus.module.css'
 import Button from 'components/general/Button.js'
 import WhyusCard from "components/homepage/WhyusCard";
+import {NavLink} from 'react-router-dom'
 
 const Whyus = () => {
 
@@ -10,9 +11,11 @@ const Whyus = () => {
         <div className={styles.container}>
             <div className={styles.getEstimate}>
                 <p className="head-text">GET <span className="highlight-text">SCHEDULED</span> HERE</p>
-                <a href={'https://clienthub.getjobber.com/booking/94678600-b45c-4237-9416-3ab3981f3fd7/'} style={{textDecoration:'none'}}>
-                    <Button callback={()=>{}}>Schedule</Button>
-                </a>
+                    <NavLink
+                        to={'/schedule'}
+                        style={{textDecoration:'none'}}>
+                        <Button callback={()=>{}}>Schedule</Button>
+                    </NavLink>
             </div>
             <h3>Why <span className="head-text">Choose</span> us?</h3>
             <h4>Clear Horizon Home Services takes home services to the next level! Clear Horizon takes home services to a new level by
