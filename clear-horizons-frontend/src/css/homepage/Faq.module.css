@@ -3,7 +3,8 @@
     margin:80px auto;
     width:80%;
     display:flex;
-    height:75vh;
+    height:50vh;
+    align-items: center;
 }
 .faqImg{
     padding:20px;
@@ -25,5 +26,9 @@
 @media (max-width:768px){
     .faqImg{
         display:none;
+    }
+    .faq{
+        height:auto;
+        flex-direction:column;
     }
 }

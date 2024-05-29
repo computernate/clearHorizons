@@ -8,10 +8,10 @@ const SavingsProgram = () => {
     return (
         <div className={styles.savingsProgram}>
             <div className={styles.savingsone}>
-                <h3>Make sure to sign up for our <span className="highlight-text">Savings Program</span> by clicking here
+                <h3>Make sure to sign up for our <span className="highlight-text">Subscription Program</span> by clicking here
                 </h3>
                 <div>
-                    <Button>Save Today</Button>
+                    <Button>Coming soon...</Button>
                 </div>
             </div>
             <div className={styles.savingstwo}>
