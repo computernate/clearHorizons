@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import requests
 
 # Load the spreadsheet
-wb = load_workbook('workbook.xlsx')
+wb = load_workbook('ClearHorizonsData/workbook.xlsx')
 
 
 def flatten_data(data, prop_list, current_level=0, ids=None):
@@ -100,8 +100,7 @@ for sheet_name in wb.sheetnames:
             print(query)
             # Send the query to Jobber's API
             url = "https://api.getjobber.com/api/graphql"
-            api_key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxNTg1ODUsImlzcyI6Imh0dHBzOi8vYXBpLmdldGpvYmJlci5jb20iLCJjbGllbnRfaWQiOiIwMjI3NzYyYi0zNTdjLTRiMWYtYTRiOC0zMjdmZmQzZDNhYTMiLCJzY29wZSI6InJlYWRfY2xpZW50cyB3cml0ZV9jbGllbnRzIHJlYWRfcmVxdWVzdHMgd3JpdGVfcmVxdWVzdHMgcmVhZF9xdW90ZXMgd3JpdGVfcXVvdGVzIHJlYWRfam9icyB3cml0ZV9qb2JzIHJlYWRfaW52b2ljZXMgd3JpdGVfaW52b2ljZXMgcmVhZF9qb2JiZXJfcGF5bWVudHMgcmVhZF91c2VycyB3cml0ZV91c2VycyIsImFwcF9pZCI6IjAyMjc3NjJiLTM1N2MtNGIxZi1hNGI4LTMyN2ZmZDNkM2FhMyIsInVzZXJfaWQiOjIxNTg1ODUsImFjY291bnRfaWQiOjExNDU3OTAsImV4cCI6MTcxMzU2NDY2OX0.4rQZvTZk2YHjPFQgwMLQnxQ9FHdG9IVl39K4xY5ot0U"
-
+            api_key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxNTQ4NzQsImlzcyI6Imh0dHBzOi8vYXBpLmdldGpvYmJlci5jb20iLCJjbGllbnRfaWQiOiI2MDdlNjRjMi00OTdkLTQyOWEtODJhYi01MTVjODgxM2M2NWQiLCJzY29wZSI6InJlYWRfY2xpZW50cyB3cml0ZV9jbGllbnRzIHJlYWRfcmVxdWVzdHMgd3JpdGVfcmVxdWVzdHMgcmVhZF9xdW90ZXMgd3JpdGVfcXVvdGVzIHJlYWRfam9icyB3cml0ZV9qb2JzIHJlYWRfc2NoZWR1bGVkX2l0ZW1zIHdyaXRlX3NjaGVkdWxlZF9pdGVtcyByZWFkX2ludm9pY2VzIHdyaXRlX2ludm9pY2VzIHJlYWRfdXNlcnMgd3JpdGVfdXNlcnMgcmVhZF9jdXN0b21fZmllbGRfY29uZmlndXJhdGlvbnMgd3JpdGVfY3VzdG9tX2ZpZWxkX2NvbmZpZ3VyYXRpb25zIHJlYWRfdGltZV9zaGVldHMiLCJhcHBfaWQiOiI2MDdlNjRjMi00OTdkLTQyOWEtODJhYi01MTVjODgxM2M2NWQiLCJ1c2VyX2lkIjoyMTU0ODc0LCJhY2NvdW50X2lkIjoxMTQ1NzkwLCJleHAiOjE3MTY3MDE4OTB9.j5xMDwIBQG4IxTNMj4Aw5OqWQG2wxZrfYV2c7gtjeTE"
             # Set the headers
             request_headers = {
                 "Authorization": f"Bearer {api_key}",
@@ -150,4 +149,4 @@ for sheet_name in wb.sheetnames:
             start_id = data['data'][nested_objects[0]]['nodes'][-1]['id']
 
 # Save the modified workbook
-wb.save('update_workbook.xlsx')
+wb.save('ClearHorizonsData/update_workbook.xlsx')
