@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import requests
 
 # Load the spreadsheet
-wb = load_workbook('ClearHorizonsData/workbook.xlsx')
+wb = load_workbook('workbook.xlsx')
 
 
 def flatten_data(data, prop_list, current_level=0, ids=None):
@@ -59,6 +59,8 @@ for sheet_name in wb.sheetnames:
             head_objects+=f"id,{object}{{nodes{{"
             tail_objects+="}}"
 
+        print(f"before_start {sheet_name}")
+        offset = 0
         while True:
             # Construct the GraphQL query based on the headers, table name, and start_id
             query_fields = []
@@ -82,6 +84,10 @@ for sheet_name in wb.sheetnames:
                       {",".join(query_fields)}
                       {tail_objects}
                     }}
+                    pageInfo {{
+                      endCursor
+                      hasNextPage
+                    }}
                   }}
                 }}
                 '''
@@ -94,13 +100,19 @@ for sheet_name in wb.sheetnames:
                       {",".join(query_fields)}
                       {tail_objects}
                     }}
+                    pageInfo {{
+                      endCursor
+                      hasNextPage
+                    }}
                   }}
                 }}
                 '''
-            print(query)
+            print(f'Getting {nested_objects[-1].capitalize()}')
             # Send the query to Jobber's API
             url = "https://api.getjobber.com/api/graphql"
-            api_key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxNTQ4NzQsImlzcyI6Imh0dHBzOi8vYXBpLmdldGpvYmJlci5jb20iLCJjbGllbnRfaWQiOiI2MDdlNjRjMi00OTdkLTQyOWEtODJhYi01MTVjODgxM2M2NWQiLCJzY29wZSI6InJlYWRfY2xpZW50cyB3cml0ZV9jbGllbnRzIHJlYWRfcmVxdWVzdHMgd3JpdGVfcmVxdWVzdHMgcmVhZF9xdW90ZXMgd3JpdGVfcXVvdGVzIHJlYWRfam9icyB3cml0ZV9qb2JzIHJlYWRfc2NoZWR1bGVkX2l0ZW1zIHdyaXRlX3NjaGVkdWxlZF9pdGVtcyByZWFkX2ludm9pY2VzIHdyaXRlX2ludm9pY2VzIHJlYWRfdXNlcnMgd3JpdGVfdXNlcnMgcmVhZF9jdXN0b21fZmllbGRfY29uZmlndXJhdGlvbnMgd3JpdGVfY3VzdG9tX2ZpZWxkX2NvbmZpZ3VyYXRpb25zIHJlYWRfdGltZV9zaGVldHMiLCJhcHBfaWQiOiI2MDdlNjRjMi00OTdkLTQyOWEtODJhYi01MTVjODgxM2M2NWQiLCJ1c2VyX2lkIjoyMTU0ODc0LCJhY2NvdW50X2lkIjoxMTQ1NzkwLCJleHAiOjE3MTY3MDE4OTB9.j5xMDwIBQG4IxTNMj4Aw5OqWQG2wxZrfYV2c7gtjeTE"
+            #CLient id: 0227762b-357c-4b1f-a4b8-327ffd3d3aa3
+            #Client secret: e33150e0de0c2d560251a06d6867fcd9774357bd0b938a9f1841843e3f0cc1dc
+            api_key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxNTg1ODUsImlzcyI6Imh0dHBzOi8vYXBpLmdldGpvYmJlci5jb20iLCJjbGllbnRfaWQiOiIwMjI3NzYyYi0zNTdjLTRiMWYtYTRiOC0zMjdmZmQzZDNhYTMiLCJzY29wZSI6InJlYWRfY2xpZW50cyB3cml0ZV9jbGllbnRzIHJlYWRfcmVxdWVzdHMgd3JpdGVfcmVxdWVzdHMgcmVhZF9xdW90ZXMgd3JpdGVfcXVvdGVzIHJlYWRfam9icyB3cml0ZV9qb2JzIHJlYWRfaW52b2ljZXMgd3JpdGVfaW52b2ljZXMgcmVhZF9qb2JiZXJfcGF5bWVudHMgcmVhZF91c2VycyB3cml0ZV91c2VycyIsImFwcF9pZCI6IjAyMjc3NjJiLTM1N2MtNGIxZi1hNGI4LTMyN2ZmZDNkM2FhMyIsInVzZXJfaWQiOjIxNTg1ODUsImFjY291bnRfaWQiOjExNDU3OTAsImV4cCI6MTcxNzA5OTM1Nn0.GaQUezeG-UOfHgM_pvmkYALlGAhBbxjF0gEtp9EOubQ"
             # Set the headers
             request_headers = {
                 "Authorization": f"Bearer {api_key}",
@@ -113,7 +125,6 @@ for sheet_name in wb.sheetnames:
             if response.status_code == 200:
                 data = response.json()
                 # Process the data as needed
-                print(data)
                 if not data['data'][nested_objects[0]]['nodes']:
                     break  # No more data available
             else:
@@ -121,12 +132,8 @@ for sheet_name in wb.sheetnames:
                 data = None
                 break
 
-            # Parse the response and populate the sheet\
-            print(nested_objects)
-
+            # Parse the response and populate the sheet
             flattened_data = flatten_data(data['data'], nested_objects)
-
-            print(flattened_data)
 
             for row_num, node in enumerate(flattened_data, start=2):
                 for col_num, field in enumerate(headers, start=1):
@@ -135,18 +142,18 @@ for sheet_name in wb.sheetnames:
                     try:
                         for nested_field in nested_fields:
                             nested_value = nested_value.get(nested_field, {})
-                        sheet.cell(row=row_num, column=col_num, value=nested_value)
+                        sheet.cell(row=row_num+offset, column=col_num, value=nested_value)
                     except:
-                        sheet.cell(row=row_num, column=col_num, value='n/a')
+                        sheet.cell(row=row_num+offset, column=col_num, value='n/a')
                 for col_num, field in enumerate(nested_objects[:-1]):
                     field_name=field+'_ID'
-                    sheet.cell(row=row_num, column=col_num+len(headers)+1, value=node[field_name])
+                    sheet.cell(row=row_num+offset, column=col_num+len(headers)+1, value=node[field_name])
 
             # Update the start_id for the next iteration
-            if start_id == data['data'][nested_objects[0]]['nodes'][-1]['id']:
+            if not data['data'][nested_objects[0]]['pageInfo']['hasNextPage']:
                 break
-
-            start_id = data['data'][nested_objects[0]]['nodes'][-1]['id']
+            offset+=10
+            start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
 
 # Save the modified workbook
-wb.save('ClearHorizonsData/update_workbook.xlsx')
+wb.save('update_workbook.xlsx')
