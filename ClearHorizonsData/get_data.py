@@ -36,14 +36,14 @@ def flatten_data(data, prop_list, current_level=0, ids=None):
 # Iterate over all sheets
 for sheet_name in wb.sheetnames:
     # Check if sheet name starts with 'JOBBER_AUTO_'
-    if sheet_name.startswith('JOBBER_AUTO_'):
+    if sheet_name.startswith('J_A_'):
         sheet = wb[sheet_name]
 
         # Read the headers from the first row
         headers = [cell.value for cell in sheet[1]]
 
         # Extract XXX from the sheet name
-        table_name = sheet_name[len('JOBBER_AUTO_'):]
+        table_name = sheet_name[len('J_A_'):]
 
         # Check if there are existing IDs in the first column
         existing_ids = [sheet.cell(row=row, column=1).value for row in range(2, sheet.max_row + 1) if
