@@ -4,6 +4,8 @@ import requests
 # Load the spreadsheet
 wb = load_workbook('workbook.xlsx')
 
+api_key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxNTg1ODUsImlzcyI6Imh0dHBzOi8vYXBpLmdldGpvYmJlci5jb20iLCJjbGllbnRfaWQiOiIwMjI3NzYyYi0zNTdjLTRiMWYtYTRiOC0zMjdmZmQzZDNhYTMiLCJzY29wZSI6InJlYWRfY2xpZW50cyB3cml0ZV9jbGllbnRzIHJlYWRfcmVxdWVzdHMgd3JpdGVfcmVxdWVzdHMgcmVhZF9xdW90ZXMgd3JpdGVfcXVvdGVzIHJlYWRfam9icyB3cml0ZV9qb2JzIHJlYWRfaW52b2ljZXMgd3JpdGVfaW52b2ljZXMgcmVhZF9qb2JiZXJfcGF5bWVudHMgcmVhZF91c2VycyB3cml0ZV91c2VycyIsImFwcF9pZCI6IjAyMjc3NjJiLTM1N2MtNGIxZi1hNGI4LTMyN2ZmZDNkM2FhMyIsInVzZXJfaWQiOjIxNTg1ODUsImFjY291bnRfaWQiOjExNDU3OTAsImV4cCI6MTcxNzA5OTM1Nn0.GaQUezeG-UOfHgM_pvmkYALlGAhBbxjF0gEtp9EOubQ"
+objects_per_page = 10
 
 def flatten_data(data, prop_list, current_level=0, ids=None):
     if ids is None:
@@ -78,7 +80,7 @@ for sheet_name in wb.sheetnames:
             if start_id:
                 query = f'''
                 query {nested_objects[0].capitalize()}Query {{
-                  {nested_objects[0]}(first: 10, after: "{start_id}") {{
+                  {nested_objects[0]}(first: {objects_per_page}, after: "{start_id}") {{
                     nodes {{
                         {head_objects}
                       {",".join(query_fields)}
@@ -94,7 +96,7 @@ for sheet_name in wb.sheetnames:
             else:
                 query = f'''
                 query {nested_objects[0].capitalize()}Query {{
-                  {nested_objects[0]}(first: 10) {{
+                  {nested_objects[0]}(first: {objects_per_page}) {{
                     nodes {{
                         {head_objects}
                       {",".join(query_fields)}
@@ -112,7 +114,6 @@ for sheet_name in wb.sheetnames:
             url = "https://api.getjobber.com/api/graphql"
             #CLient id: 0227762b-357c-4b1f-a4b8-327ffd3d3aa3
             #Client secret: e33150e0de0c2d560251a06d6867fcd9774357bd0b938a9f1841843e3f0cc1dc
-            api_key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxNTg1ODUsImlzcyI6Imh0dHBzOi8vYXBpLmdldGpvYmJlci5jb20iLCJjbGllbnRfaWQiOiIwMjI3NzYyYi0zNTdjLTRiMWYtYTRiOC0zMjdmZmQzZDNhYTMiLCJzY29wZSI6InJlYWRfY2xpZW50cyB3cml0ZV9jbGllbnRzIHJlYWRfcmVxdWVzdHMgd3JpdGVfcmVxdWVzdHMgcmVhZF9xdW90ZXMgd3JpdGVfcXVvdGVzIHJlYWRfam9icyB3cml0ZV9qb2JzIHJlYWRfaW52b2ljZXMgd3JpdGVfaW52b2ljZXMgcmVhZF9qb2JiZXJfcGF5bWVudHMgcmVhZF91c2VycyB3cml0ZV91c2VycyIsImFwcF9pZCI6IjAyMjc3NjJiLTM1N2MtNGIxZi1hNGI4LTMyN2ZmZDNkM2FhMyIsInVzZXJfaWQiOjIxNTg1ODUsImFjY291bnRfaWQiOjExNDU3OTAsImV4cCI6MTcxNzA5OTM1Nn0.GaQUezeG-UOfHgM_pvmkYALlGAhBbxjF0gEtp9EOubQ"
             # Set the headers
             request_headers = {
                 "Authorization": f"Bearer {api_key}",
@@ -152,7 +153,7 @@ for sheet_name in wb.sheetnames:
             # Update the start_id for the next iteration
             if not data['data'][nested_objects[0]]['pageInfo']['hasNextPage']:
                 break
-            offset+=10
+            offset+=objects_per_page
             start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
 
 # Save the modified workbook
