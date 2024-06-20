@@ -153,7 +153,7 @@ for sheet_name in wb.sheetnames:
             # Update the start_id for the next iteration
             if not data['data'][nested_objects[0]]['pageInfo']['hasNextPage']:
                 break
-            offset+=objects_per_page
+            offset+=len(flattened_data)
             start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
 
 # Save the modified workbook
