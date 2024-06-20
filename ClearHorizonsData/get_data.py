@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import requests
 
 # Load the spreadsheet
-wb = load_workbook('workbook.xlsx')
+wb = load_workbook('/workspaces/clearHorizons/ClearHorizonsData/workbook.xlsx')
 
 api_key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxNTg1ODUsImlzcyI6Imh0dHBzOi8vYXBpLmdldGpvYmJlci5jb20iLCJjbGllbnRfaWQiOiIwMjI3NzYyYi0zNTdjLTRiMWYtYTRiOC0zMjdmZmQzZDNhYTMiLCJzY29wZSI6InJlYWRfY2xpZW50cyB3cml0ZV9jbGllbnRzIHJlYWRfcmVxdWVzdHMgd3JpdGVfcmVxdWVzdHMgcmVhZF9xdW90ZXMgd3JpdGVfcXVvdGVzIHJlYWRfam9icyB3cml0ZV9qb2JzIHJlYWRfaW52b2ljZXMgd3JpdGVfaW52b2ljZXMgcmVhZF9qb2JiZXJfcGF5bWVudHMgcmVhZF91c2VycyB3cml0ZV91c2VycyIsImFwcF9pZCI6IjAyMjc3NjJiLTM1N2MtNGIxZi1hNGI4LTMyN2ZmZDNkM2FhMyIsInVzZXJfaWQiOjIxNTg1ODUsImFjY291bnRfaWQiOjExNDU3OTAsImV4cCI6MTcxNzA5OTM1Nn0.GaQUezeG-UOfHgM_pvmkYALlGAhBbxjF0gEtp9EOubQ"
 objects_per_page = 10
@@ -126,8 +126,11 @@ for sheet_name in wb.sheetnames:
             if response.status_code == 200:
                 data = response.json()
                 # Process the data as needed
-                if not data['data'][nested_objects[0]]['nodes']:
-                    break  # No more data available
+                try:
+                    if not data['data'][nested_objects[0]]['nodes']:
+                        break  # No more data available
+                except Exception as e:
+                    print(data)
             else:
                 print(f"Failed to fetch data from Jobber's API {response.status_code}")
                 data = None
@@ -157,4 +160,4 @@ for sheet_name in wb.sheetnames:
             start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
 
 # Save the modified workbook
-wb.save('update_workbook.xlsx')
+wb.save('/workspaces/clearHorizons/ClearHorizonsData/update_workbook.xlsx')
