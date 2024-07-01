@@ -5,6 +5,11 @@ import HouseSetup from 'components/housesetup/HouseSetup'
 import Contact from 'components/pages/Contact'
 import JobberForm from 'components/pages/JobberForm'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ReactGA from 'react-ga4';
+const measurementId = "G-8MZB7ETHCB";
+
+ReactGA.initialize(measurementId);
+
 
 
 function App() {
