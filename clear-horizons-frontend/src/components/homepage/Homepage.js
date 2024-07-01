@@ -1,22 +1,14 @@
 import React from 'react';
 
-import Greetings from './Greetings'
-import Whyus from './Whyus'
-import Aboutus from './Aboutus'
-import OurServices from './OurServices'
-import Faq from './Faq'
-import SavingsProgram from './SavingsProgram'
+import TitleImage from '../general/TitleImage'
+import ServicesSummary from './ServicesSummary';
 
 const Homepage = () => {
 
     return (
         <div>
-            <Greetings />
-            <Whyus />
-            <Aboutus />
-            <OurServices />
-            <Faq />
-            <SavingsProgram />
+            <TitleImage imageUrl = "/homepage/home_house.png" titleText = "Clear Horizons Home" subtitle="HOME-WINDOW-PEST" />
+            <ServicesSummary />
         </div>
     )
 }

@@ -1,0 +1,35 @@
+.wrapper{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content:center;
+    margin-bottom:100px;
+}
+.container {
+    display: grid;
+    width: 85%;
+    height: 200px;
+    background-color:rgba(90, 140, 166, .19);
+    transition: 0.5s ease
+  }
+  .image {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow:hidden;
+  }
+
+.images.active .image:not(.active){
+    margin-left:-200px;
+}
+  
+  .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .text p {
+    font-size: 24px;
+  }

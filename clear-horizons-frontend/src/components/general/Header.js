@@ -12,9 +12,14 @@ const Header = () => {
 
     const items = [
         {url: '/', name: 'Home'},
-        {url: '/schedule', name: 'GET SERVICE'},
+        {url: '/staff', name: 'Staff'},
         {url: '/contact', name: 'Contact Us'},
-        //{url: '/dashboard', name: 'Dashboard'},
+        {url: '/dashboard', name: 'Schedule'},
+    ]
+    const sub_items = [
+        {url: '/home-cleaning', name: 'Window'},
+        {url: '/window-cleaning', name: 'Home'},
+        {url: '/pest-control', name: 'Pest'},
     ]
 
     return (
@@ -42,9 +47,8 @@ const Header = () => {
                         </ul>
                     </div>
 
-                    {/* MOBILE MENU */}
-                    <div className={`${styles.mobileNavElements} ${isMenuOpen ? styles.navOpen : ''}`}>
-                        {items.map(item => (
+                    <div className={`${styles.subNavElements} ${isMenuOpen ? styles.navOpen : ''}`}>
+                        {sub_items.map(item => (
                             <div key={item.url}>
                                 <NavLink
                                     to={item.url}

@@ -17,6 +17,21 @@ body, html, #root{
     }
 }
 
+
+@font-face {
+    font-family: 'NavFont'; /* Choose a name for your font */
+    src: url('fonts/leaguespartan-bold.ttf') format('woff2'); /* Change the file path and format as needed */
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'TitleFont'; /* Choose a name for your font */
+    src: url('fonts/leaguespartan-bold.ttf') format('woff2'); /* Change the file path and format as needed */
+    font-weight: normal;
+    font-style: normal;
+  }
+
 .App-header {
     background-color: #282c34;
     min-height: 100vh;
@@ -88,8 +103,8 @@ h5 {
 }
 
 :root {
-    --nav-background: #B3B3B3;
-    --nav-text: #000;
+    --nav-background: #5A8CA6;
+    --nav-text: #FFF;
 
     --general-blue:#30799B;
     --general-orange:#FFA629;

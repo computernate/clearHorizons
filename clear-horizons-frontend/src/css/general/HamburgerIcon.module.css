@@ -12,10 +12,12 @@
 .bar {
     width:100%;
     height:3px;
-    background-color:var(--nav-text);
     transform-origin: 0% 100%;
     transition: transform 0.4s ease, width 0.4s ease;
 }
+.bar1{background-color:#FFAA00;}
+.bar2{background-color:#F9931C;}
+.bar3{background-color:#F37C39;}
 
 /*
     Someone should do some math to figure out the perfect width for this
@@ -27,6 +29,7 @@
 
 /*Turns the 3 bars into an X*/
 .barOpen.bar1{
+    
   transform: rotate(45deg);
 }
 

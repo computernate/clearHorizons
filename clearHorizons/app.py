@@ -2,10 +2,10 @@ from flask import Flask, render_template, request, jsonify, redirect
 from flask_mail import Mail, Message
 from flask_cors import CORS
 
-from db_functions import create_building
 from quotes import building_all, building_short_quote
-import requests
 import os
+import mysql.connector
+import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -14,8 +14,47 @@ CLIENT_ID = os.getenv('JOBBER_CLIENT_ID')
 CLIENT_SECRET = os.getenv('JOBBER_CLIENT_SECRET')
 REDIRECT_URI = '127.0.0.1:5000/callback'
 
+DB_HOST = 'database-1.ckitblxkmacp.us-east-2.rds.amazonaws.com'
+DB_USER = 'admin'
+DB_PASS = 'Crystalclear20!'
+DB_NAME = 'ClearHorizon'
+
+def get_db_connection():
+    conn = mysql.connector.connect(
+        host=DB_HOST,
+        user=DB_USER,
+        password=DB_PASS,
+        database=DB_NAME,
+        port=3306  # Add the port number here
+    )
+    return conn
+
+
 @app.route('/', methods=['GET'])
 def index():
+    source = request.args.get('source', 'other')  # Default to 'unknown' if no source provided
+    today = datetime.date.today()
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        # Check if the entry exists
+        cursor.execute('SELECT number FROM sources WHERE date = %s AND source = %s', (today, source))
+        result = cursor.fetchone()
+
+        if result:
+            new_number = result[0] + 1
+            cursor.execute('UPDATE sources SET number = %s WHERE date = %s AND source = %s', (new_number, today, source))
+        else:
+            cursor.execute('INSERT INTO sources (date, source, number) VALUES (%s, %s, 1)', (today, source))
+
+        conn.commit()  # Commit the transaction
+    except Exception as e:
+        print(e)
+        conn.rollback()  # Roll back the transaction on error
+    finally:
+        cursor.close()
+        conn.close()
     return render_template('index.html')
 
 

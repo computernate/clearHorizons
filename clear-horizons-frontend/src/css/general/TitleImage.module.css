@@ -1,0 +1,31 @@
+.titleImage {
+    height: 85vh;
+    background-size: cover;
+    background-position: center;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .titleOverlay {
+    height:25%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* White opaque background */
+    color: #000; /* Black text */
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .titleOverlay h2 {
+    font-family:TitleFont;
+    margin:0;
+    margin-bottom:10px;
+    vertical-align:bottom;
+  }
+  .titleOverlay h5{
+    font-family:TitleFont;
+    margin:0;
+    vertical-align:bottom;
+  }
