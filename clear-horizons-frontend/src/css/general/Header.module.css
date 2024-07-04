@@ -6,12 +6,14 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    z-index:100;
 }
 
 .navbar {
     height: 60px;
     background-color: var(--nav-background);
-    position: relative;
+    position: fixed;
+    width:100%;
 }
 
 .logo img {
@@ -67,26 +69,54 @@
 } */
 
 .subNavElements {
-    width: 80%;
-    background-color:var(--nav-background);
     position:fixed;
-    height:60%;
-    right:-80%;
+    right:-70%;
     top:60px;
     transition: right 0.4s ease;
     display:flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    background:linear-gradient(to right, #F37C39, #FFAA00);
+    padding:5px;
+    border-radius:20px;
 }
 
-.subNavElements a{
+.subNavElements::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white; /* Background color of the inner content */
+    border-radius: 5px; /* Optional: match with outer border radius */
+    margin: 5px; /* Same as padding to create the border effect */
+    border-radius:20px;
+}
+.subNavElementContents {
+    position: relative;
+    background: white;
+    border-radius: 5px; /* Optional: match with outer border radius */
+    z-index: 1;
+    padding:20px;
+    border-radius:20px;
+}
+
+.subNavElementContents a{
     text-decoration:none;
-    color:var(--nav-text)
+    color:black;
+    display:block;
+    padding:5px;
+    text-align:center;
+    border-radius:100px;
+}
+.subNavElementContents a:hover{
+    border:1px solid black;
 }
 
 .subNavElements.navOpen{
-    right:0;
+    right:10px;
 }
 
 @media (max-width: 768px) {

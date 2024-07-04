@@ -14,11 +14,11 @@ const Header = () => {
         {url: '/', name: 'Home'},
         {url: '/staff', name: 'Staff'},
         {url: '/contact', name: 'Contact Us'},
-        {url: '/dashboard', name: 'Schedule'},
+        {url: '/schedule', name: 'Schedule'},
     ]
     const sub_items = [
-        {url: '/home-cleaning', name: 'Window'},
-        {url: '/window-cleaning', name: 'Home'},
+        {url: '/home-cleaning', name: 'Home'},
+        {url: '/window-cleaning', name: 'Window'},
         {url: '/pest-control', name: 'Pest'},
     ]
 
@@ -29,7 +29,7 @@ const Header = () => {
 
                     {/* LOGO */}
                     <div className={styles.logo}>
-                        <img src="/utah_logo.png" alt="Clear Horizons"/>
+                        <img src="/logo.png" alt="Clear Horizons"/>
                     </div>
 
                     {/* MAIN MENU */}
@@ -47,22 +47,24 @@ const Header = () => {
                         </ul>
                     </div>
 
-                    <div className={`${styles.subNavElements} ${isMenuOpen ? styles.navOpen : ''}`}>
-                        {sub_items.map(item => (
-                            <div key={item.url}>
-                                <NavLink
-                                    to={item.url}
-                                    className={({ isActive }) => isActive ? styles.active : ""}>
-                                    {item.name}
-                                </NavLink>
-                            </div>
-                        ))}
-                    </div>
-
                     {/* HAMBURGER */}
                     <HamburgerIcon className={styles.hamburgerIcon} isOpen={isMenuOpen} toggleMenu={toggleMenu}/>
                 </div>
             </nav>
+
+            <div className={`${styles.subNavElements} ${isMenuOpen ? styles.navOpen : ''}`}>
+                <div className={styles.subNavElementContents}>
+                    {sub_items.map(item => (
+                        <div key={item.url}>
+                            <NavLink
+                                to={item.url}
+                                className={({ isActive }) => isActive ? styles.active : ""}>
+                                {item.name}
+                            </NavLink>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     )
 }

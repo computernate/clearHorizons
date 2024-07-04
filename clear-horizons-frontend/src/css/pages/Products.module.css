@@ -1,0 +1,36 @@
+.container{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom:50px;
+    width:100%;
+}
+
+.home{
+    display:flex;
+    align-items: center;
+}
+.home p{
+    padding:100px;
+    font-size:35px;
+}
+.home img{
+    padding:100px;
+}
+.window{
+    display:flex;
+    align-items: center;
+}
+.window p{
+    padding:100px;
+    font-size:35px;
+    text-align:right;
+}
+.window img{
+    padding:100px;
+}
+.pest p{
+    text-align:center;
+    font-size:35px;
+    padding: 100px;
+}

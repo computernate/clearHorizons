@@ -46,23 +46,28 @@ body, html, #root{
 h1 {
     font-size: 6rem;
     text-align: center;
+    font-family:TitleFont;
 }
 h2 {
     font-size: 4rem;
     text-align: center;
+    font-family:TitleFont;
 }
 h3 {
     font-size: 3rem;
     text-align: center;
+    font-family:TitleFont;
 }
 
 h4 {
     font-size: 2rem;
     text-align: center;
+    font-family:TitleFont;
 }
 h5 {
     font-size: 1rem;
     text-align: center;
+    font-family:TitleFont;
 }
 
 @media (max-width: 768px) {
@@ -123,4 +128,63 @@ h5 {
 
 .highlight-text {
     color: var(--head-highlight);
+}
+
+.circleButton{
+    color:black;
+    border-radius:100px;
+    background-color:#5A8CA6;
+    width:35px;
+    height:35px;
+    display:flex;
+    justify-content: center;
+    align-items: end;
+    font-size:35px;
+}
+
+.gradientButton{
+    color:black;
+    border-radius:100px;
+    background:linear-gradient(to right, #F37C39, #FFAA00);
+    width:35px;
+    height:35px;
+    display:flex;
+    justify-content: center;
+    align-items: end;
+    font-size:35px;
+}
+.gradientText{
+    position: relative;
+    display: inline-block;
+    color: transparent;
+    background: linear-gradient(to right, #F37C39, #FFAA00);
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+.gradientUnderline{
+    position: relative;
+    display: inline-block;
+    color: black;
+    background: linear-gradient(to right, #F37C39, #FFAA00);
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-decoration-color: transparent;
+}
+
+.gradientUnderline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 7px; /* Adjust this value to change the thickness of the underline */
+    background: linear-gradient(to right, #F37C39, #FFAA00);
+    bottom:0;
+}
+.roundedBlankButton{
+    border:1px solid black;
+    border-radius:100px;
+    font-size:35px;
+    text-decoration:none;
+    color:black;
+    padding:10px;
 }

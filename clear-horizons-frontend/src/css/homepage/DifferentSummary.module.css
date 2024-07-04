@@ -1,0 +1,33 @@
+.wrapper{
+    border-top:5px solid var(--nav-background);
+    border-bottom:5px solid var(--nav-background);
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content:center;
+}
+.container{
+    width:85%;
+}
+
+.container td{
+    text-align:center;
+    vertical-align: center;
+}
+
+.container td:nth-child(3n-2){
+    font-size:200px;
+    font-weight:bold;
+    padding-right:20px;
+}
+
+.container td:nth-child(3n-1){
+    font-size:30px;
+    font-weight:bold;
+    padding-right:20px;
+}
+.container td:nth-child(3n){
+    font-size:30px;
+}

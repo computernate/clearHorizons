@@ -1,28 +1,50 @@
 .wrapper{
+  display:flex;
+  align-items: center;
+  justify-content:center;
+  width:100%;
+}
+.header{
+  margin-bottom: 30px;
+  margin-top:30px;
+  text-align:left;
+  width:85%;
+}
+.container{
     display:flex;
     flex-direction:column;
     align-items: center;
     justify-content:center;
     margin-bottom:100px;
+    margin-top:-100px;
+    background-color:white;
+    border-radius:25px;
+    width:85%;
 }
-.container {
+.imagesContainer {
     display: grid;
-    width: 85%;
-    height: 200px;
+    width: 100%;
+    height: 300px;
+    border-radius:200px;
     background-color:rgba(90, 140, 166, .19);
-    transition: 0.5s ease
+    transition: grid-template-columns 300ms ease;
   }
-  .image {
+  .image{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .image img{
     display:flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     overflow:hidden;
+    background-color:white;
+    width:280px;
+    height:280px;
+    border-radius:500px;
   }
-
-.images.active .image:not(.active){
-    margin-left:-200px;
-}
   
   .text {
     display: flex;
@@ -32,4 +54,22 @@
   
   .text p {
     font-size: 24px;
+  }
+
+
+  .titlesContainer{
+    display:flex;
+    justify-content:space-around;
+    width:100%;
+    margin-top:25px;
+  }
+  .titleContainer{
+    display:flex;
+    align-items: center;
+    flex-direction:column;
+  }
+  .title{
+    margin-bottom:5px;
+    font-size:25px;
+    font-family: TitleFont;
   }

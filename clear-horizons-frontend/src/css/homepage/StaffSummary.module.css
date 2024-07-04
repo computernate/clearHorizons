@@ -1,0 +1,25 @@
+.wrapper{
+    padding-top:40px;
+    border-top:5px solid var(--nav-background);
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom:40px;
+}
+
+.image{
+    width:80%;
+    height:40vh;
+}
+
+.bottomButton{
+    margin-top:20px;
+    display:flex;
+    border:1px solid black;
+    border-radius:100px;
+    align-items: center;
+}
+.bottomButton p{
+    margin:0 10px 0 10px;
+}
