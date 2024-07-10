@@ -1,0 +1,21 @@
+.container{
+    display:flex;
+    margin-top:100px;
+    width:100%;
+    justify-content: space-around;
+}
+
+.staffContainer{
+    border:5px solid var(--general-orange);
+    border-radius:25px;
+    width:200px;
+}
+.staffContainer img{
+    width:100%;
+}
+.staffContainer h6{
+    text-decoration: underline;
+}
+.staffContainer p, .staffContainer h6{
+    margin:10px;
+}

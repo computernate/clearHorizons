@@ -7,7 +7,7 @@ import {NavLink} from 'react-router-dom'
 const ProductHome = () => {
     //usePageTracking();
     return (
-        <div>
+        <div className={styles.container}>
             <TitleImage imageUrl = "/product/productHome.png" titleText = "Home Cleaning" />
             <h2>Feel at home</h2>
             <h2>Leave the cleaning to us</h2>

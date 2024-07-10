@@ -3,6 +3,7 @@ import Header from './components/general/Header.js'
 import Homepage from 'components/homepage/Homepage'
 import Contact from 'components/pages/Contact'
 import JobberForm from 'components/pages/JobberForm'
+import Staff from 'components/pages/Staff'
 import ProductHome from 'components/products/ProductHome'
 import ProductWindow from 'components/products/ProductWindow'
 import ProductPest from 'components/products/ProductPest'
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/pest-control" element={<ProductPest />} />
                     <Route path="/schedule" element={<JobberForm />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/staff" element={<Staff />} />
                 </Routes>
             </div>
         </Router>
