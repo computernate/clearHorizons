@@ -31,3 +31,29 @@
 .container td:nth-child(3n){
     font-size:30px;
 }
+
+
+@media (max-width: 768px) {
+
+    table,
+    tbody,
+    tr,
+    td {
+        display: block;
+        width: 100%;
+    }
+
+    tr {
+        margin-bottom: 10px;
+    }
+
+    td {
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    td:nth-child(3) {
+        margin-top: 10px;
+    }
+
+}

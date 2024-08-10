@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'css/general/Button.module.css'; // Assuming you have styles for the icon
+import styles from 'css/general/Button.module.css';
 
 const Button = ({
                     children, className = "", style = 'gradient', active = false, callback, hoverCallback = () => {

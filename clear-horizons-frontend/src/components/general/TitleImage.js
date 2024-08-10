@@ -4,6 +4,7 @@ import styles from 'css/general/TitleImage.module.css'; // Import your CSS file 
 const TitleImage = ({ imageUrl, titleText, subtitle }) => {
   const divStyle = {
     backgroundImage: `url(${process.env.PUBLIC_URL}${imageUrl})`,
+    backgroundPositionY:'top'
   };
 
   return (

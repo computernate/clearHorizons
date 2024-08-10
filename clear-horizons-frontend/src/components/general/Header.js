@@ -65,6 +65,20 @@ const Header = () => {
                     ))}
                 </div>
             </div>
+
+            <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.navOpen : ''}`}>
+                <div className={styles.mobileMenuContents}>
+                    {items.map(item => (
+                        <div key={item.url}>
+                            <NavLink
+                                to={item.url}
+                                className={({ isActive }) => isActive ? styles.active : ""}>
+                                {item.name}
+                            </NavLink>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     )
 }

@@ -3,12 +3,15 @@ import styles from 'css/pages/Products.module.css'
 
 import TitleImage from '../general/TitleImage'
 import {NavLink} from 'react-router-dom'
+import ScheduleHover from 'components/general/ScheduleHover';
+import Footer from 'components/general/Footer';
 
 const ProductPest = () => {
     //usePageTracking();
     return (
         <div className={styles.container}>
-            <TitleImage imageUrl = "/product/productPest.png" titleText = "Pest Control" />
+            <ScheduleHover />
+            <TitleImage imageUrl = "/staff/ben.jpg" titleText = "Pest Control" style={{backgroundPositionY:'top'}} />
             <h2>The best at pest!</h2>
             <h5><u>Coming soon</u></h5>
             <div className={styles.pest}>
@@ -19,6 +22,7 @@ const ProductPest = () => {
                 className="roundedBlankButton">
                 Schedule
             </NavLink>
+            <Footer />
         </div>
     )
 }

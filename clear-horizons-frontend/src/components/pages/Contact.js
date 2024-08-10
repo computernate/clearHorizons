@@ -1,12 +1,14 @@
 import React from 'react';
 import styles from "css/pages/Contact.module.css";
 import ContactLink from "components/pages/ContactLink"
+import ScheduleHover from 'components/general/ScheduleHover';
 
 
 const Contact = () => {
 
     return (
         <div>
+            <ScheduleHover />
             <div className={styles.container}>
                 <h1>Contact Us</h1>
             </div>

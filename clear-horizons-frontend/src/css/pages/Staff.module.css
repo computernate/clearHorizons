@@ -10,12 +10,25 @@
     border-radius:25px;
     width:200px;
 }
+.staffImageContainer{
+    height:70%;
+}
 .staffContainer img{
     width:100%;
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
 }
 .staffContainer h6{
     text-decoration: underline;
 }
 .staffContainer p, .staffContainer h6{
     margin:10px;
+}
+
+@media (max-width: 768px) {
+    .container{
+        flex-direction: column;
+        align-items: center;
+        gap:30px;
+    }
 }

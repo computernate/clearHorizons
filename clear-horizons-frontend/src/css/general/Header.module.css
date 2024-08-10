@@ -14,6 +14,7 @@
     background-color: var(--nav-background);
     position: fixed;
     width:100%;
+    z-index:1000;
 }
 
 .logo img {
@@ -68,9 +69,9 @@
     display: none;
 } */
 
-.subNavElements {
+.subNavElements, .mobileMenu {
     position:fixed;
-    right:-70%;
+    right:-80%;
     top:60px;
     transition: right 0.4s ease;
     display:flex;
@@ -82,7 +83,7 @@
     border-radius:20px;
 }
 
-.subNavElements::before {
+.subNavElements::before, .mobileMenu::before {
     content: '';
     position: absolute;
     top: 0;
@@ -94,7 +95,7 @@
     margin: 5px; /* Same as padding to create the border effect */
     border-radius:20px;
 }
-.subNavElementContents {
+.subNavElementContents, .mobileMenuContents {
     position: relative;
     background: white;
     border-radius: 5px; /* Optional: match with outer border radius */
@@ -103,7 +104,7 @@
     border-radius:20px;
 }
 
-.subNavElementContents a{
+.subNavElementContents a, .mobileMenuContents a{
     text-decoration:none;
     color:black;
     display:block;
@@ -111,17 +112,28 @@
     text-align:center;
     border-radius:100px;
 }
-.subNavElementContents a:hover{
+.subNavElementContents a:hover, .mobileMenuContents a:hover{
     border:1px solid black;
 }
 
-.subNavElements.navOpen{
+.subNavElements.navOpen, .mobileMenu.navOpen{
     right:10px;
+}
+
+.mobileMenu{
+    display:none;
 }
 
 @media (max-width: 768px) {
     
-    .subNavElements a{
+    .subNavElements{
+        display:none;
+    }
+    .mobileMenu{
+        display:block;
+        z-index:100;
+    }
+    .mobileMenu a{
         font-size:xxx-large;
     }
     .navElements {

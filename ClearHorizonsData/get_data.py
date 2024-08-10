@@ -4,160 +4,131 @@ import requests
 # Load the spreadsheet
 wb = load_workbook('/workspaces/clearHorizons/ClearHorizonsData/workbook.xlsx')
 
-api_key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIxNTQ4NzQsImlzcyI6Imh0dHBzOi8vYXBpLmdldGpvYmJlci5jb20iLCJjbGllbnRfaWQiOiI2MDdlNjRjMi00OTdkLTQyOWEtODJhYi01MTVjODgxM2M2NWQiLCJzY29wZSI6InJlYWRfY2xpZW50cyB3cml0ZV9jbGllbnRzIHJlYWRfcmVxdWVzdHMgd3JpdGVfcmVxdWVzdHMgcmVhZF9xdW90ZXMgd3JpdGVfcXVvdGVzIHJlYWRfam9icyB3cml0ZV9qb2JzIHJlYWRfc2NoZWR1bGVkX2l0ZW1zIHdyaXRlX3NjaGVkdWxlZF9pdGVtcyByZWFkX2ludm9pY2VzIHdyaXRlX2ludm9pY2VzIHJlYWRfdXNlcnMgd3JpdGVfdXNlcnMgcmVhZF9jdXN0b21fZmllbGRfY29uZmlndXJhdGlvbnMgd3JpdGVfY3VzdG9tX2ZpZWxkX2NvbmZpZ3VyYXRpb25zIHJlYWRfdGltZV9zaGVldHMiLCJhcHBfaWQiOiI2MDdlNjRjMi00OTdkLTQyOWEtODJhYi01MTVjODgxM2M2NWQiLCJ1c2VyX2lkIjoyMTU0ODc0LCJhY2NvdW50X2lkIjoxMTQ1NzkwLCJleHAiOjE3MTg4NTIzNjJ9.O4T4qKvfj2TDEAnQUwuPzGwXter5mof9zh0KyI1o3o8"
+# Define API keys and endpoints
+jobber_api_key = "YOUR_JOBBER_API_KEY"
+divvy_api_key = "YOUR_DIVVY_API_KEY"
 objects_per_page = 10
 
-def flatten_data(data, prop_list, current_level=0, ids=None):
-    if ids is None:
-        ids = {}
+# Function to send requests and get data
+def get_data(api_name, query):
+    if api_name == 'jobber':
+        url = "https://api.getjobber.com/api/graphql"
+        headers = {
+            "Authorization": f"Bearer {jobber_api_key}",
+            "X-JOBBER-GRAPHQL-VERSION": "2023-11-15"
+        }
+    elif api_name == 'divvy':
+        url = "https://api.divvy.com/api/graphql"
+        headers = {
+            "x-divvy-api-token": divvy_api_key,
+            "x-api-version": "2"
+        }
+    else:
+        raise ValueError("Unsupported API name")
 
-    # Base case: If we are at the last property, we process the nodes directly
-    if current_level == len(prop_list) - 1:
-        final_nodes = data[prop_list[current_level]]['nodes']
-        result = []
-        for node in final_nodes:
-            item = node.copy()  # Start with the base node data
-            # Add IDs from previous levels
-            for id_name, id_value in ids.items():
-                item[f"{id_name}_ID"] = id_value
-            result.append(item)
-        return result
-
-    # Recursive case: Navigate deeper into the structure
-    results = []
-    prop = prop_list[current_level]
-    nodes = data[prop]['nodes']
-    for node in nodes:
-        # Update the IDs with the current node's ID
-        new_ids = ids.copy()
-        new_ids[prop] = node['id']
-        # Recursive call to process the next level
-        results.extend(flatten_data(node, prop_list, current_level + 1, new_ids))
-    return results
+    response = requests.post(url, headers=headers, json={'query': query})
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Failed to fetch data from {api_name}'s API: {response.status_code}")
+        return None
 
 # Iterate over all sheets
 for sheet_name in wb.sheetnames:
-    # Check if sheet name starts with 'JOBBER_AUTO_'
     if sheet_name.startswith('J_A_'):
-        sheet = wb[sheet_name]
+        api_name = 'jobber'
+    elif sheet_name.startswith('D_A_'):
+        api_name = 'divvy'
+    else:
+        continue  # Skip sheets that don't match the prefix
 
-        # Read the headers from the first row
-        headers = [cell.value for cell in sheet[1]]
+    sheet = wb[sheet_name]
+    headers = [cell.value for cell in sheet[1]]
+    table_name = sheet_name[4:]
 
-        # Extract XXX from the sheet name
-        table_name = sheet_name[len('J_A_'):]
+    existing_ids = [sheet.cell(row=row, column=1).value for row in range(2, sheet.max_row + 1) if
+                    sheet.cell(row=row, column=1).value]
+    start_id = existing_ids[-1] if existing_ids else None
 
-        # Check if there are existing IDs in the first column
-        existing_ids = [sheet.cell(row=row, column=1).value for row in range(2, sheet.max_row + 1) if
-                        sheet.cell(row=row, column=1).value]
+    nested_objects = table_name.split('_')
+    head_objects = ""
+    tail_objects = ""
+    for obj in nested_objects[1:]:
+        head_objects += f"id,{obj}{{nodes{{"
+        tail_objects += "}}"
 
-        # Set the initial start_id for pagination
-        start_id = existing_ids[-1] if existing_ids else None
+    offset = 0
+    while True:
+        query_fields = []
+        for header in headers:
+            nested_fields = header.split('_')
+            nested_structure = ''
+            for field in nested_fields[:-1]:
+                nested_structure += f'{field}{{'
+            nested_structure += nested_fields[-1]
+            nested_structure += '}' * (len(nested_fields) - 1)
+            query_fields.append(nested_structure)
 
-        nested_objects = table_name.split('_')
-        head_objects = ""
-        tail_objects = ""
-        for object in nested_objects[1:]:
-            head_objects+=f"id,{object}{{nodes{{"
-            tail_objects+="}}"
-
-        print(f"before_start {sheet_name}")
-        offset = 0
-        while True:
-            # Construct the GraphQL query based on the headers, table name, and start_id
-            query_fields = []
-            for header in headers:
-                nested_fields = header.split('_')
-                nested_structure = ''
-                for field in nested_fields[:-1]:
-                    nested_structure += f'{field}{{'
-                nested_structure += nested_fields[-1]
-                nested_structure += '}' * (len(nested_fields) - 1)
-                query_fields.append(nested_structure)
-
-
-
-            if start_id:
-                query = f'''
-                query {nested_objects[0].capitalize()}Query {{
-                  {nested_objects[0]}(first: {objects_per_page}, after: "{start_id}") {{
-                    nodes {{
-                        {head_objects}
-                      {",".join(query_fields)}
-                      {tail_objects}
-                    }}
-                    pageInfo {{
-                      endCursor
-                      hasNextPage
-                    }}
-                  }}
+        if start_id:
+            query = f'''
+            query {nested_objects[0].capitalize()}Query {{
+              {nested_objects[0]}(first: {objects_per_page}, after: "{start_id}") {{
+                nodes {{
+                    {head_objects}
+                  {",".join(query_fields)}
+                  {tail_objects}
                 }}
-                '''
-            else:
-                query = f'''
-                query {nested_objects[0].capitalize()}Query {{
-                  {nested_objects[0]}(first: {objects_per_page}) {{
-                    nodes {{
-                        {head_objects}
-                      {",".join(query_fields)}
-                      {tail_objects}
-                    }}
-                    pageInfo {{
-                      endCursor
-                      hasNextPage
-                    }}
-                  }}
+                pageInfo {{
+                  endCursor
+                  hasNextPage
                 }}
-                '''
-            print(f'Getting {nested_objects[-1].capitalize()}')
-            # Send the query to Jobber's API
-            url = "https://api.getjobber.com/api/graphql"
-            #CLient id: 0227762b-357c-4b1f-a4b8-327ffd3d3aa3
-            #Client secret: e33150e0de0c2d560251a06d6867fcd9774357bd0b938a9f1841843e3f0cc1dc
-            # Set the headers
-            request_headers = {
-                "Authorization": f"Bearer {api_key}",
-                "X-JOBBER-GRAPHQL-VERSION": "2023-11-15"
-            }
+              }}
+            }}
+            '''
+        else:
+            query = f'''
+            query {nested_objects[0].capitalize()}Query {{
+              {nested_objects[0]}(first: {objects_per_page}) {{
+                nodes {{
+                    {head_objects}
+                  {",".join(query_fields)}
+                  {tail_objects}
+                }}
+                pageInfo {{
+                  endCursor
+                  hasNextPage
+                }}
+              }}
+            }}
+            '''
 
-            response = requests.post(url, headers=request_headers, json={'query': query})
+        print(f'Getting {nested_objects[-1].capitalize()} from {api_name}')
+        data = get_data(api_name, query)
 
-            # Check if the request was successful
-            if response.status_code == 200:
-                data = response.json()
-                # Process the data as needed
+        if not data or not data['data'][nested_objects[0]]['nodes']:
+            break
+
+        flattened_data = flatten_data(data['data'], nested_objects)
+
+        for row_num, node in enumerate(flattened_data, start=2):
+            for col_num, field in enumerate(headers, start=1):
+                nested_fields = field.split('_')
+                nested_value = node
                 try:
-                    if not data['data'][nested_objects[0]]['nodes']:
-                        break  # No more data available
-                except Exception as e:
-                    print(data)
-            else:
-                print(f"Failed to fetch data from Jobber's API {response.status_code}")
-                data = None
-                break
+                    for nested_field in nested_fields:
+                        nested_value = nested_value.get(nested_field, {})
+                    sheet.cell(row=row_num+offset, column=col_num, value=nested_value)
+                except:
+                    sheet.cell(row=row_num+offset, column=col_num, value='n/a')
+            for col_num, field in enumerate(nested_objects[:-1]):
+                field_name = field + '_ID'
+                sheet.cell(row=row_num+offset, column=col_num+len(headers)+1, value=node[field_name])
 
-            # Parse the response and populate the sheet
-            flattened_data = flatten_data(data['data'], nested_objects)
+        if not data['data'][nested_objects[0]]['pageInfo']['hasNextPage']:
+            break
 
-            for row_num, node in enumerate(flattened_data, start=2):
-                for col_num, field in enumerate(headers, start=1):
-                    nested_fields = field.split('_')
-                    nested_value = node
-                    try:
-                        for nested_field in nested_fields:
-                            nested_value = nested_value.get(nested_field, {})
-                        sheet.cell(row=row_num+offset, column=col_num, value=nested_value)
-                    except:
-                        sheet.cell(row=row_num+offset, column=col_num, value='n/a')
-                for col_num, field in enumerate(nested_objects[:-1]):
-                    field_name=field+'_ID'
-                    sheet.cell(row=row_num+offset, column=col_num+len(headers)+1, value=node[field_name])
-
-            # Update the start_id for the next iteration
-            if not data['data'][nested_objects[0]]['pageInfo']['hasNextPage']:
-                break
-            offset+=len(flattened_data)
-            start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
+        offset += len(flattened_data)
+        start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
 
 # Save the modified workbook
 wb.save('/workspaces/clearHorizons/ClearHorizonsData/update_workbook.xlsx')

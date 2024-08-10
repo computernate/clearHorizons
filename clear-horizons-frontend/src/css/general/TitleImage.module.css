@@ -30,3 +30,9 @@
     margin:0;
     vertical-align:bottom;
   }
+  
+  @media (max-width: 768px) {
+    .titleOverlay h2{
+      font-size:25px;
+    }
+  }

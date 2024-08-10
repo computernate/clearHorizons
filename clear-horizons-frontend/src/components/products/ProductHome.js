@@ -3,11 +3,14 @@ import styles from 'css/pages/Products.module.css'
 
 import TitleImage from '../general/TitleImage'
 import {NavLink} from 'react-router-dom'
+import ScheduleHover from 'components/general/ScheduleHover';
+import Footer from 'components/general/Footer';
 
 const ProductHome = () => {
     //usePageTracking();
     return (
         <div className={styles.container}>
+            <ScheduleHover />
             <TitleImage imageUrl = "/product/productHome.png" titleText = "Home Cleaning" />
             <h2>Feel at home</h2>
             <h2>Leave the cleaning to us</h2>
@@ -21,6 +24,7 @@ const ProductHome = () => {
                 className="roundedBlankButton">
                 Schedule
             </NavLink>
+            <Footer />
            </div>
     )
 }

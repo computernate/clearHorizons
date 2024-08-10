@@ -1,0 +1,20 @@
+.hoverbutton{
+    position:fixed;
+    bottom:10px;
+    right:10px;
+    border-radius:40px;
+    color:white;
+    background-image: linear-gradient(to right, #fc5000 0%, #fc9300 51%, #fc5000 100%);
+    border:0px;
+    transition: 0.25s;
+    background-size: 200% auto;
+    font-size:25px;
+    padding:5px 20px 5px 20px;
+    display:inline;
+    text-align:center;
+    text-decoration: none;
+}
+
+.hoverbutton:hover{
+    background-position: right center;
+}

@@ -21,3 +21,12 @@
     padding:20px;
     padding-right:0px;
 }
+
+@media (max-width: 768px) {
+    .content{
+        flex-direction:column;
+    }
+    .image{
+        width:75%;
+    }
+}
