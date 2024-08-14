@@ -2,11 +2,12 @@ from openpyxl import load_workbook
 import requests
 
 # Load the spreadsheet
-wb = load_workbook('/workspaces/clearHorizons/ClearHorizonsData/workbook.xlsx')
+#wb = load_workbook('/workspaces/clearHorizons/ClearHorizonsData/workbook.xlsx')
+wb = load_workbook('/home/n8ros/Documents/clearHorizons/ClearHorizonsData/workbook.xlsx')
 
 # Define API keys and endpoints
 jobber_api_key = "YOUR_JOBBER_API_KEY"
-divvy_api_key = "YOUR_DIVVY_API_KEY"
+#divvy_api_key = ""
 objects_per_page = 10
 
 # Function to send requests and get data
@@ -18,7 +19,7 @@ def get_data(api_name, query):
             "X-JOBBER-GRAPHQL-VERSION": "2023-11-15"
         }
     elif api_name == 'divvy':
-        url = "https://api.divvy.com/api/graphql"
+        url = "https://api.divvy.co/graphql"
         headers = {
             "x-divvy-api-token": divvy_api_key,
             "x-api-version": "2"
@@ -101,10 +102,31 @@ for sheet_name in wb.sheetnames:
               }}
             }}
             '''
-
+        query = '''query {
+  currentUser {
+    company {
+      budgets(first: 1) {
+        edges {
+          node {
+            id
+            name
+            users(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}'''
         print(f'Getting {nested_objects[-1].capitalize()} from {api_name}')
+        print(query)
         data = get_data(api_name, query)
-
+        print(data)
         if not data or not data['data'][nested_objects[0]]['nodes']:
             break
 
@@ -131,4 +153,4 @@ for sheet_name in wb.sheetnames:
         start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
 
 # Save the modified workbook
-wb.save('/workspaces/clearHorizons/ClearHorizonsData/update_workbook.xlsx')
+wb.save('/home/n8ros/Documents/clearHorizons/ClearHorizonsData/update_workbook.xlsx')
