@@ -3,6 +3,32 @@ import os
 jobber_api_key = os.getenv("JOBBER_API_KEY", "")
 objects_per_page = 10
 
+def flatten_data(data, prop_list, current_level=0, ids=None):
+    if ids is None:
+        ids = {}
+    # Base case: If we are at the last property, we process the nodes directly
+    if current_level == len(prop_list) - 1:
+        final_nodes = data[prop_list[current_level]]['nodes']
+        result = []
+        for node in final_nodes:
+            item = node.copy()  # Start with the base node data
+            # Add IDs from previous levels
+            for id_name, id_value in ids.items():
+                item[f"{id_name}_ID"] = id_value
+            result.append(item)
+        return result
+    # Recursive case: Navigate deeper into the structure
+    results = []
+    prop = prop_list[current_level]
+    nodes = data[prop]['nodes']
+    for node in nodes:
+        # Update the IDs with the current node's ID
+        new_ids = ids.copy()
+        new_ids[prop] = node['id']
+        # Recursive call to process the next level
+        results.extend(flatten_data(node, prop_list, current_level + 1, new_ids))
+    return results
+
 # Function to send requests and get data
 def get_data(query):
     url = "https://api.getjobber.com/api/graphql"
