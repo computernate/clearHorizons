@@ -6,10 +6,10 @@ def flatten_data(data, prop_list, current_level=0, ids=None):
         ids = {}
     # Base case: If we are at the last property, we process the nodes directly
     if current_level == len(prop_list) - 1:
-        final_nodes = data[prop_list[current_level]]['nodes']
+        final_nodes = data[prop_list[current_level]]['edges']
         result = []
         for node in final_nodes:
-            item = node.copy()  # Start with the base node data
+            item = node['node'].copy()  # Start with the base node data
             # Add IDs from previous levels
             for id_name, id_value in ids.items():
                 item[f"{id_name}_ID"] = id_value
@@ -18,7 +18,7 @@ def flatten_data(data, prop_list, current_level=0, ids=None):
     # Recursive case: Navigate deeper into the structure
     results = []
     prop = prop_list[current_level]
-    nodes = data[prop]['nodes']
+    nodes = data[prop]['edges']
     for node in nodes:
         # Update the IDs with the current node's ID
         new_ids = ids.copy()
@@ -108,7 +108,7 @@ def get_from_divvy(sheet, sheet_name):
             print(query)
         data = get_data(query)
         print(data)
-        if not data or not data['data']['currentUser']['company'][nested_objects[0]]['nodes']:
+        if not data or not data['data']['currentUser']['company'][nested_objects[0]]['edges']:
             break
 
         flattened_data = flatten_data(data['data']['currentUser']['company'], nested_objects)
@@ -127,7 +127,7 @@ def get_from_divvy(sheet, sheet_name):
                 field_name = field + '_ID'
                 sheet.cell(row=row_num+offset, column=col_num+len(headers)+1, value=node[field_name])
 
-        if not data['data'][nested_objects[0]]['pageInfo']['hasNextPage']:
+        if not data['data']['currentUser']['company'][nested_objects[0]]['pageInfo']['hasNextPage']:
             break
 
         offset += len(flattened_data)
