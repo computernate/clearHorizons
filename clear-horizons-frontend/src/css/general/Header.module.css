@@ -71,7 +71,7 @@
 
 .subNavElements, .mobileMenu {
     position:fixed;
-    right:-80%;
+    right:-120%;
     top:60px;
     transition: right 0.4s ease;
     display:flex;
@@ -125,7 +125,7 @@
 }
 
 @media (max-width: 768px) {
-    
+
     .subNavElements{
         display:none;
     }

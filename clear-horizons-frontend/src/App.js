@@ -27,7 +27,9 @@ function App() {
                     <Route path="/window-cleaning" element={<ProductWindow />} />
                     <Route path="/pest-control" element={<ProductPest />} />
                     <Route path="/schedule" element={<JobberForm />} />
+                    <Route path="/schedule2" element={<JobberForm />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/contact2" element={<Contact />} />
                     <Route path="/staff" element={<Staff />} />
                 </Routes>
             </div>

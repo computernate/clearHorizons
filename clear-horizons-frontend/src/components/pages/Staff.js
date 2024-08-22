@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "css/pages/Staff.module.css";
-import ScheduleHover from 'components/general/ScheduleHover';
+// import ScheduleHover from 'components/general/ScheduleHover';
 
 
 const Staff = () => {
@@ -30,7 +30,6 @@ const Staff = () => {
 
     return (
         <div>
-            <ScheduleHover />
             <div className={styles.container}>
                 {staffData.map((item)=>(
                     <div className={styles.staffContainer}>

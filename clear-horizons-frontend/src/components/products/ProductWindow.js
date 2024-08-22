@@ -3,14 +3,13 @@ import styles from 'css/pages/Products.module.css'
 
 import TitleImage from '../general/TitleImage'
 import {NavLink} from 'react-router-dom'
-import ScheduleHover from 'components/general/ScheduleHover';
+// import ScheduleHover from 'components/general/ScheduleHover';
 import Footer from 'components/general/Footer';
 
 const ProductWindow = () => {
     //usePageTracking();
     return (
         <div className={styles.container}>
-            <ScheduleHover />
             <TitleImage imageUrl = "/product/productWindow.png" titleText = "Window Cleaning" />
             <h2>Relax</h2>
             <h2>We're here to ease your Pane</h2>

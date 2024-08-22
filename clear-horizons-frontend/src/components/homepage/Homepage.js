@@ -5,7 +5,7 @@ import ServicesSummary from './ServicesSummary';
 import DifferentSummary from './DifferentSummary';
 import ProductsSummary from './ProductsSummary';
 import StaffSummary from './StaffSummary';
-import ScheduleHover from 'components/general/ScheduleHover';
+// import ScheduleHover from 'components/general/ScheduleHover';
 import Footer from 'components/general/Footer';
 
 const Homepage = () => {
@@ -17,7 +17,6 @@ const Homepage = () => {
             <DifferentSummary />
             <ProductsSummary />
             <StaffSummary />
-            <ScheduleHover />
             <Footer />
         </div>
     )
