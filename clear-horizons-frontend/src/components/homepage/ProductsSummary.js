@@ -13,7 +13,6 @@ const ProductsSummary = () => {
                         <li>Seasonal pest control solutions</li>
                         <li>Chemical free options</li>
                     </ul>
-                    <div className="gradientButton">+</div>
                 </div>
                 <img className={styles.image} src="homepage/spray-bottle.png"/>
             </div>
