@@ -57,6 +57,7 @@ const Header = () => {
                     {sub_items.map(item => (
                         <div key={item.url}>
                             <NavLink
+                                onClick={toggleMenu}
                                 to={item.url}
                                 className={({ isActive }) => isActive ? styles.active : ""}>
                                 {item.name}
@@ -71,6 +72,7 @@ const Header = () => {
                     {items.map(item => (
                         <div key={item.url}>
                             <NavLink
+                                onClick={toggleMenu}
                                 to={item.url}
                                 className={({ isActive }) => isActive ? styles.active : ""}>
                                 {item.name}
