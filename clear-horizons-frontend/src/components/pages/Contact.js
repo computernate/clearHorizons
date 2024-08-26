@@ -13,9 +13,9 @@ const Contact = () => {
             </div>
             <div className={styles.iconsWrapper}>
                 <ContactLink icon={"fa-brands fa-facebook-f"} text={"@clearHorizons"} url={'https://www.facebook.com/clearhorizonutah'} />
-                <ContactLink icon={"fa-brands fa-instagram"} text={"@clearHorizons"} url={'https://www.instagram.com/clearhorizonutah/'} />
-                <ContactLink icon={"fa-solid fa-phone"} text={"+1 (801) 800-9898"} url={''} />
-                <ContactLink icon={"fa-solid fa-envelope"} text={"clearhorizon.utah@gmail.com"} url={''} />
+                <ContactLink icon={"fa-brands fa-instagram"} text={"@clearHorizons"} url={'https://www.instagram.com/clearhorizonhome/'} />
+                <ContactLink icon={"fa-solid fa-phone"} text={"+1 (801) 800-9898"} url={'tel:+18018009898'} />
+                <ContactLink icon={"fa-solid fa-envelope"} text={"clearhorizon.utah@gmail.com"} url={'mailto:clearhorizonhome@gmail.com'} />
             </div>
         </div>
     )

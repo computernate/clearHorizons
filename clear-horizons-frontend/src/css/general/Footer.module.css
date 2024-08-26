@@ -5,4 +5,22 @@
     font-weight:bold;
     padding:20px;
     margin-top:50px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.bottomNav{
+  width:50%;
+  margin:20px;
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.bottomNav a{
+  color:black;
+}
+.link{
+  color:black !important;
 }
