@@ -1,0 +1,145 @@
+/* Basic body styling */
+.wrapper {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+  }
+  
+  /* Center the estimate form */
+  .estimateForm {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }
+  .estimateForm form{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+  }
+  
+  .labelAndSelect{
+    width:85%;
+  }
+  /* Form label styling */
+  .estimateForm label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #333;
+  }
+  .estimateForm select{
+    width:100%;
+    margin:0px;
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:20px;
+  } 
+  
+  .checkboxes {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    width:85%;
+  }
+  .checkbox{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .checkbox img{
+    width:50px;
+    height:50px;
+  }
+  
+  .checkboxes label {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .cleaningDetails {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: all 0.5s ease;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+  }
+  
+  
+  h3 {
+    color: var(--nav-background);
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  
+  /* Table styling */
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  table td {
+    padding: 10px 5px;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+  }
+  
+  table td:last-child {
+    text-align: right;
+    font-weight: bold;
+  }
+  table tr:last-child{
+    font-weight:bold;
+    background-color: #f9f9f9;
+  }
+  
+  /* Button styling (if you add buttons later) */
+  button {
+    background-color: var(--nav-background);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  button:hover {
+    background-color: var(--nav-background);
+  }
+  
+  /* Animation for dropdown */
+  .animateDropdown {
+    animation: slide-down 0.5s ease forwards;
+  }
+  
+  @keyframes slide-down {
+    0% {
+      max-height: 0;
+      opacity: 0;
+    }
+    100% {
+      max-height: 500px;
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .wrapper{
+        padding:0px;
+    }
+    .estimateForm{
+        width:100%;
+    }
+  }
