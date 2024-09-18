@@ -2,6 +2,7 @@ import requests
 import os
 jobber_api_key = os.getenv("JOBBER_API_KEY", "")
 objects_per_page = 10
+import time
 
 def flatten_data(data, prop_list, current_level=0, ids=None):
     if ids is None:
@@ -129,3 +130,4 @@ def get_from_jobber(sheet, sheet_name):
 
         offset += len(flattened_data)
         start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
+        time.sleep(.5)
