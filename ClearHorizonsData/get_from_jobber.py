@@ -105,6 +105,7 @@ def get_from_jobber(sheet, sheet_name):
             }}
             '''
         data = get_data(query)
+        time.sleep(.5)
         print(data)
         if not data or not data['data'][nested_objects[0]]['nodes']:
             break
@@ -130,4 +131,3 @@ def get_from_jobber(sheet, sheet_name):
 
         offset += len(flattened_data)
         start_id = data['data'][nested_objects[0]]['pageInfo']['endCursor']
-        time.sleep(.5)
