@@ -18,6 +18,7 @@ const Homepage = () => {
             <ScheduleHover />
             <TitleImage imageUrl = "/homepage/home_house.png" titleText = "Clear Horizon Home" subtitle="HOME-WINDOW-PEST" />
             <ServiceEstimateForm />
+            <ServicesSummary />
             <ServiceSteps />
             <StaffSummary />
             <Footer />
