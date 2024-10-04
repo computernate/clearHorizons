@@ -107,8 +107,8 @@ def get_from_jobber(sheet, sheet_name):
         data = get_data(query)
         print(data)
         if data.get('errors') and data['errors'][0]['message']=="Throttled":
-            print("THROTTLED. STARTING 60 SECOND COOLDOWN")
-            time.sleep(60)
+            print("THROTTLED. STARTING 300 SECOND COOLDOWN")
+            time.sleep(300)
             continue
         if not data or not data['data'][nested_objects[0]]['nodes']:
             break
