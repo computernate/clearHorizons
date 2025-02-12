@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import hello_world, submit_form
+from .views import hello_world, submit_form, contact
 
 urlpatterns = [
     path('hello/', hello_world),
