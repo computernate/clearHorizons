@@ -1,0 +1,50 @@
+
+.ourServices{
+    color:white;
+    background: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("/public/homepage/home_street.jpg");
+    background-size: 100% auto;
+    background-position:25%, 50%;
+    background-repeat:no-repeat;
+    height:80vh;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: space-around;
+    min-height:700px;
+}
+
+.ourServicesSlider{
+    width:90%;
+}
+
+.servicesCard{
+    background-color:white;
+    text-align:center;
+    border-radius:5px;
+    color:black;
+    height:350px;
+    margin:20px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+}
+.reviewImage{
+    width:100px;
+    height:100px;
+    border-radius:50px;
+    object-fit: cover;
+}
+.servicesCard p{
+    font-size:large;
+}
+.servicesCard h4{
+    font-size:small;
+}
+
+@media (max-width: 768px) {
+
+    .ourServices {
+        background-size: 300% auto;
+    }
+}

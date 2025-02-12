@@ -3,10 +3,10 @@ import React from 'react';
 import TitleImage from '../general/TitleImage'
 import ServiceEstimateForm from './ServiceEstimateForm';
 import ServiceSteps from './ServiceSteps';
-import ServicesSummary from './ServicesSummary';
-import DifferentSummary from './DifferentSummary';
-import ProductsSummary from './ProductsSummary';
-import StaffSummary from './StaffSummary';
+import OurServices from './OurServices';
+import CustomerReviews from './CustomerReviews';
+import WhyUs from './WhyUs';
+import Care from './Care';
 import ScheduleHover from 'components/general/ScheduleHover';
 // import ScheduleHover from 'components/general/ScheduleHover';
 import Footer from 'components/general/Footer';
@@ -15,11 +15,12 @@ const Homepage = () => {
     //usePageTracking();
     return (
         <div>
-            <ScheduleHover />
-            <TitleImage imageUrl = "/homepage/home_house.png" titleText = "Clear Horizon Home" subtitle="HOME-WINDOW-PEST" />
+            <TitleImage imageUrl = "/homepage/home_head.jpg" titleText = "Clear Horizon Home" subtitle="Window and Home Cleaning" button="Get Free Quote" />
+            <OurServices />
+            <CustomerReviews />
             <ServiceEstimateForm />
-            <ServiceSteps />
-            <StaffSummary />
+            <WhyUs />
+            <Care />
             <Footer />
         </div>
     )

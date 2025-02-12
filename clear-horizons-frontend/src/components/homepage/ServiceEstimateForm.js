@@ -67,9 +67,12 @@ const ServiceEstimateForm = () => {
 
   return (
     <div className={styles.wrapper}>
+    <div className={styles.description}>
+      <h3>Get a service Estimate</h3>
+      <p>Want to get a general idea of what a home or window cleaning might run you without filling out the quote? Try out our service estimate calculator! This is only an estimate and not a quote. Click here to request a personalized quote!</p>
+    </div>
     <div className={styles.estimateForm}>
       {/* Initial Selection */}
-      <h3>Get Your Service Estimate</h3>
       <form>
         <div className={styles.labelAndSelect}>
           <label for="squareFeet">
@@ -135,20 +138,6 @@ const ServiceEstimateForm = () => {
                 onChange={handleChange}
               />
               Window
-            </label>
-          </div>
-          <div className={styles.checkbox}>
-            <img
-              src="homepage/CCHpest.png"
-            />
-            <label>
-              <input
-                type="checkbox"
-                name="pest"
-                checked={formData.pest}
-                onChange={handleChange}
-              />
-              Pest
             </label>
           </div>
         </div>

@@ -1,0 +1,154 @@
+.wrapper{
+    margin-top:100px;
+    height:100%;
+}
+.header{
+    height:50%;
+    background-image:url('/public/pages/living-room.jpg');
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    gap:100px;
+}
+.headertop{
+    background-color:#FFFFFFBB;
+    border-radius:10px;
+    padding:25px 50px 25px 50px;
+    font-size:100px;
+}
+.headerDetail{
+    display:flex;
+    justify-content: space-around;
+    width:100%;
+}
+.headerDetail>div{
+    background-color:#FFFFFFBB;
+    border-radius:10px;
+    padding:25px 50px 25px 50px;
+    font-size:x-large;
+}
+.description{
+    font-size:x-large;
+    color:var(--general-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:100px;
+}
+.description div{
+    text-align:center;
+    width:30%;
+}
+.description .orange{
+    color:var(--general-orange);
+}
+.windowWrapper{
+    width:100%;
+    display:flex;
+    justify-content: space-around;
+    margin:100px;
+}
+.window{
+    width:30%;
+    padding:25px;
+    text-align:left;
+    color:var(--general-blue);
+}
+.window h3{
+    text-align:left;
+    color:var(--general-blue);
+}
+
+.homeWrapper{
+    width:100%;
+    text-align:left;
+    background-color:var(--general-blue);
+    padding-top:100px;
+    padding-bottom:100px;
+    display:flex;
+    justify-content: space-around;
+}
+.home{
+    text-align:left;
+    color:white;
+    width:30%;
+}
+.home h3, .home p{
+    text-align:left;
+    color:white;
+}
+.quadricles{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: space-around;
+}
+.quadricle{
+    width:20%;
+    text-align:center;
+}
+.quadricle img{
+    width:200px;
+    height:200px;
+    border-radius:100px;
+}
+.homeQuad{
+    background-color:var(--general-blue);
+    color:white !important;
+}
+
+.bundle{
+    height:50%;
+}
+.bundleWave{
+    position:absolute;
+    z-index:-1;
+}
+.bundleContent{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding:20px;
+    gap:100px;
+}
+.bundleContent img{
+    height:100%;
+    border-radius:10px;
+}
+.bundleText{
+    width:30%;
+    color:var(--general-blue);
+    text-align:center;
+}
+
+.bundleText button{
+
+}
+@media (max-width: 768px) {
+    .header{
+        height:100%;
+        text-align:center;
+    }
+    .headerDetail, .bundleContent{
+        flex-direction:column;
+        gap:20px;
+    }
+    .quadricle, .window, .home p{
+        width:auto;
+    }
+    .home{
+        display:block
+    }
+    .home h3{
+        text-align:center;
+        width:auto;
+    }
+    .bundleContent img{
+        display:none;
+    }
+    .bundleContent{
+        height:auto;
+    }
+}

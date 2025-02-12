@@ -1,50 +1,102 @@
-.container {
-    background: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("/public/homepage/home_house.png");
-    background-size: 150%;
-    background-position: 25%, 50%;
-    background-repeat: no-repeat;
-    height: 45vh;
-    width: 100%;
+.wrapper{
+    margin-top:100px;
+}
+.contactContainer {
+    display: flex;
+    justify-content: center;
+    gap:100px;
+    align-items: center;
+    padding: 40px;
+    background-color: #f5f5f5;
+  }
+  
+  .contactForm {
+    width: 50%;
+    max-width: 500px;
+  }
+  
+  .contactForm h1 {
+    color: #1e64c8;
+    font-size: 32px;
+  }
+  
+  .contactForm p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .contactEmail {
+    color: #ff6600;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .contactPhone {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  form {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    color: white;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.iconsWrapper{
-    display:flex;
-    justify-content: space-around;
-    margin-top:50px;
-}
-
-.contactLink{
-    text-decoration:none;
-    color:#30799B;
-}
-.contactBubble{
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto;
+  }
+  
+  .inputGroup {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--general-orange);
-}
-.contactBubble:hover{
-    background-color: var(--general-blue);
-}
-.icon{
-    color:white;
-    font-size:50px;
-}
-
-@media (max-width:768px){
-    .iconsWrapper{
-        flex-direction:column;
-    }
-}
+    gap: 10px;
+  }
+  
+  .inputField {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .inputField label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .inputField input,
+  .inputField textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .inputField textarea {
+    height: 80px;
+    resize: none;
+  }
+  
+  .sendButton {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #ff6600;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .sendButton:hover {
+    background-color: #e65c00;
+  }
+  
+  .contactImage {
+    width: 20%;
+    height: 400px; /* Adjust the height to match your layout */
+    background-image: url('/public/homepage/bottle.png'); /* Replace with your actual image path */
+    background-size: cover; /* Ensures the image fills the div */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents repetition */
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  

@@ -1,13 +1,20 @@
 /* Basic body styling */
 .wrapper {
+    margin-top:120px;
     font-family: Arial, sans-serif;
     background-color: #f0f0f5;
-    margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
     padding: 50px;
+    gap:50px;
+  }
+  .description h3{
+    font-size:xxx-large;
+    margin-bottom:50px;
+  }
+  .wrapper>div{
+    width:30%;
   }
   
   /* Center the estimate form */
@@ -23,14 +30,50 @@
     flex-direction:column;
     align-items: center;
   }
+  .formSection{
+    border-bottom:1px solid black;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-bottom:20px;
+    margin-bottom:20px;
+  }
+  .formSection img{
+    width:150px;
+    height:150px;
+  }
   
   .labelAndSelect{
     width:85%;
   }
+  .labelAndInput{
+    width:85%;
+    margin-bottom:10px;
+  }
+  .labelAndInput input{
+    padding:10px;
+    width:100%;
+    border-radius:5px;
+    box-sizing: border-box;
+  }
+  .labelAndCheck{
+    width:85%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .labelAndCheck input{
+    width:20px;
+    height:20px;
+  }
+  .labelAndInput textarea{
+    width:100%;
+  }
   /* Form label styling */
   .estimateForm label {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     font-size: 14px;
     color: #333;
   }
@@ -44,7 +87,7 @@
   
   .checkboxes {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin: 15px 0;
     width:85%;
   }
@@ -73,6 +116,9 @@
     display:flex;
     flex-direction:column;
     align-items: center;
+    gap: 15px;
+    border:1px solid black;
+    margin-bottom:40px;
   }
   
   
@@ -123,7 +169,56 @@
   .animateDropdown {
     animation: slide-down 0.5s ease forwards;
   }
+  .address{
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: all 0.5s ease;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    gap: 15px;
+    border:1px solid black;
+    margin-bottom:40px;
+  }
+  .infoIcon {
+    margin-left: 8px;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+  }
   
+  .infoIcon::after {
+    content: attr(data-tooltip); /* Use the data-tooltip attribute for the content */
+    position: absolute;
+    bottom: 125%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 12px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s;
+  }
+  
+  .infoIcon:hover::after {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .submitButton{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    margin-top:20px;
+  }
+
   @keyframes slide-down {
     0% {
       max-height: 0;
@@ -138,8 +233,13 @@
   @media (max-width: 768px) {
     .wrapper{
         padding:0px;
+        flex-direction:column;
     }
     .estimateForm{
         width:100%;
+    }
+    .wrapper>div{
+      width:auto;
+      padding:20px;
     }
   }

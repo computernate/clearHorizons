@@ -9,6 +9,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    color:white;
 }
 
 .bottomNav{
@@ -19,8 +20,8 @@
   align-items: center;
 }
 .bottomNav a{
-  color:black;
+  color:white;
 }
 .link{
-  color:black !important;
+  color:white !important;
 }

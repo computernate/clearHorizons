@@ -1,0 +1,73 @@
+/* Services.css */
+
+.services-container {
+    text-align: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.services-heading {
+    font-size: 4rem;
+    font-family:TitleFont;
+    color: var(--general-blue);
+    margin-bottom: 20px;
+}
+
+.services-content {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    flex-wrap: wrap;
+}
+
+.service-item {
+    width: 25%;
+    padding: 15px;
+    text-align: left;
+}
+
+.service-image {
+    width: 100%;
+}
+
+.service-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 10px;
+    text-align:left;
+}
+
+.service-description {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 10px;
+    line-height: 1.5;
+}
+
+.cta-button {
+    background-color: var(--quote-bg);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 20px 30px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #e05500;
+}
+
+@media (max-width: 768px) {
+    .services-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .service-item {
+        width: 90%;
+    }
+}

@@ -20,14 +20,14 @@ body, html, #root{
 
 @font-face {
     font-family: 'NavFont'; /* Choose a name for your font */
-    src: url('fonts/leaguespartan-bold.ttf') format('woff2'); /* Change the file path and format as needed */
+    src: url('fonts/Roboto-VariableFont_wdth,wght.ttf') format('woff2'); /* Change the file path and format as needed */
     font-weight: normal;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'TitleFont'; /* Choose a name for your font */
-    src: url('fonts/leaguespartan-bold.ttf') format('woff2'); /* Change the file path and format as needed */
+    src: url('fonts/Roboto-VariableFont_wdth,wght.ttf') format('woff2'); /* Change the file path and format as needed */
     font-weight: normal;
     font-style: normal;
   }
@@ -109,9 +109,11 @@ h5 {
 
 :root {
     --nav-background: #5A8CA6;
-    --nav-text: #FFF;
+    --nav-text: #000;
+    --btn-bg:#1470af;
+    --quote-bg:#ff7f00;
 
-    --general-blue:#30799B;
+    --general-blue:#1470af;
     --general-orange:#FFA629;
 
     --head-main: #30799B;
@@ -188,3 +190,14 @@ h5 {
     color:black;
     padding:10px;
 }
+
+.quotelink{
+    background-color:var(--quote-bg);
+    padding:15px;
+    padding-left:20px;
+    padding-right:20px;
+    border-radius:100px;
+    margin-top:50px;
+    color:white;
+    text-decoration:none;
+  }

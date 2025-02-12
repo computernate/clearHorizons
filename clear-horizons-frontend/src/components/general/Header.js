@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import styles from 'css/general/Header.module.css'
 import HamburgerIcon from './HamburgerIcon'
 import {NavLink} from 'react-router-dom'
+import { motion } from "framer-motion";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,15 +12,9 @@ const Header = () => {
     };
 
     const items = [
-        {url: '/', name: 'Home'},
-        {url: '/staff', name: 'Staff'},
-        {url: '/contact', name: 'Contact Us'},
-        {url: '/schedule', name: 'Schedule'},
-    ]
-    const sub_items = [
-        {url: '/home-cleaning', name: 'Home'},
-        {url: '/window-cleaning', name: 'Window'},
-        {url: '/pest-control', name: 'Pest'},
+        {url: '/services', name: 'Services'},
+        {url: '/about', name: 'About'},
+        {url: '/contact', name: 'Contact'},
     ]
 
     return (
@@ -28,9 +23,11 @@ const Header = () => {
                 <div className={styles.container}>
 
                     {/* LOGO */}
-                    <div className={styles.logo}>
-                        <img src="/logo.png" alt="Clear Horizons"/>
-                    </div>
+                    <NavLink
+                        to={'/'}
+                        className={styles.title}>
+                        Clear Horizon Home
+                    </NavLink>
 
                     {/* MAIN MENU */}
                     <div className={styles.navElements}>
@@ -44,6 +41,13 @@ const Header = () => {
                                     </NavLink>
                                 </li>
                             ))}
+                            <li>
+                                <NavLink
+                                    to={'/quote'}
+                                    className={styles.bookLink}>
+                                    Book Now
+                                </NavLink>
+                            </li>
                         </ul>
                     </div>
 
@@ -52,22 +56,15 @@ const Header = () => {
                 </div>
             </nav>
 
-            <div className={`${styles.subNavElements} ${isMenuOpen ? styles.navOpen : ''}`}>
-                <div className={styles.subNavElementContents}>
-                    {sub_items.map(item => (
-                        <div key={item.url}>
-                            <NavLink
-                                onClick={toggleMenu}
-                                to={item.url}
-                                className={({ isActive }) => isActive ? styles.active : ""}>
-                                {item.name}
-                            </NavLink>
-                        </div>
-                    ))}
-                </div>
-            </div>
 
-            <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.navOpen : ''}`}>
+            <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={isMenuOpen ? { opacity: 1, y: 0, pointerEvents:'auto' } : { opacity: 0, y: -20, pointerEvents:'none' }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className={`${styles.mobileMenu} absolute top-12 left-0 w-40 bg-white shadow-lg rounded-lg p-4 ${
+                    isMenuOpen ? "block" : "hidden"
+                    }`}
+                >
                 <div className={styles.mobileMenuContents}>
                     {items.map(item => (
                         <div key={item.url}>
@@ -79,8 +76,13 @@ const Header = () => {
                             </NavLink>
                         </div>
                     ))}
+                    <NavLink
+                        to={'/quote'}
+                        className={styles.bookLink}>
+                        Book Now
+                    </NavLink>
                 </div>
-            </div>
+            </motion.div>
         </div>
     )
 }

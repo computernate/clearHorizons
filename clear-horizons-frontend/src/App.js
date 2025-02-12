@@ -2,7 +2,9 @@ import './App.css';
 import Header from './components/general/Header.js'
 import Homepage from 'components/homepage/Homepage'
 import Contact from 'components/pages/Contact'
-import JobberForm from 'components/pages/JobberForm'
+import GetService from 'components/pages/GetService'
+import Services from 'components/pages/Services'
+import About from 'components/pages/About'
 import Staff from 'components/pages/Staff'
 import ProductHome from 'components/products/ProductHome'
 import ProductWindow from 'components/products/ProductWindow'
@@ -25,11 +27,13 @@ function App() {
                     <Route path="/home-cleaning" element={<ProductHome />} />
                     <Route path="/window-cleaning" element={<ProductWindow />} />
                     <Route path="/pest-control" element={<ProductPest />} />
-                    <Route path="/schedule" element={<JobberForm />} />
-                    <Route path="/schedule2" element={<JobberForm />} />
+                    <Route path="/schedule" element={<GetService />} />
+                    <Route path="/quote" element={<GetService />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/contact2" element={<Contact />} />
                     <Route path="/staff" element={<Staff />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/services" element={<Services />} />
                 </Routes>
             </div>
         </Router>

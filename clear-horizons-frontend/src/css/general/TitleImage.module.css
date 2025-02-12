@@ -1,18 +1,21 @@
 .titleImage {
-    height: 85vh;
+    height: 75vh;
     background-size: cover;
-    background-position: center;
+    background-position-y: bottom;
     display:flex;
+    flex-direction:column;
+    gap:50px;
     justify-content: center;
     align-items: center;
     width:100%;
   }
   
   .titleOverlay {
-    height:25%;
+    height:100%;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.7); /* White opaque background */
-    color: #000; /* Black text */
+    background-color: rgba(0, 0, 0, 0.4); /*# White opaque background */
+    /* color: #000; Black text */
+    color:white;
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -24,13 +27,27 @@
     margin:0;
     margin-bottom:10px;
     vertical-align:bottom;
+    color:white;
   }
   .titleOverlay h5{
     font-family:TitleFont;
     margin:0;
     vertical-align:bottom;
+    color:white;
   }
-  
+  .quoteButton{
+    margin-top:50px;
+  }
+  .quotelink{
+    background-color:var(--quote-bg);
+    padding:15px;
+    padding-left:20px;
+    padding-right:20px;
+    border-radius:100px;
+    margin-top:50px;
+    color:white;
+    text-decoration:none;
+  }
   @media (max-width: 768px) {
     .titleOverlay h2{
       font-size:25px;
