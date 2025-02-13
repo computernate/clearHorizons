@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from 'css/homepage/ProductsSummary.module.css'
+import sprayBottle from "assets/homepage/spray-bottle.png"
 
 const ProductsSummary = () => {
     return (
@@ -14,7 +15,7 @@ const ProductsSummary = () => {
                         <li>Chemical free options</li>
                     </ul>
                 </div>
-                <img className={styles.image} src="homepage/spray-bottle.png"/>
+                <img className={styles.image} src={sprayBottle} />
             </div>
         </div>
     )

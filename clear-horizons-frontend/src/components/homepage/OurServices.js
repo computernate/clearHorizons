@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from 'css/homepage/OurServices.css'
 import {NavLink} from 'react-router-dom'
+import ourServices1 from 'assets/homepage/our_services_1.jpg'
+import ourServices2 from 'assets/homepage/our_services_2.jpg'
 
 const OurServices = () => {
     return (
@@ -10,7 +12,7 @@ const OurServices = () => {
                 {/* Window Cleaning Section */}
                 <div className="service-item">
                     <img 
-                        src="/homepage/our_services_1.jpg" 
+                        src={ourServices1}
                         alt="Window Cleaning" 
                         className="service-image"
                     />
@@ -25,7 +27,7 @@ const OurServices = () => {
                 {/* Home Cleaning Section */}
                 <div className="service-item">
                     <img 
-                        src="/homepage/our_services_2.jpg" 
+                        src={ourServices2}
                         alt="Home Cleaning" 
                         className="service-image"
                     />

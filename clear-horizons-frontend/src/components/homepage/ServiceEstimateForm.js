@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styles from 'css/homepage/ServiceEstimateForm.module.css'
 import { Link } from "react-router-dom";
+import cchHome from "assets/homepage/CCHhome.png"
+import cchWindow from "assets/homepage/CCHwindow.png"
 
 const ServiceEstimateForm = () => {
   const [formData, setFormData] = useState({
@@ -114,7 +116,7 @@ const ServiceEstimateForm = () => {
         <div className={styles.checkboxes}>
           <div className={styles.checkbox}>
             <img
-              src="homepage/CCHhome.png"
+              src={cchHome}
             />
             <label>
               <input
@@ -128,7 +130,7 @@ const ServiceEstimateForm = () => {
           </div>
           <div className={styles.checkbox}>
             <img
-              src="homepage/CCHwindow.png"
+              src={cchWindow}
             />
             <label>
               <input

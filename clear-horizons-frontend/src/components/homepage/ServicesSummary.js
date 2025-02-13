@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from 'css/homepage/ServicesSummary.module.css'; // We'll define the styles here
+import cchHome from 'assets/homepage/CCHhome.png'
+import cchWindow from 'assets/homepage/CCHwindow.png'
 
 const ServicesSummary = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -36,12 +38,12 @@ const ServicesSummary = () => {
   
   const images = [
     {
-        src: "homepage/CCHhome.png",
+        src: cchHome,
         title: "Home Cleaning",
         text: "Home clean when you need it, where you need it. Schedule a single service, or sign up for a recurring schedule. Clean only the rooms you need, or the whole house for a whole home experience"
     },
     {
-        src: "homepage/CCHwindow.png",
+        src: cchWindow,
         title: "Window Cleaning",
         text: "High and low. In and out. We've got the skill and equipment to clean all your windows perfectly the first time! Manage a business? We've got commercial cleaning as well"
     },

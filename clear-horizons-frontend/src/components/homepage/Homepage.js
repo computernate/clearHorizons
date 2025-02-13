@@ -10,12 +10,13 @@ import Care from './Care';
 import ScheduleHover from 'components/general/ScheduleHover';
 // import ScheduleHover from 'components/general/ScheduleHover';
 import Footer from 'components/general/Footer';
+import homeHead from 'assets/homepage/home_head.jpg'
 
 const Homepage = () => {
     //usePageTracking();
     return (
         <div>
-            <TitleImage imageUrl = "/homepage/home_head.jpg" titleText = "Clear Horizon Home" subtitle="Window and Home Cleaning" button="Get Free Quote" />
+            <TitleImage imageUrl = {homeHead} titleText = "Clear Horizon Home" subtitle="Window and Home Cleaning" button="Get Free Quote" />
             <OurServices />
             <CustomerReviews />
             <ServiceEstimateForm />

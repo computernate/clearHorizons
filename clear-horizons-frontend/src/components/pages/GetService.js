@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styles from 'css/homepage/ServiceEstimateForm.module.css'
 import { Link } from "react-router-dom";
+import cchHome from 'assets/homepage/CCHhome.png'
+import cchWindow from 'assets/homepage/CCHwindow.png'
 
 const GetService = () => {
   const [formData, setFormData] = useState({
@@ -250,7 +252,7 @@ const GetService = () => {
             <div className={styles.checkboxes}>
               <div className={styles.checkbox}>
                 <img
-                  src="homepage/CCHhome.png"
+                  src={cchHome}
                 />
                 <label>
                   <input
@@ -264,7 +266,7 @@ const GetService = () => {
               </div>
               <div className={styles.checkbox}>
                 <img
-                  src="homepage/CCHwindow.png"
+                  src={cchWindow}
                 />
                 <label>
                   <input
@@ -335,7 +337,7 @@ const GetService = () => {
           {/* Detailed Selection for Cleaning */}
           {formData.cleaningService && (
             <div className={`${styles.formSection} ${styles.animateDropdown}`}>
-              <img src="homepage/CCHhome.png" />
+              <img src={cchHome} />
               <div className={styles.labelAndSelect}>
                 <label for="beds">
                   Beds:
@@ -545,7 +547,7 @@ const GetService = () => {
 
           {formData.window && (
             <div className={`${styles.formSection} ${styles.animateDropdown}`}>
-              <img src="homepage/CCHwindow.png" />
+              <img src={cchWindow} />
               <div className={styles.labelAndInput}>
                 <label for="groundFloorWindows">
                   Ground Floor Windows:

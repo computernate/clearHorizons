@@ -2,6 +2,13 @@ import React from 'react'
 import styles from 'css/pages/Services.module.css'
 import TitleImage from 'components/general/TitleImage'
 import Footer from 'components/general/Footer'
+import drops from 'assets/pages/drops.jpg'
+import lake from 'assets/pages/lake.jpg'
+import mountainClose from 'assets/pages/mountain-close.jpg'
+import mountainHome from 'assets/pages/mountain-home.jpg'
+import mountainFar from 'assets/pages/mountains-far.jpg'
+import screen from 'assets/pages/screen.jpg'
+import wfp from 'assets/pages/wfp.jpg'
 
 const Services = () => {
     return (
@@ -25,22 +32,22 @@ const Services = () => {
             </div>
             <div className={styles.quadricles}>
                 <div className={styles.quadricle}>
-                    <img src="/pages/drops.jpg" />
+                    <img src={drops} />
                     <h6>7-Day Rain Guarantee</h6>
                     <p>Worried rain will leave spots on your new, sparkling windows? With every subscription we provide a 7-day rain guarantee at no additional cost!</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src="/pages/wfp.jpg" />
+                    <img src={wfp} />
                     <h6>Precision and Care</h6>
                     <p>Our team uses advanced equipment to ensure that every window shines, from the tallest, seemingly out of reach panes, to the below ground sills.</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src="/pages/mountain-home.jpg" />
+                    <img src={mountainHome} />
                     <h6>100% Satisfaction Guarantee</h6>
                     <p>Why settle for mediocrity? At Clear Horizon we provide a streak free guarantee and won’t leave until you are 100% satisfied with our work!</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src="/pages/screen.jpg" />
+                    <img src={screen} />
                     <h6>The Clear Horizon Difference</h6>
                     <p>Apart from cleaning even the tallest and lowest windows, we hand scrub each screen, ensuring a longer lasting clean and a clearer view. </p>
                 </div>
@@ -54,22 +61,22 @@ const Services = () => {
             </div>
             <div className={`${styles.quadricles} ${styles.homeQuad}`}>
                 <div className={styles.quadricle}>
-                    <img src="/pages/lake.jpg" />
+                    <img src={lake} />
                     <h6>Customized Cleaning</h6>
                     <p>Don’t settle for a one-size-fits-all approach to cleaning. Let us create a customized cleaning plan tailored to you and your needs.</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src="/pages/mountains-far.jpg" />
+                    <img src={mountainFar} />
                     <h6>Trusted and Screened Cleaning Professionals</h6>
                     <p>Our employees are trained, insured and background checked for peace of mind. We are locally owned and operated.</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src="/pages/mountain-home.jpg" />
+                    <img src={mountainHome} />
                     <h6>100% Satisfaction Guarantee</h6>
                     <p>We are so confident in our professional  service that if for any reason you are unsatisfied with a job, we will come back to your home and make things right. Just notify us within 24 hours of the original cleaning service with the details of the issue and we will take care of the rest!</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src="/pages/mountain-close.jpg" />
+                    <img src={mountainClose} />
                     <h6>Wide Range of Services</h6>
                     <p>We clean bedrooms, bathrooms, kitchens and more! Whether you need a one time clean or are looking for a longer term solution we will be able to help you take your time back!</p>
                 </div>
@@ -94,13 +101,13 @@ const Services = () => {
                 </text>
                 </svg>
                 <div className={styles.bundleContent}>
-                    <img src="/pages/mountain-close.jpg" />
+                    <img src={mountainClose} />
                     <div className={styles.bundleText}>
                         <p>Take advantage of both our window and home cleaning services to get exclusive discounts on your service!</p>
                         <button className="cta-button">Get 25% off</button>
                     </div>
                 </div>
-                <TitleImage imageUrl='/pages/mountain-close.jpg' titleText="Experience the Clear Horizon Difference Today!" button="GET FREE QUOTE" />
+                <TitleImage imageUrl={mountainClose} titleText="Experience the Clear Horizon Difference Today!" button="GET FREE QUOTE" />
                 <Footer />
             </div>
         </div>

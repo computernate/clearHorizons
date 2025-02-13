@@ -3,6 +3,8 @@ import styles from "css/pages/about.module.css";
 import TitleImage from 'components/general/TitleImage';
 import Footer from 'components/general/Footer';
 // import ScheduleHover from 'components/general/ScheduleHover';
+import mop from 'assets/homepage/mop.png'
+import getStarted from 'assets/homepage/get_started.png'
 
 
 const About = () => {
@@ -18,13 +20,13 @@ const About = () => {
                 </div>
                 <div>
                     <img 
-                        src="/homepage/mop.png" 
+                        src={mop}
                         alt="Mop" 
                         className="service-image"
                     />
                 </div>
             </div>
-            <TitleImage imageUrl = "/homepage/get_started.png" titleText = "Get Started" subtitle="" button="View Services" />
+            <TitleImage imageUrl = {getStarted} titleText = "Get Started" subtitle="" button="View Services" />
             <Footer />
         </div>
     )
