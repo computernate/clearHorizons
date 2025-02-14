@@ -11,8 +11,10 @@ const TitleImage = ({ imageUrl, titleText, subtitle, button }) => {
   return (
     <div className={styles.titleImage} style={divStyle}>
       <div className={styles.titleOverlay}>
-        <h2>{titleText}</h2>
-        {subtitle && <h5>{subtitle}</h5>}
+        <div className={styles.text}>
+          <h2>{titleText}</h2>
+          {subtitle && <h5>{subtitle}</h5>}
+        </div>
         {button && (
           <div className={styles.quoteButton}>
             <NavLink

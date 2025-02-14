@@ -1,27 +1,41 @@
+
+
+
+.navbarSpacer {
+    top: 0;
+    background-color: white;
+    z-index: 2;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2vw;
+    padding-left:3vw;
+    padding-right:3vw;
+    pointer-events: auto;
+    box-shadow: 0px 12px 12px 0px rgba(0, 0, 0, 0.3);
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2vw;
+    padding-left:3vw;
+    padding-right:3vw;
+    pointer-events: auto;
+    box-shadow: 0px 12px 12px 0px #666;
+}
 .container {
     flex: 0 1 auto;
     margin: 0 auto;
-    padding: 0 150px;
+    max-width:1400px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 100%;
     z-index:100;
     font-family:NavFont;
-}
-
-.navbar {
-    position: fixed;
-    background-color: white;
-    z-index: 2;
-    width: 100%;
-    box-sizing: border-box;
-    padding-top: 2vw;
-    padding-bottom: 2vw;
-    padding-left: 4vw;
-    padding-right: 4vw;
-    pointer-events: auto;
-
 }
 .title{
     font-size: calc((0.7)* 1.2vw + 1rem);
@@ -52,6 +66,7 @@
 .navElements ul a {
     color: var(--nav-text);
     text-decoration: none;
+    font-size:12px;
 }
 .bookLink{
     background-color:var(--btn-bg);

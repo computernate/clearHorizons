@@ -19,6 +19,17 @@ const Header = () => {
 
     return (
         <div style={{flex: '0 1 auto'}}>
+            <nav className={styles.navbarSpacer}>
+                <div className={styles.container}>
+
+                    {/* LOGO */}
+                    <NavLink
+                        to={'/'}
+                        className={styles.title}>
+                        Clear Horizon Home
+                    </NavLink>
+                </div>
+            </nav>
             <nav className={styles.navbar}>
                 <div className={styles.container}>
 

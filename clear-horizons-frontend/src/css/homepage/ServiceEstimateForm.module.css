@@ -1,20 +1,25 @@
 /* Basic body styling */
 .wrapper {
-    margin-top:120px;
     font-family: Arial, sans-serif;
     background-color: #f0f0f5;
-    padding: 0;
+    padding: 30px;
     display: flex;
     justify-content: center;
-    padding: 50px;
-    gap:50px;
+  }
+  .content{
+    display: flex;
+    justify-content: space-around;
+    max-width:1400px;
+  }
+  .content>div{
+    width:40%;
   }
   .description h3{
-    font-size:xxx-large;
+    color:var(--general-blue);
+    font-size:4rem;
+    font-weight:lighter;
     margin-bottom:50px;
-  }
-  .wrapper>div{
-    width:30%;
+    text-align:left;
   }
   
   /* Center the estimate form */
@@ -231,14 +236,17 @@
   }
 
   @media (max-width: 768px) {
-    .wrapper{
+    .content{
         padding:0px;
         flex-direction:column;
     }
     .estimateForm{
         width:100%;
     }
-    .wrapper>div{
+    .description h3{
+      font-size:calc(3* calc(.012* min(100vh, 900px)) + 1rem);
+    }
+    .content>div{
       width:auto;
       padding:20px;
     }

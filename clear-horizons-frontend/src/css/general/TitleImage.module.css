@@ -1,5 +1,5 @@
 .titleImage {
-    height: 75vh;
+    height: 60vh;
     background-size: cover;
     background-position-y: bottom;
     display:flex;
@@ -20,6 +20,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap:20px;
   }
 
   .titleOverlay h2 {
@@ -28,9 +29,11 @@
     margin-bottom:10px;
     vertical-align:bottom;
     color:white;
+    font-weight:lighter;
   }
   .titleOverlay h5{
     font-family:TitleFont;
+    font-weight:lighter;
     margin:0;
     vertical-align:bottom;
     color:white;
@@ -41,15 +44,22 @@
   .quotelink{
     background-color:var(--quote-bg);
     padding:15px;
-    padding-left:20px;
-    padding-right:20px;
+    padding-left:40px;
+    padding-right:40px;
     border-radius:100px;
     margin-top:50px;
     color:white;
     text-decoration:none;
+    font-size:12px;
   }
   @media (max-width: 768px) {
+    .titleImage{
+      height:100vh;
+    }
     .titleOverlay h2{
-      font-size:25px;
+      font-size:calc(3* calc(.012* min(100vh, 900px)) + 1rem);
+    }
+    .titleOverlay h5{
+      font-size:12px;
     }
   }

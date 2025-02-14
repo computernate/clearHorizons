@@ -192,10 +192,12 @@ h5 {
 }
 
 .quotelink{
+    font-family:TitleFont;
+    font-size:14px;
     background-color:var(--quote-bg);
-    padding:15px;
-    padding-left:20px;
-    padding-right:20px;
+    padding:22px;
+    padding-left:60px;
+    padding-right:60px;
     border-radius:100px;
     margin-top:50px;
     color:white;
