@@ -189,6 +189,11 @@ const GetService = () => {
   };
 
 
+  function getCSRFToken() {
+    return document.cookie.split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+}
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -203,6 +208,7 @@ const GetService = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "X-CSRFToken": getCSRFToken()
         },
         body: JSON.stringify(formData),
       });

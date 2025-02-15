@@ -15,6 +15,11 @@ const Contact = () => {
         [e.target.name]: e.target.value,
       });
     };
+    function getCSRFToken() {
+      return document.cookie.split('; ')
+          .find(row => row.startsWith('csrftoken='))
+          ?.split('=')[1];
+  }
     const handleSubmit = async (e) => {
       e.preventDefault(); // Prevent default form refresh
   
@@ -23,6 +28,7 @@ const Contact = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken()
           },
           body: JSON.stringify(formData),
         });
