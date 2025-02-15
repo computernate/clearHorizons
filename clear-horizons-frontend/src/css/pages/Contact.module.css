@@ -1,34 +1,54 @@
 .wrapper{
-    margin-top:100px;
+  background-color: #eaeaee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
 }
+
 .contactContainer {
     display: flex;
-    justify-content: center;
-    gap:100px;
+    justify-content: space-around;
     align-items: center;
-    padding: 40px;
-    background-color: #f5f5f5;
+    max-width:1400px;
+    width:100%;
+    height:85vh;
+    gap:100px;
+  }
+  .contactContainer>div{
+    flex:1;
+  }
+  .contactUs {
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
   }
   
-  .contactForm {
-    width: 50%;
-    max-width: 500px;
+  .contactUs h1 {
+    color: var(--general-blue);
+    text-align:left;
+    font-size:4rem;
+    font-family:TitleFont;
+    font-weight:lighter;
   }
   
-  .contactForm h1 {
-    color: #1e64c8;
-    font-size: 32px;
-  }
-  
-  .contactForm p {
+  .contactUs p {
     font-size: 16px;
+    font-family:TitleFont;
     color: #333;
     margin-bottom: 10px;
   }
-  
+  .contactInfo{
+    display:flex;
+    flex-direction:column;
+    gap:0px;
+  }
+  .contactInfo p{
+    margin:0px;
+  }
   .contactEmail {
-    color: #ff6600;
-    text-decoration: none;
+    color: var(--general-orange);
     font-weight: bold;
   }
   
@@ -89,14 +109,28 @@
   }
   
   .contactImage {
-    width: 20%;
-    height: 400px; /* Adjust the height to match your layout */
+    width: 100%;
+    height: 100%; /* Adjust the height to match your layout */
     background-image: url('/public/homepage/bottle.png'); /* Replace with your actual image path */
     background-size: cover; /* Ensures the image fills the div */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents repetition */
-    border-radius: 10px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   }
   
-  
+@media (max-width: 768px) {
+  .contactUs h1{
+    font-size:2rem;
+  }
+  .contactContainer{
+    height:auto;
+  }
+  .contactContainer{
+    flex-direction:column;
+  }
+  .contactImage{
+    height:auto;
+  }
+  .contactUs{
+    gap:20px;
+  }
+}

@@ -1,10 +1,10 @@
 .wrapper{
-    margin-top:100px;
     height:100%;
 }
 .header{
     height:50%;
     background-image:url('/public/pages/living-room.jpg');
+    background-position:0% 65%;
     display:flex;
     flex-direction:column;
     align-items: center;
@@ -12,10 +12,14 @@
     gap:100px;
 }
 .headertop{
+    font-weight: 700;
     background-color:#FFFFFFBB;
-    border-radius:10px;
-    padding:25px 50px 25px 50px;
-    font-size:100px;
+    border-radius:40px;
+    width:40%;
+    text-align:center;
+    padding:40px;
+    font-size:calc( 3 * 1.2vw + 1rem);
+    font-family: TitleFont;
 }
 .headerDetail{
     display:flex;
@@ -24,61 +28,84 @@
 }
 .headerDetail>div{
     background-color:#FFFFFFBB;
-    border-radius:10px;
-    padding:25px 50px 25px 50px;
+    text-align:center;
+    border-radius:40px;
+    text-align:center;
+    width:20%;
+    padding:20px;
     font-size:x-large;
 }
 .description{
     font-size:x-large;
+    font-family:TitleFont;
     color:var(--general-blue);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding:100px;
+    padding:50px;
+    background-color:#eaeaee;
 }
 .description div{
     text-align:center;
-    width:30%;
+    width:50%;
+    font-size:calc(1.1* 1.2vw + 1rem)
 }
 .description .orange{
     color:var(--general-orange);
 }
 .windowWrapper{
+    background-color:#eaeaee;
     width:100%;
     display:flex;
     justify-content: space-around;
-    margin:100px;
 }
 .window{
-    width:30%;
-    padding:25px;
+    width:100%;
+    max-width:1400px;
+    padding:100px 25px 100px 25px;
     text-align:left;
     color:var(--general-blue);
 }
 .window h3{
     text-align:left;
     color:var(--general-blue);
+    font-size:calc(1.5 * 1.2vw + 1rem);
+    font-weight:lighter;
+}
+.window p{
+    width:50%;
+    font-size:calc((0.1) * 1.2vw + 1rem)
 }
 
 .homeWrapper{
     width:100%;
     text-align:left;
     background-color:var(--general-blue);
-    padding-top:100px;
-    padding-bottom:100px;
+    padding-top:150px;
+    padding-bottom:250px;
     display:flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .home{
     text-align:left;
     color:white;
-    width:30%;
+    width:40%;
+    padding-right:100px;
 }
 .home h3, .home p{
     text-align:left;
     color:white;
 }
+.home p{
+    font-size:calc((0.1) * 1.2vw + 1rem)
+}
+.home h3{
+    text-align:left;
+    font-size:calc(1.5 * 1.2vw + 1rem);
+    font-weight:lighter;
+}
 .quadricles{
+    background-color:#eaeaee;
     display:flex;
     flex-wrap:wrap;
     justify-content: space-around;
@@ -86,6 +113,12 @@
 .quadricle{
     width:20%;
     text-align:center;
+}
+.quadricle h6{
+    font-size:1.2rem;
+    font-weight:lighter;
+    font-family:TitleFont;
+    margin:10px;
 }
 .quadricle img{
     width:200px;
@@ -98,23 +131,25 @@
 }
 
 .bundle{
-    height:50%;
+    background-color:#eaeaee;
+    height:80vh;
 }
 .bundleWave{
     position:absolute;
-    z-index:-1;
+    z-index:0;
 }
 .bundleContent{
+    background-color:#eaeaee;
     width:100%;
     height:100%;
     display:flex;
     justify-content: center;
     align-items: center;
-    padding:20px;
     gap:100px;
 }
 .bundleContent img{
-    height:100%;
+    z-index:5;
+    height:85%;
     border-radius:10px;
 }
 .bundleText{
@@ -122,33 +157,69 @@
     color:var(--general-blue);
     text-align:center;
 }
-
-.bundleText button{
-
+.bundleText p{
+    font-size:calc(0.1 * 1.2vw + 1rem);
+    font-family:TitleFont;
+    margin-bottom:50px;
 }
+
 @media (max-width: 768px) {
     .header{
-        height:100%;
+        height:85vh;
         text-align:center;
+        background-position:40% 45%;
+    }
+    .headertop{
+        width:70%;
+        padding:30px;
+    }
+    .headerDetail>div{
+        font-size:calc(0.4 * calc(.012 * min(100vh, 900px)) + 1rem) !important;
+        font-weight:bold;
     }
     .headerDetail, .bundleContent{
-        flex-direction:column;
         gap:20px;
     }
+    .description{
+        padding:20px;
+        padding-top:50px;
+    }
+.description div{
+    width:100%;
+}
+.window p{
+    width:100%;
+}
     .quadricle, .window, .home p{
         width:auto;
     }
+    .homeWrapper{
+        padding-top:10px;
+        flex-direction:column;
+        align-items: center;
+        padding-bottom:50px;
+    }
     .home{
-        display:block
+        display:block;
+        width:90%;
+        padding:0px;
+        padding-top:50px;
     }
     .home h3{
-        text-align:center;
+        text-align:left;
         width:auto;
+    }
+    .home p{
+        width:100%;
     }
     .bundleContent img{
         display:none;
     }
+    .bundleText{
+        width:90%;
+    }
     .bundleContent{
-        height:auto;
+        height:100vh;
+        width:100%;
     }
 }

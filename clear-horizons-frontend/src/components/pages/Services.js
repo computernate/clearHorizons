@@ -9,6 +9,8 @@ import mountainHome from 'assets/pages/mountain-home.jpg'
 import mountainFar from 'assets/pages/mountains-far.jpg'
 import screen from 'assets/pages/screen.jpg'
 import wfp from 'assets/pages/wfp.jpg'
+import {NavLink} from 'react-router-dom'
+import cleaningSupplies from 'assets/pages/cleaningSupplies.png'
 
 const Services = () => {
     return (
@@ -21,7 +23,7 @@ const Services = () => {
                 </div>
             </div>
             <div className={styles.description}>
-                <div>Transform your home with our comprehensive range of <span className={styles.orange}>services tailored</span> to meet your needs. Whether you need your windows or home cleaned - or both! - we've got you covered.</div>
+                <div className={styles.descriptionText}>Transform your home with our comprehensive range of <span className={styles.orange}>services tailored</span> to meet your needs. Whether you need your windows or home cleaned - or both! - we've got you covered.</div>
             </div>
             <div className={styles.windowWrapper}>
                 <div className={styles.window}>
@@ -104,10 +106,15 @@ const Services = () => {
                     <img src={mountainClose} />
                     <div className={styles.bundleText}>
                         <p>Take advantage of both our window and home cleaning services to get exclusive discounts on your service!</p>
-                        <button className="cta-button">Get 25% off</button>
+                        
+                        <NavLink
+                            to={'/quote'}
+                            className="quotelink">
+                            Get 25% Off
+                        </NavLink>
                     </div>
                 </div>
-                <TitleImage imageUrl={mountainClose} titleText="Experience the Clear Horizon Difference Today!" button="GET FREE QUOTE" />
+                <TitleImage imageUrl={cleaningSupplies} titleText="Experience the Clear Horizon Difference Today!" button="GET FREE QUOTE" />
                 <Footer />
             </div>
         </div>

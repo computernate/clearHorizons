@@ -4,28 +4,28 @@ import {NavLink} from 'react-router-dom'
 
 const Footer = () => {
     return (
+        <div className={styles.wrapper}>
         <div className={styles.footer}>
-            <div>Clear Horizon Home LLC</div>
-              <div className={styles.bottomNav}>
-                <NavLink
-                    to='/'
-                    className="link">
-                    Home
-                </NavLink>
-                <NavLink
-                    to='/schedule'
-                    className="link">
-                    Schedule
-                </NavLink>
-                <NavLink
-                    to='/schedule'
-                    className="link">
-                    Contact
-                </NavLink>
+            <h2>Clear Horizon Home</h2>
+              <div className={styles.info}>
+                <div className={styles.infoBlock}>
+                    <div className={styles.infoHead}>
+                        Location
+                    </div>
+                    <div>123 Demo Street</div>
+                    <div>New York, NY 12345</div>
+                </div>
+                <div className={styles.infoBlock}>
+                    <div className={styles.infoHead}>
+                        Contact
+                    </div>
+                    <div><a href="mailto:clearhorizons.utah@gmail.com" className={styles.contactEmail}>
+                    clearhorizons.utah@gmail.com
+                    </a></div>
+                    <div className={styles.contactPhone}>(801) 553-2261</div>
+                </div>
               </div>
-            <div>801-800-9898</div>
-            <div>clearhorizon.utah@gmail.com</div>
-            <div>© 2024 Clear Horizon Home LLC  All Rights Reserved</div>
+        </div>
         </div>
     );
 };

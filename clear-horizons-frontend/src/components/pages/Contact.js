@@ -39,21 +39,26 @@ const Contact = () => {
       }
     };
   return (
+    <div style={{width:'100%;'}}>
     <div className={styles.wrapper}>
     <div className={styles.contactContainer}>
-      <div className={styles.contactForm}>
-        <h1>Contact Us</h1>
-        <p>
-          If you've got a specific question, are inquiring for a business, or
-          interested in collaborating, please provide your information, and we
-          will contact you soon. We look forward to connecting with you.
-        </p>
-        <a href="mailto:clearhorizons.utah@gmail.com" className={styles.contactEmail}>
-          clearhorizons.utah@gmail.com
-        </a>
-        <p className={styles.contactPhone}>(801)553-2261</p>
+      <div className={styles.contactUs}>
+        <div className={styles.contactDescription}>
+          <h1>Contact Us</h1>
+          <p>
+            If you've got a specific question, are inquiring for a business, or
+            interested in collaborating, please provide your information, and we
+            will contact you soon. We look forward to connecting with you.
+          </p>
+          <div className={styles.contactInfo}>
+            <a href="mailto:clearhorizons.utah@gmail.com" className={styles.contactEmail}>
+              clearhorizons.utah@gmail.com
+            </a>
+            <p className={styles.contactPhone}>(801) 553-2261</p>
+          </div>
+        </div>
 
-        <form>
+        <form className={styles.contactForm}>
           <div className={styles.inputGroup}>
             <div className={styles.inputField}>
               <label>Name</label>
@@ -95,7 +100,7 @@ const Contact = () => {
       <div className={styles.contactImage}>
       </div>
     </div>
-    
+    </div>
     <Footer />
     </div>
   );

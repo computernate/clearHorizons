@@ -53,8 +53,10 @@
     font-size:12px;
   }
   @media (max-width: 768px) {
+    
     .titleImage{
       height:100vh;
+      background-position-x:35%;
     }
     .titleOverlay h2{
       font-size:calc(3* calc(.012* min(100vh, 900px)) + 1rem);
