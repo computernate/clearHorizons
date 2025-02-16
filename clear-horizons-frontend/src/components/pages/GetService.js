@@ -199,10 +199,12 @@ const GetService = () => {
     try {
       const updatedData = {
         ...formData,
-        windowInterior: calculateWindowInterior(),
-        windowExterior: calculateWindowExterior(),
-        cleaning: calculateCleaning(),
-        total: calculateTotal()
+        totals:{
+          windowInterior: calculateWindowInterior(),
+          windowExterior: calculateWindowExterior(),
+          cleaning: calculateCleaning(),
+          total: calculateTotal()
+        }
       }
       const response = await fetch('/ch_base/submit-form/', {
         method: 'POST',
@@ -210,7 +212,7 @@ const GetService = () => {
           'Content-Type': 'application/json',
           "X-CSRFToken": getCSRFToken()
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedData),
       });
 
       if (response.ok) {

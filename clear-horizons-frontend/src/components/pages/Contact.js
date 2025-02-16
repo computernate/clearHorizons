@@ -24,7 +24,7 @@ const Contact = () => {
       e.preventDefault(); // Prevent default form refresh
   
       try {
-        const response = await fetch("/ch_base/contact", {
+        const response = await fetch("/ch_base/contact/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

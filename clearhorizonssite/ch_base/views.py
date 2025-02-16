@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.core.mail import send_mail
 from django.http import JsonResponse
@@ -35,7 +36,6 @@ def submit_form(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            print(data)
             client_name = data.get("clientName")
             client_email = data.get("email")
             phone = data.get("phone")
@@ -47,15 +47,15 @@ def submit_form(request):
 
             # Email content
             confirmation_subject = "Thank You for Your Request!"
-            confirmation_message = f"Dear {client_name},\n\nThank you for your request. We will get back to you soon.\n\nDetails:\nPhone: {phone}\nAddress: {street_address}, {city}, {state} {zip_code}\n\nSpecial Instructions: {special_instructions}\n\nBest,\nYour Company"
+            confirmation_message = f"Dear {client_name},\n\nThank you for your request. We will get back to you soon.\n\nDetails:\nPhone: {phone}\nAddress: {street_address}, {city}, {state} {zip_code}\n\nSpecial Instructions: {special_instructions}\n\nBest,\nClear Horizons"
 
             internal_subject = "New Service Request Received"
             internal_message = f"A new service request has been submitted.\n\nClient Name: {client_name}\nEmail: {client_email}\nPhone: {phone}\nAddress: {street_address}, {city}, {state} {zip_code}\n\nSpecial Instructions: {special_instructions}\n\n"
 
-            formatted_data = format_form_data(request.POST.dict())
+            formatted_data = format_form_data(data)
             internal_message += formatted_data
+            print(internal_message)
             # Send confirmation email to client
-            print("Sending mail 1")
             send_mail(
                 confirmation_subject,
                 confirmation_message,
@@ -64,7 +64,6 @@ def submit_form(request):
                 fail_silently=False,
             )
 
-            print("Sending mail 2")
             # Send internal notification email
             send_mail(
                 internal_subject,
@@ -88,7 +87,6 @@ def contact(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            print(data)
             client_name = data.get("name")
             client_email = data.get("email")
             message = data.get("message")
@@ -101,21 +99,19 @@ def contact(request):
             internal_message = f"A new service request has been submitted.\n\nClient Name: {client_name}\nEmail: {client_email}\n{message}"
 
             # Send confirmation email to client
-            print("Sending mail 1")
             send_mail(
                 confirmation_subject,
                 confirmation_message,
-                'nateroskelley@gmail.com',
+                'clearhorizons.utah@gmail.com',
                 [client_email],
                 fail_silently=False,
             )
 
-            print("Sending mail 2")
             # Send internal notification email
             send_mail(
                 internal_subject,
                 internal_message,
-                'nateroskelley@gmail.com',
+                'clearhorizons.utah@gmail.com',
                 ['clearhorizons.utah@gmail.com'],
                 fail_silently=False,
             )

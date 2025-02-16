@@ -41,7 +41,7 @@ const OurServices = () => {
             </div>
 
             {/* Call-to-Action Button */}
-          <div className={styles.quoteButton}>
+          <div className="quoteButton">
             <NavLink
                 to={'/quote'}
                 className="quotelink">

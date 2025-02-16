@@ -1,5 +1,5 @@
 .wrapper{
-    height:70vh;
+    min-height:70vh;
     background-color:hsla(204.39,79.49%,38.24%,1);
     display:flex;
     flex-direction:column;
@@ -29,7 +29,7 @@
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position-y:40%;
-    height:85vh;
+    min-height:85vh;
     display:flex;
     flex-direction:column;
     align-items: center;

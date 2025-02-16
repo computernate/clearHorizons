@@ -6,7 +6,7 @@
     font-family: Arial, sans-serif;
     background-color: #eaeaee;
     color: #444;
-    height:90vh;
+    min-height:90vh;
 }
 
 .services-heading {
@@ -53,6 +53,7 @@
 
 .quoteButton{
     margin-top:40px;
+    margin-bottom:40px;
 }
 
 @media (max-width: 768px) {
