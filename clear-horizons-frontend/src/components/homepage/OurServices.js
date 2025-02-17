@@ -45,7 +45,7 @@ const OurServices = () => {
             <NavLink
                 to={'/quote'}
                 className="quotelink">
-                GET FREE QUOTE
+                Get Free Quote
             </NavLink>
           </div>
         </div>

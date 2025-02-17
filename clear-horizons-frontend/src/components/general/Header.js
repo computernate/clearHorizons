@@ -3,6 +3,7 @@ import styles from 'css/general/Header.module.css'
 import HamburgerIcon from './HamburgerIcon'
 import {NavLink} from 'react-router-dom'
 import { motion } from "framer-motion";
+import logo from 'assets/homepage/Clear-Horizon-logo.png'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,24 +22,27 @@ const Header = () => {
         <div style={{flex: '0 1 auto'}}>
             <nav className={styles.navbarSpacer}>
                 <div className={styles.container}>
-
-                    {/* LOGO */}
+                    <div className={styles.logoAndTitle}>
+                    <img src={logo} className={styles.logo} />
                     <NavLink
                         to={'/'}
                         className={styles.title}>
                         Clear Horizon Home
                     </NavLink>
+                    </div>
                 </div>
             </nav>
             <nav className={styles.navbar}>
                 <div className={styles.container}>
 
-                    {/* LOGO */}
+                <div className={styles.logoAndTitle}>
+                    <img src={logo} className={styles.logo} />
                     <NavLink
                         to={'/'}
                         className={styles.title}>
                         Clear Horizon Home
                     </NavLink>
+                    </div>
 
                     {/* MAIN MENU */}
                     <div className={styles.navElements}>

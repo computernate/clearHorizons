@@ -60,7 +60,7 @@ const Contact = () => {
             <a href="mailto:clearhorizons.utah@gmail.com" className={styles.contactEmail}>
               clearhorizons.utah@gmail.com
             </a>
-            <p className={styles.contactPhone}>(801) 553-2261</p>
+            <p className={styles.contactPhone}>(801) 935-8787</p>
           </div>
         </div>
 

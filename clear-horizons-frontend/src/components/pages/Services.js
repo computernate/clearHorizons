@@ -32,6 +32,7 @@ const Services = () => {
                 </div>
                 <div></div>
             </div>
+            <div className={styles.quadriclesWrapper}>
             <div className={styles.quadricles}>
                 <div className={styles.quadricle}>
                     <img src={drops} />
@@ -54,6 +55,7 @@ const Services = () => {
                     <p>Apart from cleaning even the tallest and lowest windows, we hand scrub each screen, ensuring a longer lasting clean and a clearer view. </p>
                 </div>
             </div>
+            </div>
             <div className={styles.homeWrapper}>
                 <div></div>
                 <div className={styles.home}>
@@ -61,6 +63,7 @@ const Services = () => {
                     <p>At Clear Horizon Home, we understand that a clean home is essential for your well-being and peace of mind. Our professional and experienced cleaning service is dedicated to delivering exceptional results tailored to your needs. By choosing us, you gain not only a spotless living space but also the freedom to focus on what truly matters in your life. Experience the difference of a meticulously cleaned home—trust Clear Horizon Home to exceed your expectations every time.</p>
                 </div>
             </div>
+            <div className={`${styles.quadriclesWrapper} ${styles.homeQuad}`}>
             <div className={`${styles.quadricles} ${styles.homeQuad}`}>
                 <div className={styles.quadricle}>
                     <img src={lake} />
@@ -82,6 +85,7 @@ const Services = () => {
                     <h6>Wide Range of Services</h6>
                     <p>We clean bedrooms, bathrooms, kitchens and more! Whether you need a one time clean or are looking for a longer term solution we will be able to help you take your time back!</p>
                 </div>
+            </div>
             </div>
             <div className={styles.bundle}>
                 <svg width="100%" height="217" className={styles.bundleWave}>

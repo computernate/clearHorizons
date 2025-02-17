@@ -22,7 +22,7 @@ const Footer = () => {
                     <div><a href="mailto:clearhorizons.utah@gmail.com" className={styles.contactEmail}>
                     clearhorizons.utah@gmail.com
                     </a></div>
-                    <div className={styles.contactPhone}>(801) 553-2261</div>
+                    <div className={styles.contactPhone}>(801) 935-8787</div>
                 </div>
               </div>
         </div>

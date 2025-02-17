@@ -1,4 +1,6 @@
 import './App.css';
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from './components/general/Header.js'
 import Homepage from 'components/homepage/Homepage'
 import Contact from 'components/pages/Contact'
@@ -9,6 +11,7 @@ import Staff from 'components/pages/Staff'
 import ProductHome from 'components/products/ProductHome'
 import ProductWindow from 'components/products/ProductWindow'
 import ProductPest from 'components/products/ProductPest'
+import ScrollToTop from 'components/general/ScrollToTop';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ReactGA from 'react-ga4';
 const measurementId = "G-8MZB7ETHCB";
@@ -20,6 +23,7 @@ ReactGA.initialize(measurementId);
 function App() {
     return (
         <Router>
+            <ScrollToTop />
             <div style={{height:"100%", display:"flex", flexFlow: 'column'}}>
                 <Header />
                 <Routes>

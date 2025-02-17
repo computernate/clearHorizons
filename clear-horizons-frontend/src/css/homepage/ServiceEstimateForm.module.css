@@ -18,8 +18,11 @@
     color:var(--general-blue);
     font-size:4rem;
     font-weight:lighter;
-    margin-bottom:50px;
+    margin-bottom:20px;
     text-align:left;
+  }
+  .description p{
+    font-size:1.1rem;
   }
   
   /* Center the estimate form */
