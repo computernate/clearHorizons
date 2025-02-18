@@ -12,8 +12,8 @@ const Footer = () => {
                     <div className={styles.infoHead}>
                         Location
                     </div>
-                    <div>123 Demo Street</div>
-                    <div>New York, NY 12345</div>
+                    <div>2644 E. Shortcut Drive</div>
+                    <div>Draper, UT, 84020</div>
                 </div>
                 <div className={styles.infoBlock}>
                     <div className={styles.infoHead}>

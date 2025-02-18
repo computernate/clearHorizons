@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-ap^ipisgej5s0o6jj(hc)y%pyrs$68g5@%y%2($5ctor51)c#=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["35.89.247.129", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["35.89.247.129", "localhost", "127.0.0.1", "clearhorizonhome.com", "www.clearhorizonhome.com"]
 
 
 # Application definition
@@ -101,8 +101,12 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://35.89.247.129"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://35.89.247.129", "http://clearhorizonhome.com", "https://clearhorizonhome.com", "https://www.clearhorizonhome.com"]
 
+# Enforce HTTPS
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
