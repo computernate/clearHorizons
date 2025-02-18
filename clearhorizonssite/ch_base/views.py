@@ -33,7 +33,9 @@ def format_form_data(data, indent=0):
 
 @csrf_exempt
 def submit_form(request):
+    print("Fuck you")
     if request.method == "POST":
+        return JsonResponse({"message": "Form submitted successfully"}, status=200)
         try:
             data = json.loads(request.body)
             client_name = data.get("clientName")

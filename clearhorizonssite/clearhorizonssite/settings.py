@@ -104,9 +104,9 @@ USE_TZ = True
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://35.89.247.129", "https://clearhorizonhome.com", "https://www.clearhorizonhome.com"]
 
 # Enforce HTTPS
-SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 

@@ -27,11 +27,12 @@ const Contact = () => {
         const response = await fetch("/ch_base/contact/", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": getCSRFToken()
+            "Content-Type": "application/json"
           },
           body: JSON.stringify(formData),
         });
+        const data = await response.text();
+        console.log(data);
   
         if (response.ok) {
           alert("Message sent successfully!");
