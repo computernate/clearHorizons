@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'ch_base',  # Your Django app
+    'price_configurations'
 ]
 
 MIDDLEWARE = [

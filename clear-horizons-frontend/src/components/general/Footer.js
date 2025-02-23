@@ -19,8 +19,8 @@ const Footer = () => {
                     <div className={styles.infoHead}>
                         Contact
                     </div>
-                    <div><a href="mailto:clearhorizons.utah@gmail.com" className={styles.contactEmail}>
-                    clearhorizons.utah@gmail.com
+                    <div><a href="mailto:clearhorizon.utah@gmail.com" className={styles.contactEmail}>
+                    clearhorizon.utah@gmail.com
                     </a></div>
                     <div className={styles.contactPhone}>(801) 935-8787</div>
                 </div>

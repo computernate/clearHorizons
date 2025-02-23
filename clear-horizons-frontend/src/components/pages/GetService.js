@@ -47,6 +47,8 @@ const GetService = () => {
     highWindows: 0,
     wellWindows: 0,
     frenchWindows: 0,
+    highFrenchWindows: 0,
+    wellFrenchWindows: 0,
     interiorOnly: false,
     exteriorOnly: false,
     screens: 0,
@@ -94,73 +96,88 @@ const GetService = () => {
     });
   };
 
-  const calculateCleaning = () => {
-    if (!formData.cleaning) return 0
-    let total
+  const calculateCleaningTime = () => {
     if(formData.deepCleaning){
-      let bed = 27 * formData.cleaning.beds
-      let fullBath = 27 * formData.cleaning.fullBath
-      let masterBath = 40 * formData.cleaning.masterBath
-      let halfBath = 24 * formData.cleaning.halfBath
-      let kitchen = 40 * formData.cleaning.kitchen
-      let diningRoom = 27 * formData.cleaning.diningRoom
-      let familyRoom = 27 * formData.cleaning.familyRoom
-      let livingRoom = 27 * formData.cleaning.livingRoom
-      let office = 24 * formData.cleaning.office
-      let mudRoom = 20 * formData.cleaning.mudRoom
-      let laundryRoom = 20 * formData.cleaning.laundryRoom
-      let gym = 20 * formData.cleaning.gym
-      let staircase = 17 * formData.cleaning.staircase
-      let homeTheater = 20 * formData.cleaning.homeTheater
-      let gameRoom = 20 * formData.cleaning.gameRoom
-      let storageRoom = 17 * formData.cleaning.storageRoom
-      let oven = 40 * formData.cleaning.oven
-      let fridge = 40 * formData.cleaning.fridge
-      let other = 20 * formData.cleaning.other
-      total = bed + fullBath + masterBath + halfBath + kitchen + diningRoom + familyRoom + livingRoom + office + 
+      let bed = .67 * formData.cleaning.beds
+      let fullBath = 1 * formData.cleaning.fullBath
+      let masterBath = .83 * formData.cleaning.masterBath
+      let halfBath = .33 * formData.cleaning.halfBath
+      let kitchen = 1.25 * formData.cleaning.kitchen
+      let diningRoom = .67 * formData.cleaning.diningRoom
+      let familyRoom = .67 * formData.cleaning.familyRoom
+      let livingRoom = .67 * formData.cleaning.livingRoom
+      let office = .58 * formData.cleaning.office
+      let mudRoom = .5 * formData.cleaning.mudRoom
+      let laundryRoom = .5 * formData.cleaning.laundryRoom
+      let gym = .75 * formData.cleaning.gym
+      let staircase = .42 * formData.cleaning.staircase
+      let homeTheater = .75 * formData.cleaning.homeTheater
+      let gameRoom = .75 * formData.cleaning.gameRoom
+      let storageRoom = .42 * formData.cleaning.storageRoom
+      let oven = 1 * formData.cleaning.oven
+      let fridge = 1 * formData.cleaning.fridge
+      let other = .5 * formData.cleaning.other
+      return bed + fullBath + masterBath + halfBath + kitchen + diningRoom + familyRoom + livingRoom + office + 
       mudRoom + laundryRoom + gym + staircase + homeTheater + gameRoom + storageRoom + oven + fridge + other
     }
     else{
-      let bed = 14 * formData.cleaning.beds
-      let fullBath = 20 * formData.cleaning.fullBath
-      let masterBath = 27 * formData.cleaning.masterBath
-      let halfBath = 14 * formData.cleaning.halfBath
-      let kitchen = 24 * formData.cleaning.kitchen
-      let diningRoom = 14 * formData.cleaning.diningRoom
-      let familyRoom = 14 * formData.cleaning.familyRoom
-      let livingRoom = 14 * formData.cleaning.livingRoom
-      let office = 14 * formData.cleaning.office
-      let mudRoom = 10 * formData.cleaning.mudRoom
-      let laundryRoom = 10 * formData.cleaning.laundryRoom
-      let gym = 10 * formData.cleaning.gym
-      let staircase = 7 * formData.cleaning.staircase
-      let homeTheater = 10 * formData.cleaning.homeTheater
-      let gameRoom = 10 * formData.cleaning.gameRoom
-      let storageRoom = 7 * formData.cleaning.storageRoom
-      let oven = 40 * formData.cleaning.oven
-      let fridge = 40 * formData.cleaning.fridge
-      let other = 10 * formData.cleaning.other
-      total = bed + fullBath + masterBath + halfBath + kitchen + diningRoom + familyRoom + livingRoom + office + 
+      let bed = .33 * formData.cleaning.beds
+      let fullBath = .67 * formData.cleaning.fullBath
+      let masterBath = .83 * formData.cleaning.masterBath
+      let halfBath = .33 * formData.cleaning.halfBath
+      let kitchen = .83 * formData.cleaning.kitchen
+      let diningRoom = .33 * formData.cleaning.diningRoom
+      let familyRoom = .33 * formData.cleaning.familyRoom
+      let livingRoom = .67 * formData.cleaning.livingRoom
+      let office = .33 * formData.cleaning.office
+      let mudRoom = .25 * formData.cleaning.mudRoom
+      let laundryRoom = .25 * formData.cleaning.laundryRoom
+      let gym = .50 * formData.cleaning.gym
+      let staircase = .17 * formData.cleaning.staircase
+      let homeTheater = .42 * formData.cleaning.homeTheater
+      let gameRoom = .42 * formData.cleaning.gameRoom
+      let storageRoom = .17 * formData.cleaning.storageRoom
+      let oven = 1 * formData.cleaning.oven
+      let fridge = 1 * formData.cleaning.fridge
+      let other = .25 * formData.cleaning.other
+      return bed + fullBath + masterBath + halfBath + kitchen + diningRoom + familyRoom + livingRoom + office + 
       mudRoom + laundryRoom + gym + staircase + homeTheater + gameRoom + storageRoom + oven + fridge + other
     }
-    return total;
+  }
+
+  const calculateCleaning = () => {
+    let hourly_rate = 50;
+    let inflation_rate = 1;
+    if (!formData.cleaning) return 0
+    let total_time = calculateCleaningTime()
+    return total_time * hourly_rate * inflation_rate;
   };
+
+  const calculateWindowInteriorTime = () => {
+    let total_time = (0.03 * formData.wellWindows) + (0.03*formData.groundFloorWindows) + (0.03*formData.highWindows)
+    total_time += (0.17 * formData.frenchWindows) + (0.12 * formData.highFrenchWindows) + (0.17 * formData.wellFrenchWindows)
+    return total_time
+  }
 
   const calculateWindowInterior = () => {
     if (!formData.window) return 0;
-    let hourly_rate = 40;
+    let hourly_rate = 50;
     let inflation_rate = 1;
-    let total_time = (0.03 * formData.wellWindows) + (0.03*formData.groundFloorWindows) + (0.03*formData.highWindows)
-    total_time += 0.03 * (formData.frenchWindows)
+    let total_time = calculateWindowInteriorTime()
     return total_time * hourly_rate * inflation_rate
   };
 
+  const calculateWindowExteriorTime = () => {
+    let total_time = (0.08 * formData.wellWindows) + (0.05*formData.groundFloorWindows) + (0.08*formData.highWindows)
+    total_time += (0.17 * formData.frenchWindows) + (0.12 * formData.highFrenchWindows) + (0.17 * formData.wellFrenchWindows)
+    return total_time
+  }
+
   const calculateWindowExterior = () => {
     if (!formData.window) return 0;
-    let hourly_rate = 40;
+    let hourly_rate = 50;
     let inflation_rate = 1;
-    let total_time = (0.08 * formData.wellWindows) + (0.05*formData.groundFloorWindows) + (0.08*formData.highWindows)
-    total_time += 0.17 * (formData.frenchWindows)
+    let total_time = calculateWindowExteriorTime()
 
     return total_time * hourly_rate * inflation_rate
   };
@@ -203,7 +220,10 @@ const GetService = () => {
           windowInterior: calculateWindowInterior(),
           windowExterior: calculateWindowExterior(),
           cleaning: calculateCleaning(),
-          total: calculateTotal()
+          total: calculateTotal(),
+          windowInteriorTime: calculateWindowInteriorTime(),
+          windowExteriorTime: calculateWindowExteriorTime(),
+          cleaningTime: calculateCleaningTime(),
         }
       }
       const response = await fetch('/ch_base/submit-form/', {
@@ -559,7 +579,7 @@ const GetService = () => {
               <div className={styles.labelAndInput}>
                 <label for="groundFloorWindows">
                   Ground Floor Windows:
-                  <span className={styles.infoIcon} data-tooltip="They're on the ground. Why are you paying us? Just do it yourself">
+                  <span className={styles.infoIcon} data-tooltip="These are windows that can be reached from a standing position (this would include windows that can be accessed from a back deck or tall ground level windows which are at least partially accessible from a standing position)">
                     ℹ️
                   </span>
                 </label>
@@ -569,7 +589,7 @@ const GetService = () => {
               <div className={styles.labelAndInput}>
                 <label for="highWindows">
                   2(+) story windows:
-                  <span className={styles.infoIcon} data-tooltip="If it's over floor 4, we will charge you extra and not tell you until you get the bill">
+                  <span className={styles.infoIcon} data-tooltip="These are windows that are not accessible from ground level and require long ladders, walking on the roof, or long cleaning poles to access.l">
                     ℹ️
                   </span>
                 </label>
@@ -579,7 +599,7 @@ const GetService = () => {
               <div className={styles.labelAndInput}>
                 <label for="wellWindows">
                   Window Well Windows:
-                  <span className={styles.infoIcon} data-tooltip="Contrary to popular belief, window wells are not done very well.">
+                  <span className={styles.infoIcon} data-tooltip="Any windows that are down in a window well, below or partially below ground level">
                     ℹ️
                   </span>
                 </label>
@@ -590,11 +610,27 @@ const GetService = () => {
                 <label for="frenchWindows">
                   {/* TODO: Include info toast */}
                   French Windows:
-                  <span className={styles.infoIcon} data-tooltip="You can ask your windows if they are french. If they are, they will say 'Putain de merdre je suis dégoûtante nettoyez moi'.">
+                  <span className={styles.infoIcon} data-tooltip="French windows are windows with grids that divide the window into smaller panes of glass (also known as muntins, mullions, or divided windows)">
                     ℹ️
                   </span>
                 </label>
                 <input name="frenchWindows" value={formData.frenchWindows}
+                  onChange={handleChange} />
+              </div>
+              <div className={styles.labelAndInput}>
+                <label for="highFrenchWindows">
+                  {/* TODO: Include info toast */}
+                  French Windows (2+ story):
+                </label>
+                <input name="highFrenchWindows" value={formData.highFrenchWindows}
+                  onChange={handleChange} />
+              </div>
+              <div className={styles.labelAndInput}>
+                <label for="wellFrenchWindows">
+                  {/* TODO: Include info toast */}
+                  French Windows (window well):
+                </label>
+                <input name="wellFrenchWindows" value={formData.wellFrenchWindows}
                   onChange={handleChange} />
               </div>
               <div className={styles.labelAndCheck}>
