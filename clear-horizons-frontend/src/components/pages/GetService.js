@@ -22,13 +22,13 @@ const GetService = () => {
       fullBath:0,
       masterBath:0,
       halfBath:0,
-      kitchen:1,
-      diningRoom:1,
-      familyRoom:1,
-      livingRoom:1,
+      kitchen:0,
+      diningRoom:0,
+      familyRoom:0,
+      livingRoom:0,
       office:0,
       mudRoom:0,
-      laundryRoom:1,
+      laundryRoom:0,
       gym:0,
       staircase:0,
       homeTheater:0,
@@ -69,7 +69,7 @@ const GetService = () => {
   };
   const handleCleaningChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prevFormData) => ({
+    setFormData((prevFormData) => ({ 
       ...prevFormData,
       cleaning: {
         ...prevFormData.cleaning,
@@ -100,8 +100,8 @@ const GetService = () => {
     if(formData.deepCleaning){
       let bed = .67 * formData.cleaning.beds
       let fullBath = 1 * formData.cleaning.fullBath
-      let masterBath = .83 * formData.cleaning.masterBath
-      let halfBath = .33 * formData.cleaning.halfBath
+      let masterBath = 1.25 * formData.cleaning.masterBath
+      let halfBath = .58 * formData.cleaning.halfBath
       let kitchen = 1.25 * formData.cleaning.kitchen
       let diningRoom = .67 * formData.cleaning.diningRoom
       let familyRoom = .67 * formData.cleaning.familyRoom
@@ -128,7 +128,7 @@ const GetService = () => {
       let kitchen = .83 * formData.cleaning.kitchen
       let diningRoom = .33 * formData.cleaning.diningRoom
       let familyRoom = .33 * formData.cleaning.familyRoom
-      let livingRoom = .67 * formData.cleaning.livingRoom
+      let livingRoom = .33 * formData.cleaning.livingRoom
       let office = .33 * formData.cleaning.office
       let mudRoom = .25 * formData.cleaning.mudRoom
       let laundryRoom = .25 * formData.cleaning.laundryRoom
@@ -150,12 +150,16 @@ const GetService = () => {
     let inflation_rate = 1;
     if (!formData.cleaning) return 0
     let total_time = calculateCleaningTime()
-    return total_time * hourly_rate * inflation_rate;
+    return Math.round(total_time * hourly_rate * inflation_rate);
   };
 
   const calculateWindowInteriorTime = () => {
-    let total_time = (0.03 * formData.wellWindows) + (0.03*formData.groundFloorWindows) + (0.03*formData.highWindows)
-    total_time += (0.17 * formData.frenchWindows) + (0.12 * formData.highFrenchWindows) + (0.17 * formData.wellFrenchWindows)
+    let actual_ground_floor = Number(formData.groundFloorWindows) + (.8 * formData.highWindows)
+    let actual_high = 0.2 * formData.highWindows
+    let actual_ground_floor_french = Number(formData.frenchWindows) + (.8 * formData.highFrenchWindows)
+    let actual_high_french = 0.2 * formData.highFrenchWindows
+    let total_time = (0.05 * formData.wellWindows) + (0.05 * actual_ground_floor) + (0.08 * actual_high)
+    total_time += (0.12 * actual_ground_floor_french) + (0.17 * actual_high_french) + (0.12 * formData.wellFrenchWindows)
     return total_time
   }
 
@@ -169,7 +173,7 @@ const GetService = () => {
 
   const calculateWindowExteriorTime = () => {
     let total_time = (0.08 * formData.wellWindows) + (0.05*formData.groundFloorWindows) + (0.08*formData.highWindows)
-    total_time += (0.17 * formData.frenchWindows) + (0.12 * formData.highFrenchWindows) + (0.17 * formData.wellFrenchWindows)
+    total_time += (0.12 * formData.frenchWindows) + (0.17 * formData.highFrenchWindows) + (0.17 * formData.wellFrenchWindows)
     return total_time
   }
 
@@ -589,9 +593,6 @@ const GetService = () => {
               <div className={styles.labelAndInput}>
                 <label for="highWindows">
                   2(+) story windows:
-                  <span className={styles.infoIcon} data-tooltip="These are windows that are not accessible from ground level and require long ladders, walking on the roof, or long cleaning poles to access.l">
-                    ℹ️
-                  </span>
                 </label>
                 <input name="highWindows" value={formData.highWindows}
                   onChange={handleChange} />
@@ -791,23 +792,23 @@ const GetService = () => {
           <tbody>
             {(formData.cleaning && <tr>
               <td>Cleaning</td>
-              <td>${calculateCleaning()}</td>
+              <td>${calculateCleaning().toFixed(2)}</td>
             </tr>)}
             {(formData.window && <tr>
               <td>Window (Interior)</td>
-              <td>${calculateWindowInterior()}</td>
+              <td>${calculateWindowInterior().toFixed(2)}</td>
             </tr>)}
             {(formData.window && <tr>
               <td>Window (Exterior)</td>
-              <td>${calculateWindowExterior()}</td>
+              <td>${calculateWindowExterior().toFixed(2)}</td>
             </tr>)}
             {(formData.pest && <tr>
               <td>Pest</td>
-              <td>${calculatePest()}</td>
+              <td>${calculatePest().toFixed(2)}</td>
             </tr>)}
             <tr>
               <td>Total</td>
-              <td>${calculateTotal()}</td>
+              <td>${calculateTotal().toFixed(2)}</td>
             </tr>
           </tbody>
         </table>

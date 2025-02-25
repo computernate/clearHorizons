@@ -92,6 +92,7 @@ const Header = () => {
                         </div>
                     ))}
                     <NavLink
+                                onClick={toggleMenu}
                         to={'/quote'}
                         className={styles.bookLink}>
                         Book Now

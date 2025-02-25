@@ -46,6 +46,7 @@
     align-items:center;
     padding-bottom:20px;
     margin-bottom:20px;
+    height:auto;
   }
   .formSection img{
     width:150px;
@@ -233,7 +234,7 @@
       opacity: 0;
     }
     100% {
-      max-height: 500px;
+      max-height: auto;
       opacity: 1;
     }
   }
