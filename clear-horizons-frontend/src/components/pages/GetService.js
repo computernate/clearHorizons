@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from 'css/homepage/ServiceEstimateForm.module.css'
 import { Link } from "react-router-dom";
 import cchHome from 'assets/homepage/CCHhome.png'
@@ -10,7 +10,9 @@ const GetService = () => {
     email: '',
     phone: '',
     squareFeet: '',
-    floors: '',
+    mainFloor:true,
+    basement:false,
+    secondFloor:false,
     cleaningService: false,
     window: false,
     homeDetail: false,
@@ -22,7 +24,7 @@ const GetService = () => {
       fullBath:0,
       masterBath:0,
       halfBath:0,
-      kitchen:0,
+      kitchen:1,
       diningRoom:0,
       familyRoom:0,
       livingRoom:0,
@@ -49,8 +51,8 @@ const GetService = () => {
     frenchWindows: 0,
     highFrenchWindows: 0,
     wellFrenchWindows: 0,
-    interiorOnly: false,
-    exteriorOnly: false,
+    windowInterior: true,
+    windowExterior: true,
     screens: 0,
     hardWater: false,
     noWFP: false,
@@ -58,25 +60,79 @@ const GetService = () => {
     city: "",
     state: "",
     zipCode: "",
+    cleaning_frequency:'',
+    window_frequency:''
   });
+  const [errors, setErrors] = useState({});
+  const [discountMessage, setDiscountMessage] = useState('')
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    let additional_change=formData.cleaning
+    if(name=='basement' && checked){
+      additional_change.staircase++
+      additional_change.familyRoom++
+    }
+    if(name=='basement' && !checked){
+      additional_change.staircase=Math.max(0,additional_change.staircase-1)
+      additional_change.familyRoom=Math.max(0,additional_change.familyRoom-1)
+    }
+    if(name=='mainFloor' && checked){
+      additional_change.kitchen++
+      additional_change.diningRoom++
+      additional_change.familyRoom++
+      additional_change.livingRoom++
+      additional_change.office++
+    }
+    if(name=='mainFloor' && !checked){
+      additional_change.kitchen=Math.max(0,additional_change.kitchen-1)
+      additional_change.diningRoom=Math.max(0,additional_change.diningRoom-1)
+      additional_change.familyRoom=Math.max(0,additional_change.familyRoom-1)
+      additional_change.livingRoom=Math.max(0,additional_change.livingRoom-1)
+      additional_change.office=Math.max(0,additional_change.office-1)
+    }
+    if(name=='secondFloor' && checked){
+      additional_change.staircase++
+    }
+    if(name=='secondFloor' && !checked){
+      additional_change.staircase=Math.max(0,additional_change.staircase-1)
+    }
     setFormData({
       ...formData,
+      cleaning: additional_change,
       [name]: type === 'checkbox' ? checked : value,
     });
   };
+
+
   const handleCleaningChange = (e) => {
     const { name, value, type, checked } = e.target;
+    let trueValue=value
+    if(!value) trueValue=0
     setFormData((prevFormData) => ({ 
       ...prevFormData,
       cleaning: {
         ...prevFormData.cleaning,
-        [name]: type === 'checkbox' ? checked : value,
+        [name]: type === 'checkbox' ? checked : trueValue,
       },
     }));
   };
+
+  const validate = () => {
+    let newErrors = {};
+    if (!formData.clientName.trim()) newErrors.clientName = "Name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    if (!formData.squareFeet.trim()) newErrors.squareFeet = "This is required";
+    if (!formData.streetAddress.trim()) newErrors.streetAddress = "This is required";
+    if (!formData.city.trim()) newErrors.city = "This is required";
+    if (!formData.state.trim()) newErrors.state = "This is required";
+    if (!formData.zipCode.trim()) newErrors.zipCode = "This is required";
+    if (formData.cleaningService && !formData.cleaning_frequency.trim()) newErrors.cleaning_frequency = "This is required";
+    if (formData.window &&!formData.window_frequency.trim()) newErrors.window_frequency = "This is required";
+    return newErrors;
+  };
+
   const handleDetailedChange = (e) => {
 
     const { name, value, type, checked } = e.target;
@@ -146,11 +202,12 @@ const GetService = () => {
   }
 
   const calculateCleaning = () => {
+    if(!formData.cleaningService) return 0
     let hourly_rate = 50;
-    let inflation_rate = 1;
+    let inflation_rate = 1.25;
     if (!formData.cleaning) return 0
     let total_time = calculateCleaningTime()
-    return Math.round(total_time * hourly_rate * inflation_rate);
+    return Math.ceil(total_time * hourly_rate * inflation_rate);
   };
 
   const calculateWindowInteriorTime = () => {
@@ -164,11 +221,11 @@ const GetService = () => {
   }
 
   const calculateWindowInterior = () => {
-    if (!formData.window) return 0;
+    if (!formData.window || !formData.windowInterior) return 0;
     let hourly_rate = 50;
-    let inflation_rate = 1;
+    let inflation_rate = 1.25;
     let total_time = calculateWindowInteriorTime()
-    return total_time * hourly_rate * inflation_rate
+    return Math.ceil(total_time * hourly_rate * inflation_rate)
   };
 
   const calculateWindowExteriorTime = () => {
@@ -178,12 +235,11 @@ const GetService = () => {
   }
 
   const calculateWindowExterior = () => {
-    if (!formData.window) return 0;
+    if (!formData.window || !formData.windowExterior) return 0;
     let hourly_rate = 50;
-    let inflation_rate = 1;
+    let inflation_rate = 1.25;
     let total_time = calculateWindowExteriorTime()
-
-    return total_time * hourly_rate * inflation_rate
+    return Math.ceil(total_time * hourly_rate * inflation_rate)
   };
 
   const calculatePest = () => {
@@ -195,20 +251,36 @@ const GetService = () => {
   };
 
   const calculateDiscount = () => {
-    let discount = 0;
-    if (formData.pest) discount++;
-    if (formData.window) discount++;
-    if (formData.cleaning) discount++;
-    return 10 * discount;
+    let discount = 0; 
+    if(formData.cleaningService && formData.cleaning_frequency=='monthly') discount+=50
+    if(formData.cleaningService && formData.cleaning_frequency=='bi-monthly')discount+=100
+    if(formData.cleaningService && formData.cleaning_frequency=='weekly')discount+=150
+    if(formData.window && formData.window_frequency=='bi-annually') discount+=50
+    if(formData.window && formData.window_frequency=='quarterly')discount+=100
+    if(formData.window && formData.window_frequency=='monthly')discount+=150
+
+    return discount;
   };
 
-  const calculateTotal = () => {
-    let total = calculateCleaning() + calculateWindowInterior() + calculatePest() + calculateWindowExterior()
-    // let discount = total * calculateDiscount() / 100
-    // return Math.floor((total - discount) * 100) / 100;
-    return total
-  };
+  const discount = calculateDiscount();
 
+  const totalGross = useMemo(() => 
+    calculateCleaning() + calculateWindowInterior() + calculatePest() + calculateWindowExterior(),
+    [calculateCleaning, calculateWindowInterior, calculatePest, calculateWindowExterior]
+  );
+
+  const total = useMemo(() => {
+    return totalGross < discount * 2 ? totalGross : totalGross - discount;
+  }, [totalGross, discount]);
+
+
+  useEffect(() => {
+    if (totalGross < discount * 2) {
+      setDiscountMessage("This order is too small to count for this discount");
+    } else {
+      setDiscountMessage("");
+    }
+  }, [totalGross, discount]);
 
   function getCSRFToken() {
     return document.cookie.split('; ')
@@ -217,6 +289,12 @@ const GetService = () => {
 }
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validate();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return
+    } 
     try {
       const updatedData = {
         ...formData,
@@ -224,7 +302,7 @@ const GetService = () => {
           windowInterior: calculateWindowInterior(),
           windowExterior: calculateWindowExterior(),
           cleaning: calculateCleaning(),
-          total: calculateTotal(),
+          total: total,
           windowInteriorTime: calculateWindowInteriorTime(),
           windowExteriorTime: calculateWindowExteriorTime(),
           cleaningTime: calculateCleaningTime(),
@@ -261,14 +339,18 @@ const GetService = () => {
                 Name
               </label>
               <input name="clientName" value={formData.clientName}
+                style={{ border: errors.clientName ? "2px solid red" : "1px solid black" }}
                 onChange={handleChange} />
+                {errors.clientName && <p style={{ color: "red" }}>{errors.clientName}</p>}
             </div>
             <div className={styles.labelAndInput}>
               <label for="email">
                 Email
               </label>
               <input name="email" value={formData.email}
+                style={{ border: errors.email ? "2px solid red" : "1px solid black" }}
                 onChange={handleChange} />
+                {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
             </div>
             <div className={styles.labelAndInput}>
               <label for="phone">
@@ -332,7 +414,12 @@ const GetService = () => {
               <label for="squareFeet">
                 Square Feet:
               </label>
-              <select name="squareFeet" value={formData.squareFeet} onChange={handleChange}>
+              <select 
+              name="squareFeet" 
+              value={formData.squareFeet} 
+              style={{ border: errors.squareFeet ? "2px solid red" : "1px solid black" }}
+              onChange={handleChange}
+              >
                 <option value="">Select</option>
                 <option value="500">Up to 500 sq ft</option>
                 <option value="1000">500-1000 sq ft</option>
@@ -352,17 +439,33 @@ const GetService = () => {
               <label for="floors">
                 Number of Floors:
               </label>
-              <select name="floors" value={formData.floors} onChange={handleChange}>
-                <option value="">Select</option>
-                <option value="1">1 floor</option>
-                <option value="2">2 floors</option>
-                <option value="3">3 floors</option>
-                <option value="4">4+ floors</option>
-                <option value="11">1 floor (+ basement)</option>
-                <option value="12">2 floors (+ basement)</option>
-                <option value="13">3 floors (+ basement)</option>
-                <option value="14">4+ floors (+ basement)</option>
-              </select>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="mainFloor"
+                    checked={formData.mainFloor}
+                    onChange={handleChange}
+                  />
+                  Main Floor
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="basement"
+                    checked={formData.basement}
+                    onChange={handleChange}
+                  />
+                  Basement
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="secondFloor"
+                    checked={formData.secondFloor}
+                    onChange={handleChange}
+                  />
+                  Second Floor
+                </label>
             </div>
           </div>
 
@@ -374,7 +477,8 @@ const GetService = () => {
                 <label for="beds">
                   Beds:
                 </label>
-                <select name="beds_temp" value={formData.beds_temp} onChange={handleDetailedChange}>
+                <select 
+                name="beds_temp" value={formData.beds_temp} onChange={handleDetailedChange}>
                   <option value="">Select</option>
                   <option value="1">1 Bed</option>
                   <option value="2">2 Beds</option>
@@ -428,9 +532,25 @@ const GetService = () => {
                   Deep Cleaning
                 </label>
               </div>
+              <div className={styles.labelAndSelect}>
+                <label for="cleaning_frequency">
+                  Frequency:
+                </label>
+                <select 
+                name="cleaning_frequency" value={formData.cleaning_frequency}
+                style={{ border: errors.cleaning_frequency ? "2px solid red" : "1px solid black" }}
+                 onChange={handleDetailedChange}>
+                  <option value="">Select (GET DISCOUNTS!)</option>
+                  <option value="one-time">One time ($0 OFF)</option>
+                  <option value="monthly">Monthly ($50 OFF PER CLEANING)</option>
+                  <option value="bi-monthly">Bi-Monthly ($100 OFF PER CLEANING)</option>
+                  <option value="weekly">Weekly ($150 OFF PER CLEANING)</option>
+                </select>
+                {errors.cleaning_frequency && <p style={{ color: "red" }}>{errors.cleaning_frequency}</p>}
+              </div>
             </div>
           )}
-          {formData.cleaningDetails && (
+          {formData.cleaningDetails && formData.cleaningService && (
             <div className={`${styles.cleaningDetails}`}>
 
               <div className={styles.labelAndInput}>
@@ -610,7 +730,7 @@ const GetService = () => {
               <div className={styles.labelAndInput}>
                 <label for="frenchWindows">
                   {/* TODO: Include info toast */}
-                  French Windows:
+                  French Pane Ground Floor:
                   <span className={styles.infoIcon} data-tooltip="French windows are windows with grids that divide the window into smaller panes of glass (also known as muntins, mullions, or divided windows)">
                     ℹ️
                   </span>
@@ -621,7 +741,7 @@ const GetService = () => {
               <div className={styles.labelAndInput}>
                 <label for="highFrenchWindows">
                   {/* TODO: Include info toast */}
-                  French Windows (2+ story):
+                  French Pane (2+ story):
                 </label>
                 <input name="highFrenchWindows" value={formData.highFrenchWindows}
                   onChange={handleChange} />
@@ -629,7 +749,7 @@ const GetService = () => {
               <div className={styles.labelAndInput}>
                 <label for="wellFrenchWindows">
                   {/* TODO: Include info toast */}
-                  French Windows (window well):
+                  French Pane (window well):
                 </label>
                 <input name="wellFrenchWindows" value={formData.wellFrenchWindows}
                   onChange={handleChange} />
@@ -637,23 +757,23 @@ const GetService = () => {
               <div className={styles.labelAndCheck}>
                 <input
                   type="checkbox"
-                  name="interiorOnly"
-                  checked={formData.interiorOnly}
+                  name="windowInterior"
+                  checked={formData.windowInterior}
                   onChange={handleChange}
                 />
-                <label for="interiorOnly">
-                  Interior Only
+                <label for="windowInterior">
+                  Interior
                 </label>
               </div>
               <div className={styles.labelAndCheck}>
                 <input
                   type="checkbox"
-                  name="exteriorOnly"
-                  checked={formData.exteriorOnly}
+                  name="windowExterior"
+                  checked={formData.windowExterior}
                   onChange={handleChange}
                 />
-                <label for="exteriorOnly">
-                  Exterior Only
+                <label for="windowExterior">
+                  Exterior
                 </label>
               </div>
               <div className={styles.labelAndCheck}>
@@ -667,8 +787,7 @@ const GetService = () => {
                   See More Options
                 </label>
               </div>
-            </div>
-          )}
+              
           {formData.windowDetail && (
             <div className={`${styles.cleaningDetails}`}>
 
@@ -703,6 +822,24 @@ const GetService = () => {
               </div>
             </div>
           )}
+          <div className={styles.labelAndSelect}>
+            <label for="window_frequency">
+              Frequency:
+            </label>
+            <select 
+            name="window_frequency" value={formData.window_frequency} 
+            style={{ border: errors.window_frequency ? "2px solid red" : "1px solid black" }}
+            onChange={handleDetailedChange}>
+              <option value="">Select (GET DISCOUNTS!)</option>
+              <option value="one-time">One time ($0 OFF)</option>
+              <option value="bi-annually">Bi-Annually ($50 OFF PER CLEANING)</option>
+              <option value="quarterly">Quarterly ($100 OFF PER CLEANING)</option>
+              <option value="monthly">Monthly ($150 OFF PER CLEANING)</option>
+            </select>
+            {errors.window_frequency && <p style={{ color: "red" }}>{errors.window_frequency}</p>}
+          </div>
+            </div>
+          )}
         </form>
 
 
@@ -715,9 +852,11 @@ const GetService = () => {
               id="streetAddress"
               name="streetAddress"
               value={formData.streetAddress}
+              style={{ border: errors.streetAddress ? "2px solid red" : "1px solid black" }}
               onChange={handleChange}
               placeholder="123 Main St"
             />
+              {errors.streetAddress && <p style={{ color: "red" }}>{errors.streetAddress}</p>}
           </div>
 
           <div className={styles.labelAndInput}>
@@ -727,9 +866,11 @@ const GetService = () => {
               id="city"
               name="city"
               value={formData.city}
+              style={{ border: errors.city ? "2px solid red" : "1px solid black" }}
               onChange={handleChange}
               placeholder="City"
             />
+                {errors.city && <p style={{ color: "red" }}>{errors.city}</p>}
           </div>
 
           <div className={styles.labelAndInput}>
@@ -739,9 +880,11 @@ const GetService = () => {
               id="state"
               name="state"
               value={formData.state}
+              style={{ border: errors.state ? "2px solid red" : "1px solid black" }}
               onChange={handleChange}
               placeholder="State"
             />
+                {errors.state && <p style={{ color: "red" }}>{errors.state}</p>}
           </div>
 
           <div className={styles.labelAndInput}>
@@ -751,9 +894,11 @@ const GetService = () => {
               id="zipCode"
               name="zipCode"
               value={formData.zipCode}
+              style={{ border: errors.zipCode ? "2px solid red" : "1px solid black" }}
               onChange={handleChange}
               placeholder="12345"
             />
+                {errors.zipCode && <p style={{ color: "red" }}>{errors.zipCode}</p>}
           </div>
         </div>
 
@@ -790,15 +935,15 @@ const GetService = () => {
         <h3>Quote</h3>
         <table>
           <tbody>
-            {(formData.cleaning && <tr>
+            {(formData.cleaningService && <tr>
               <td>Cleaning</td>
               <td>${calculateCleaning().toFixed(2)}</td>
             </tr>)}
-            {(formData.window && <tr>
+            {(formData.window && formData.windowInterior && <tr>
               <td>Window (Interior)</td>
               <td>${calculateWindowInterior().toFixed(2)}</td>
             </tr>)}
-            {(formData.window && <tr>
+            {(formData.window && formData.windowExterior && <tr>
               <td>Window (Exterior)</td>
               <td>${calculateWindowExterior().toFixed(2)}</td>
             </tr>)}
@@ -807,8 +952,15 @@ const GetService = () => {
               <td>${calculatePest().toFixed(2)}</td>
             </tr>)}
             <tr>
+              <td>FREQUENCY DISCOUNT</td>
+              <td>(-${calculateDiscount().toFixed(2)})</td>
+            </tr>
+            {(discountMessage && <tr>
+              <td colspan='2'>{discountMessage}</td>
+            </tr>)}
+            <tr>
               <td>Total</td>
-              <td>${calculateTotal().toFixed(2)}</td>
+              <td>${total.toFixed(2)}</td>
             </tr>
           </tbody>
         </table>

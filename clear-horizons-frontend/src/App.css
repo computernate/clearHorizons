@@ -204,3 +204,36 @@ h5 {
     color:white;
     text-decoration:none;
   }
+
+  [data-tooltip] {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  [data-tooltip]:hover::after,
+  [data-tooltip]:focus::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    max-width: 80vw; /* Adjust as needed */
+    width:300px;
+    word-wrap: break-word;
+    white-space: normal; /* Ensures wrapping */
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    z-index: 100;
+    text-align: center;
+  }
+  
+  /* Ensures the tooltip stays within the viewport */
+  [data-tooltip]:hover::after {
+    white-space: normal;
+    max-width: 80vw; /* Prevents it from exceeding screen width */
+    word-wrap: break-word;
+  }
+  
