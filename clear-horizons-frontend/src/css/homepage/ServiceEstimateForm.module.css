@@ -154,7 +154,7 @@
     text-align: right;
     font-weight: bold;
   }
-  table tr:last-child{
+  .total{
     font-weight:bold;
     background-color: #f9f9f9;
   }
@@ -212,12 +212,37 @@
     font-size: 12px;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.2s, visibility 0.2s;
   }
   
   .infoIcon:hover::after {
     visibility: visible;
     opacity: 1;
+  }
+  
+
+  .hiddenCheckbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .customCheckbox {
+    cursor: pointer;
+    position: relative;
+    padding-left: 25px; /* space for our custom arrow */
+  }
+  
+  .customCheckbox::before {
+    content: "▼"; /* default arrow */
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  /* When the checkbox is checked, change the arrow */
+  .hiddenCheckbox:checked + .customCheckbox::before {
+    content: "▲";
   }
 
   .submitButton{

@@ -252,16 +252,37 @@ const GetService = () => {
 
   const calculateDiscount = () => {
     let discount = 0; 
-    if(formData.cleaningService && formData.cleaning_frequency=='monthly') discount+=50
-    if(formData.cleaningService && formData.cleaning_frequency=='bi-monthly')discount+=100
-    if(formData.cleaningService && formData.cleaning_frequency=='weekly')discount+=150
-    if(formData.window && formData.window_frequency=='bi-annually') discount+=50
-    if(formData.window && formData.window_frequency=='quarterly')discount+=100
-    if(formData.window && formData.window_frequency=='monthly')discount+=150
+    discount += calculateCleaningDiscount()
+    discount += calculateWindowDiscount()
+    discount += calculateBundleDiscount()
 
     return discount;
   };
 
+  const calculateCleaningDiscount = () => {
+    if(formData.cleaningService && formData.cleaning_frequency=='monthly') return 50
+    if(formData.cleaningService && formData.cleaning_frequency=='bi-monthly') return 100
+    if(formData.cleaningService && formData.cleaning_frequency=='weekly') return 150
+    return 0
+  }
+  const calculateWindowDiscount = () => {
+    if(formData.window && formData.window_frequency=='bi-annually') return 50
+    if(formData.window && formData.window_frequency=='quarterly') return 100
+    if(formData.window && formData.window_frequency=='monthly') return 150
+    return 0
+  }
+
+  const calculateBundleDiscount = () =>{
+    if(formData.window && formData.cleaningService){
+      let pre_total = calculateCleaning() + calculateWindowInterior() + calculatePest() + calculateWindowExterior() - calculateCleaningDiscount() - calculateWindowDiscount()
+      return Math.floor(pre_total * 0.2)
+    }
+    return 0
+  }
+
+  const cleaningDiscount = calculateCleaningDiscount();
+  const windowDiscount = calculateWindowDiscount();
+  const bundleDiscount = calculateBundleDiscount();
   const discount = calculateDiscount();
 
   const totalGross = useMemo(() => 
@@ -513,17 +534,6 @@ const GetService = () => {
               <div className={styles.labelAndCheck}>
                 <input
                   type="checkbox"
-                  name="cleaningDetails"
-                  checked={formData.cleaningDetails}
-                  onChange={handleChange}
-                />
-                <label>
-                  Detailed Breakdown and More Options
-                </label>
-              </div>
-              <div className={styles.labelAndCheck}>
-                <input
-                  type="checkbox"
                   name="deepCleaning"
                   checked={formData.deepCleaning}
                   onChange={handleChange}
@@ -547,6 +557,19 @@ const GetService = () => {
                   <option value="weekly">Weekly ($150 OFF PER CLEANING)</option>
                 </select>
                 {errors.cleaning_frequency && <p style={{ color: "red" }}>{errors.cleaning_frequency}</p>}
+              </div>
+              <div className={styles.labelAndCheck}>
+                <input
+                  id="cleaningDetails"
+                  type="checkbox"
+                  name="cleaningDetails"
+                  checked={formData.cleaningDetails}
+                  onChange={handleChange}
+                  className={styles.hiddenCheckbox}
+                />
+                <label htmlFor="cleaningDetails" className={styles.customCheckbox}>
+                  Detailed Breakdown and More Options
+                </label>
               </div>
             </div>
           )}
@@ -776,7 +799,7 @@ const GetService = () => {
                   Exterior
                 </label>
               </div>
-              <div className={styles.labelAndCheck}>
+              {/* <div className={styles.labelAndCheck}>
                 <input
                   type="checkbox"
                   name="windowDetail"
@@ -786,7 +809,7 @@ const GetService = () => {
                 <label for="windowDetail">
                   See More Options
                 </label>
-              </div>
+              </div> */}
               
           {formData.windowDetail && (
             <div className={`${styles.cleaningDetails}`}>
@@ -936,29 +959,45 @@ const GetService = () => {
         <table>
           <tbody>
             {(formData.cleaningService && <tr>
-              <td>Cleaning</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning</td>
               <td>${calculateCleaning().toFixed(2)}</td>
             </tr>)}
+            {(cleaningDiscount && <tr>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning Frequency Discount</td>
+              <td>-${cleaningDiscount}.00</td>
+            </tr>)}
+            {(formData.cleaningService && <tr className={styles.total}>
+              <td>Cleaning Total</td>
+              <td>${(calculateCleaning()-cleaningDiscount).toFixed(2)}</td>
+            </tr>)}
             {(formData.window && formData.windowInterior && <tr>
-              <td>Window (Interior)</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Window (Interior)</td>
               <td>${calculateWindowInterior().toFixed(2)}</td>
             </tr>)}
             {(formData.window && formData.windowExterior && <tr>
-              <td>Window (Exterior)</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Window (Exterior)</td>
               <td>${calculateWindowExterior().toFixed(2)}</td>
+            </tr>)}
+            {(windowDiscount && <tr>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Window Frequency Discount</td>
+              <td>-${windowDiscount}.00</td>
+            </tr>)}
+            {(formData.window && <tr className={styles.total}>
+              <td>Window Total</td>
+              <td>${(calculateWindowInterior() + calculateWindowExterior() - windowDiscount).toFixed(2)}</td>
             </tr>)}
             {(formData.pest && <tr>
               <td>Pest</td>
               <td>${calculatePest().toFixed(2)}</td>
             </tr>)}
-            <tr>
-              <td>FREQUENCY DISCOUNT</td>
-              <td>(-${calculateDiscount().toFixed(2)})</td>
-            </tr>
             {(discountMessage && <tr>
               <td colspan='2'>{discountMessage}</td>
             </tr>)}
-            <tr>
+            {(bundleDiscount && <tr>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Bundle Discount</td>
+              <td>-${bundleDiscount.toFixed(2)}</td>
+            </tr>)}
+            <tr className={styles.total}>
               <td>Total</td>
               <td>${total.toFixed(2)}</td>
             </tr>

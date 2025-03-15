@@ -2,6 +2,8 @@ import React from 'react'
 import styles from 'css/pages/Services.module.css'
 import TitleImage from 'components/general/TitleImage'
 import Footer from 'components/general/Footer'
+import {NavLink} from 'react-router-dom'
+
 import drops from 'assets/pages/drops.jpg'
 import lake from 'assets/pages/lake.jpg'
 import mountainClose from 'assets/pages/mountain-close.jpg'
@@ -9,8 +11,11 @@ import mountainHome from 'assets/pages/mountain-home.jpg'
 import mountainFar from 'assets/pages/mountains-far.jpg'
 import screen from 'assets/pages/screen.jpg'
 import wfp from 'assets/pages/wfp.jpg'
-import {NavLink} from 'react-router-dom'
 import cleaningSupplies from 'assets/pages/cleaningSupplies.png'
+import homeCleaning from 'assets/pages/home-cleaning.JPG'
+import windowCleaning from 'assets/pages/window-cleaning.JPG'
+import customizedCleaning from 'assets/pages/customized-cleaning.JPG'
+import satisfaction from 'assets/pages/satisfaction.jpg'
 
 const Services = () => {
     return (
@@ -30,7 +35,9 @@ const Services = () => {
                     <h3>Window Cleaning</h3>
                     <p>Clear Horizon Home brings 5 years of expert window cleaning experience to improve your home's clarity and beauty. Our skilled team uses advanced equipment and eco-friendly products for sparkling results. We clean all building types, from multi-story homes to businesses, ensuring every window, frame, and sill shines. Trust our reliable, detail-oriented service to enhance your property's appearance with safety and care. Experience the Clear Horizon Home difference - a clear view is just a service away.</p>
                 </div>
-                <div></div>
+                <div>
+                    <img src={windowCleaning} className={styles.sideImage}/>
+                </div>
             </div>
             <div className={styles.quadriclesWrapper}>
             <div className={styles.quadricles}>
@@ -45,7 +52,7 @@ const Services = () => {
                     <p>Our team uses advanced equipment to ensure that every window shines, from the tallest, seemingly out of reach panes, to the below ground sills.</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src={mountainHome} />
+                    <img src={satisfaction} />
                     <h6>100% Satisfaction Guarantee</h6>
                     <p>Why settle for mediocrity? At Clear Horizon we provide a streak free guarantee and won’t leave until you are 100% satisfied with our work!</p>
                 </div>
@@ -57,7 +64,9 @@ const Services = () => {
             </div>
             </div>
             <div className={styles.homeWrapper}>
-                <div></div>
+                <div>
+                    <img src={homeCleaning} className={styles.sideImage}/>
+                </div>
                 <div className={styles.home}>
                     <h3>Home Cleaning</h3>
                     <p>At Clear Horizon Home, we understand that a clean home is essential for your well-being and peace of mind. Our professional and experienced cleaning service is dedicated to delivering exceptional results tailored to your needs. By choosing us, you gain not only a spotless living space but also the freedom to focus on what truly matters in your life. Experience the difference of a meticulously cleaned home—trust Clear Horizon Home to exceed your expectations every time.</p>
@@ -66,9 +75,9 @@ const Services = () => {
             <div className={`${styles.quadriclesWrapper} ${styles.homeQuad}`}>
             <div className={`${styles.quadricles} ${styles.homeQuad}`}>
                 <div className={styles.quadricle}>
-                    <img src={lake} />
+                    <img src={customizedCleaning} />
                     <h6>Customized Cleaning</h6>
-                    <p>Don’t settle for a one-size-fits-all approach to cleaning. Let us create a customized cleaning plan tailored to you and your needs.</p>
+                    <p>Don't settle for a one-size-fits-all approach to cleaning. Let us create a customized cleaning plan tailored to you and your needs.</p>
                 </div>
                 <div className={styles.quadricle}>
                     <img src={mountainFar} />

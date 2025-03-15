@@ -73,7 +73,7 @@ const ServiceEstimateForm = () => {
 
     <div className={styles.description}>
       <h3>Get a service Estimate</h3>
-      <p>Want to get a general idea of what a home or window cleaning might run you without filling out the quote? Try out our service estimate calculator! This is only an estimate and not a quote. Click here to request a personalized quote!</p>
+      <p>Want to get a general idea of what a home or window cleaning might run you without filling out the quote? Try out our service estimate calculator! </p>
     </div>
     <div className={styles.estimateForm}>
       {/* Initial Selection */}
