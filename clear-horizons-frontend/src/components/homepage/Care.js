@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from 'css/homepage/WhyUs.module.css'
 import {NavLink} from 'react-router-dom'
+import windowVideo from 'assets/homepage/window-video.mp4'
 
 const Care = () => {
     return (
@@ -12,7 +13,7 @@ const Care = () => {
             muted
             playsInline
           >
-            <source src="/homepage/window-video.mp4" type="video/mp4" />
+            <source src={windowVideo} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <div className={styles.careContent}>
