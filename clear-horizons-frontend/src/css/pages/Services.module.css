@@ -206,12 +206,15 @@
         padding:20px;
         padding-top:50px;
     }
-.description div{
-    width:100%;
-}
-.window p{
-    width:100%;
-}
+    .description div{
+        width:100%;
+    }
+    .window p{
+        width:100%;
+    }
+    .windowWrapper{
+    flex-direction:column-reverse;
+    }
     .quadricle, .window, .home p{
         width:auto;
     }

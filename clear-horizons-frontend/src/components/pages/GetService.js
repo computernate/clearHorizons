@@ -39,12 +39,12 @@ const GetService = () => {
       oven:0,
       fridge:0,
       other:0,
+      specialInstructions: '',
     },
     beds_temp: 0,
     baths_temp: 0,
     ovenCleaning: false,
     fridgeCleaning: false,
-    specialInstructions: '',
     groundFloorWindows: 0,
     highWindows: 0,
     wellWindows: 0,
@@ -61,7 +61,9 @@ const GetService = () => {
     state: "",
     zipCode: "",
     cleaning_frequency:'',
-    window_frequency:''
+    window_frequency_interior:'',
+    window_frequency_exterior:'',
+    discount_code:''
   });
   const [errors, setErrors] = useState({});
   const [discountMessage, setDiscountMessage] = useState('')
@@ -109,7 +111,10 @@ const GetService = () => {
   const handleCleaningChange = (e) => {
     const { name, value, type, checked } = e.target;
     let trueValue=value
-    if(!value) trueValue=0
+    console.log(name)
+    console.log(name!="specialInstructions")
+    if(name!="specialInstructions")
+      trueValue = value.replace(/\D+/g, '')
     setFormData((prevFormData) => ({ 
       ...prevFormData,
       cleaning: {
@@ -129,7 +134,8 @@ const GetService = () => {
     if (!formData.state.trim()) newErrors.state = "This is required";
     if (!formData.zipCode.trim()) newErrors.zipCode = "This is required";
     if (formData.cleaningService && !formData.cleaning_frequency.trim()) newErrors.cleaning_frequency = "This is required";
-    if (formData.window &&!formData.window_frequency.trim()) newErrors.window_frequency = "This is required";
+    if (formData.window &&!formData.window_frequency_interior.trim()) newErrors.window_frequency_interior = "This is required";
+    if (formData.window &&!formData.window_frequency_exterior.trim()) newErrors.window_frequency_exterior = "This is required";
     return newErrors;
   };
 
@@ -203,11 +209,12 @@ const GetService = () => {
 
   const calculateCleaning = () => {
     if(!formData.cleaningService) return 0
-    let hourly_rate = 50;
-    let inflation_rate = 1.25;
+    let hourly_rate = 50.17;
+    let inflation_rate = 1;
+    let fixed = 200
     if (!formData.cleaning) return 0
     let total_time = calculateCleaningTime()
-    return Math.ceil(total_time * hourly_rate * inflation_rate);
+    return Math.ceil(total_time * hourly_rate * inflation_rate) + fixed;
   };
 
   const calculateWindowInteriorTime = () => {
@@ -222,10 +229,11 @@ const GetService = () => {
 
   const calculateWindowInterior = () => {
     if (!formData.window || !formData.windowInterior) return 0;
-    let hourly_rate = 50;
-    let inflation_rate = 1.25;
+    let hourly_rate = 50.17;
+    let inflation_rate = 1;
+    let fixed = 100
     let total_time = calculateWindowInteriorTime()
-    return Math.ceil(total_time * hourly_rate * inflation_rate)
+    return Math.ceil(total_time * hourly_rate * inflation_rate) + fixed
   };
 
   const calculateWindowExteriorTime = () => {
@@ -236,10 +244,11 @@ const GetService = () => {
 
   const calculateWindowExterior = () => {
     if (!formData.window || !formData.windowExterior) return 0;
-    let hourly_rate = 50;
-    let inflation_rate = 1.25;
+    let hourly_rate = 50.17;
+    let inflation_rate = 1;
+    let fixed = 100
     let total_time = calculateWindowExteriorTime()
-    return Math.ceil(total_time * hourly_rate * inflation_rate)
+    return Math.ceil(total_time * hourly_rate * inflation_rate) + fixed
   };
 
   const calculatePest = () => {
@@ -254,35 +263,44 @@ const GetService = () => {
     let discount = 0; 
     discount += calculateCleaningDiscount()
     discount += calculateWindowDiscount()
-    discount += calculateBundleDiscount()
 
     return discount;
   };
 
   const calculateCleaningDiscount = () => {
+    if(formData.window && formData.cleaningService){
+      if(formData.cleaningService && formData.cleaning_frequency=='monthly') return 100
+      if(formData.cleaningService && formData.cleaning_frequency=='bi-monthly') return 150
+      if(formData.cleaningService && formData.cleaning_frequency=='weekly') return 200
+      return 50
+    }
     if(formData.cleaningService && formData.cleaning_frequency=='monthly') return 50
     if(formData.cleaningService && formData.cleaning_frequency=='bi-monthly') return 100
     if(formData.cleaningService && formData.cleaning_frequency=='weekly') return 150
     return 0
   }
+
   const calculateWindowDiscount = () => {
-    if(formData.window && formData.window_frequency=='bi-annually') return 50
-    if(formData.window && formData.window_frequency=='quarterly') return 100
-    if(formData.window && formData.window_frequency=='monthly') return 150
-    return 0
+    let winDiscount=0
+
+    if(formData.window && formData.cleaningService){
+      winDiscount+=50
+    }
+    console.log(formData.window)
+    console.log(formData.windowInterior)
+    console.log(formData.cleaning_frequency_interior)
+    if(formData.window && formData.windowInterior && formData.window_frequency_interior=='bi-annually') winDiscount+=25
+    if(formData.window && formData.windowInterior && formData.window_frequency_interior=='quarterly') winDiscount+=50
+    if(formData.window && formData.windowInterior && formData.window_frequency_interior=='monthly') winDiscount+=75
+    if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='bi-annually') winDiscount+=25
+    if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='quarterly') winDiscount+=50
+    if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='monthly') winDiscount+=75
+    return winDiscount
   }
 
-  const calculateBundleDiscount = () =>{
-    if(formData.window && formData.cleaningService){
-      let pre_total = calculateCleaning() + calculateWindowInterior() + calculatePest() + calculateWindowExterior() - calculateCleaningDiscount() - calculateWindowDiscount()
-      return Math.floor(pre_total * 0.2)
-    }
-    return 0
-  }
 
   const cleaningDiscount = calculateCleaningDiscount();
   const windowDiscount = calculateWindowDiscount();
-  const bundleDiscount = calculateBundleDiscount();
   const discount = calculateDiscount();
 
   const totalGross = useMemo(() => 
@@ -352,7 +370,7 @@ const GetService = () => {
     <div className={styles.wrapper}>
       <div className={styles.estimateForm}>
         <form>
-          {/* Initial Selection */}
+          {/* General Info */}
           <h3>Get Service</h3>
           <div className={styles.formSection}>
             <div className={styles.labelAndInput}>
@@ -382,6 +400,7 @@ const GetService = () => {
             </div>
           </div>
 
+          {/* Select Services */}
           <div className={styles.formSection}>
 
             <div className={styles.checkboxes}>
@@ -428,8 +447,10 @@ const GetService = () => {
               </label>
             </div> */}
             </div>
+            <p>Get $50 off each service for house and window cleaning when you let us take care of both for you!</p>
           </div>
 
+          {/* Square Feet/Floors */}
           <div className={styles.formSection}>
             <div className={styles.labelAndSelect}>
               <label for="squareFeet">
@@ -580,133 +601,133 @@ const GetService = () => {
                 <label for="beds">
                   Beds
                 </label>
-                <input name="beds" value={formData.cleaning.beds}
+                <input name="beds" value={formData.cleaning.beds} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="fullBath">
                   Full Bath
                 </label>
-                <input name="fullBath" value={formData.cleaning.fullBath}
+                <input name="fullBath" value={formData.cleaning.fullBath} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="masterBath">
                   Master Bath
                 </label>
-                <input name="masterBath" value={formData.cleaning.masterBath}
+                <input name="masterBath" value={formData.cleaning.masterBath} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="halfBath">
                   Half Baths
                 </label>
-                <input name="halfBath" value={formData.cleaning.halfBath}
+                <input name="halfBath" value={formData.cleaning.halfBath} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="kitchen">
                   Kitchen
                 </label>
-                <input name="kitchen" value={formData.cleaning.kitchen}
+                <input name="kitchen" value={formData.cleaning.kitchen} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="diningRoom">
                   Dining Room
                 </label>
-                <input name="diningRoom" value={formData.cleaning.diningRoom}
+                <input name="diningRoom" value={formData.cleaning.diningRoom} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="familyRoom">
                   Family Room
                 </label>
-                <input name="familyRoom" value={formData.cleaning.familyRoom}
+                <input name="familyRoom" value={formData.cleaning.familyRoom} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="livingRoom">
                   Living Room
                 </label>
-                <input name="livingRoom" value={formData.cleaning.livingRoom}
+                <input name="livingRoom" value={formData.cleaning.livingRoom} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="office">
                   Office
                 </label>
-                <input name="office" value={formData.cleaning.office}
+                <input name="office" value={formData.cleaning.office} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="mudRoom">
                   Mud Room
                 </label>
-                <input name="mudRoom" value={formData.cleaning.mudRoom}
+                <input name="mudRoom" value={formData.cleaning.mudRoom} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="laundryRoom">
                   Laundry Room
                 </label>
-                <input name="laundryRoom" value={formData.cleaning.laundryRoom}
+                <input name="laundryRoom" value={formData.cleaning.laundryRoom} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="gym">
                   Gym
                 </label>
-                <input name="gym" value={formData.cleaning.gym}
+                <input name="gym" value={formData.cleaning.gym} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="staircase">
                   Staircase
                 </label>
-                <input name="staircase" value={formData.cleaning.staircase}
+                <input name="staircase" value={formData.cleaning.staircase} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="homeTheater">
                   Home Theater
                 </label>
-                <input name="homeTheater" value={formData.cleaning.homeTheater}
+                <input name="homeTheater" value={formData.cleaning.homeTheater} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="gameRoom">
                   Game Room
                 </label>
-                <input name="gameRoom" value={formData.cleaning.gameRoom}
+                <input name="gameRoom" value={formData.cleaning.gameRoom} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="storageRoom">
                   Storage Room
                 </label>
-                <input name="storageRoom" value={formData.cleaning.storageRoom}
+                <input name="storageRoom" value={formData.cleaning.storageRoom} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="oven">
                   Oven
                 </label>
-                <input name="oven" value={formData.cleaning.oven}
+                <input name="oven" value={formData.cleaning.oven} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="fridge">
                   Fridge
                 </label>
-                <input name="fridge" value={formData.cleaning.fridge}
+                <input name="fridge" value={formData.cleaning.fridge} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="other">
                 Other
                 </label>
-                <input name="other" value={formData.cleaning.other}
+                <input name="other" value={formData.cleaning.other} placeholder="0"
                   onChange={handleCleaningChange} />
               </div>
               <div className={styles.labelAndInput}>
@@ -714,7 +735,7 @@ const GetService = () => {
                   Special Requests
                 </label>
                 <textarea name="specialInstructions" value={formData.specialInstructions}
-                  onChange={handleCleaningChange} />
+                  onChange={handleCleaningChange}>{formData.specialInstructions}</textarea>
               </div>
             </div>
           )}
@@ -845,22 +866,42 @@ const GetService = () => {
               </div>
             </div>
           )}
+          {(formData.windowInterior) && (
+            <div className={styles.labelAndSelect}>
+              <label for="window_frequency_interior">
+                Interior Frequency:
+              </label>
+              <select 
+              name="window_frequency_interior" value={formData.window_frequency_interior} 
+              style={{ border: errors.window_frequency_interior ? "2px solid red" : "1px solid black" }}
+              onChange={handleDetailedChange}>
+                <option value="">Select (GET DISCOUNTS!)</option>
+                <option value="one-time">One time ($0 OFF)</option>
+                <option value="bi-annually">Bi-Annually ($25 OFF PER CLEANING)</option>
+                <option value="quarterly">Quarterly ($50 OFF PER CLEANING)</option>
+                <option value="monthly">Monthly ($75 OFF PER CLEANING)</option>
+              </select>
+              {errors.window_frequency_interior && <p style={{ color: "red" }}>{errors.window_frequency_interior}</p>}
+            </div>
+          )}
+          {(formData.windowExterior) && (
           <div className={styles.labelAndSelect}>
-            <label for="window_frequency">
-              Frequency:
+            <label for="window_frequency_exterior">
+              Exterior Frequency:
             </label>
             <select 
-            name="window_frequency" value={formData.window_frequency} 
-            style={{ border: errors.window_frequency ? "2px solid red" : "1px solid black" }}
+            name="window_frequency_exterior" value={formData.window_frequency_exterior} 
+            style={{ border: errors.window_frequency_exterior ? "2px solid red" : "1px solid black" }}
             onChange={handleDetailedChange}>
               <option value="">Select (GET DISCOUNTS!)</option>
               <option value="one-time">One time ($0 OFF)</option>
-              <option value="bi-annually">Bi-Annually ($50 OFF PER CLEANING)</option>
-              <option value="quarterly">Quarterly ($100 OFF PER CLEANING)</option>
-              <option value="monthly">Monthly ($150 OFF PER CLEANING)</option>
+              <option value="bi-annually">Bi-Annually ($25 OFF PER CLEANING)</option>
+              <option value="quarterly">Quarterly ($50 OFF PER CLEANING)</option>
+              <option value="monthly">Monthly ($75 OFF PER CLEANING)</option>
             </select>
-            {errors.window_frequency && <p style={{ color: "red" }}>{errors.window_frequency}</p>}
+            {errors.window_frequency_exterior && <p style={{ color: "red" }}>{errors.window_frequency_exterior}</p>}
           </div>
+          )}
             </div>
           )}
         </form>
@@ -962,7 +1003,7 @@ const GetService = () => {
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning</td>
               <td>${calculateCleaning().toFixed(2)}</td>
             </tr>)}
-            {(cleaningDiscount && <tr>
+            {(cleaningDiscount > 0 && <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning Frequency Discount</td>
               <td>-${cleaningDiscount}.00</td>
             </tr>)}
@@ -978,7 +1019,7 @@ const GetService = () => {
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Window (Exterior)</td>
               <td>${calculateWindowExterior().toFixed(2)}</td>
             </tr>)}
-            {(windowDiscount && <tr>
+            {(windowDiscount > 0 && <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Window Frequency Discount</td>
               <td>-${windowDiscount}.00</td>
             </tr>)}
@@ -990,13 +1031,19 @@ const GetService = () => {
               <td>Pest</td>
               <td>${calculatePest().toFixed(2)}</td>
             </tr>)}
-            {(discountMessage && <tr>
-              <td colspan='2'>{discountMessage}</td>
-            </tr>)}
-            {(bundleDiscount && <tr>
-              <td>&nbsp;&nbsp;&nbsp;&nbsp;Bundle Discount</td>
-              <td>-${bundleDiscount.toFixed(2)}</td>
-            </tr>)}
+            <tr>
+              <td colspan='2'>
+                <div className={styles.labelAndInput}>
+                  <label for="disount_code" style={{textAlign:'left'}}>
+                    Discount Code (will be applied after submission)
+                  </label>
+                  <input name="disount_code" value={formData.disount_code}
+                    style={{ border: errors.disount_code ? "2px solid red" : "1px solid black" }}
+                    onChange={handleChange} />
+                    {errors.disount_code && <p style={{ color: "red" }}>{errors.disount_code}</p>}
+                </div>
+              </td>
+            </tr>
             <tr className={styles.total}>
               <td>Total</td>
               <td>${total.toFixed(2)}</td>
