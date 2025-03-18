@@ -50,7 +50,6 @@ const GetService = () => {
     wellWindows: 0,
     frenchWindows: 0,
     highFrenchWindows: 0,
-    wellFrenchWindows: 0,
     windowInterior: true,
     windowExterior: true,
     screens: 0,
@@ -105,6 +104,15 @@ const GetService = () => {
       cleaning: additional_change,
       [name]: type === 'checkbox' ? checked : value,
     });
+    setErrors(prevErrors => {
+      // Check if there's an existing error for this field
+      if (prevErrors[name]) {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[name]; // remove the specific field error
+        return updatedErrors;
+      }
+      return prevErrors; // no change if no error for this field
+    });
   };
 
 
@@ -128,7 +136,10 @@ const GetService = () => {
     let newErrors = {};
     if (!formData.clientName.trim()) newErrors.clientName = "Name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
+    if (!formData.phone.trim()) newErrors.phone = "Phone is required";
     if (!formData.squareFeet.trim()) newErrors.squareFeet = "This is required";
+    if (!formData.beds_temp) newErrors.beds_temp = "This is required";
+    if (!formData.baths_temp) newErrors.baths_temp = "This is required";
     if (!formData.streetAddress.trim()) newErrors.streetAddress = "This is required";
     if (!formData.city.trim()) newErrors.city = "This is required";
     if (!formData.state.trim()) newErrors.state = "This is required";
@@ -223,7 +234,7 @@ const GetService = () => {
     let actual_ground_floor_french = Number(formData.frenchWindows) + (.8 * formData.highFrenchWindows)
     let actual_high_french = 0.2 * formData.highFrenchWindows
     let total_time = (0.05 * formData.wellWindows) + (0.05 * actual_ground_floor) + (0.08 * actual_high)
-    total_time += (0.12 * actual_ground_floor_french) + (0.17 * actual_high_french) + (0.12 * formData.wellFrenchWindows)
+    total_time += (0.12 * actual_ground_floor_french) + (0.17 * actual_high_french)
     return total_time
   }
 
@@ -238,7 +249,7 @@ const GetService = () => {
 
   const calculateWindowExteriorTime = () => {
     let total_time = (0.08 * formData.wellWindows) + (0.05*formData.groundFloorWindows) + (0.08*formData.highWindows)
-    total_time += (0.12 * formData.frenchWindows) + (0.17 * formData.highFrenchWindows) + (0.17 * formData.wellFrenchWindows)
+    total_time += (0.12 * formData.frenchWindows) + (0.17 * formData.highFrenchWindows)
     return total_time
   }
 
@@ -280,27 +291,48 @@ const GetService = () => {
     return 0
   }
 
+  const calculateCleaningBundle = () => {
+    if(formData.window && formData.cleaningService)
+      return 50
+    return 0
+  }
+
+  const calculateWindowBundle = () => {
+    let winDiscount = 0;
+    if(formData.window && formData.cleaningService){
+      if(formData.windowInterior)
+        winDiscount+=25
+      if(formData.windowExterior)
+        winDiscount+=25
+    }
+    return winDiscount
+  }
+
   const calculateWindowDiscount = () => {
     let winDiscount=0
-
-    if(formData.window && formData.cleaningService){
-      winDiscount+=50
+    if(formData.window && formData.windowInterior && formData.windowExterior){
+      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='bi-annually') return 50
+      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='quarterly') return 100
+      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='monthly') return 150
     }
-    console.log(formData.window)
-    console.log(formData.windowInterior)
-    console.log(formData.cleaning_frequency_interior)
-    if(formData.window && formData.windowInterior && formData.window_frequency_interior=='bi-annually') winDiscount+=25
-    if(formData.window && formData.windowInterior && formData.window_frequency_interior=='quarterly') winDiscount+=50
-    if(formData.window && formData.windowInterior && formData.window_frequency_interior=='monthly') winDiscount+=75
-    if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='bi-annually') winDiscount+=25
-    if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='quarterly') winDiscount+=50
-    if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='monthly') winDiscount+=75
+    if(formData.window && formData.windowInterior && !formData.windowExterior){
+      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='bi-annually') return 25
+      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='quarterly') return 50
+      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='monthly') return 75
+    }
+    if(formData.window && !formData.windowInterior && formData.windowExterior){
+      if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='bi-annually') return 25
+      if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='quarterly') return 50
+      if(formData.window && formData.windowExterior && formData.window_frequency_exterior=='monthly') return 75
+    }
     return winDiscount
   }
 
 
   const cleaningDiscount = calculateCleaningDiscount();
   const windowDiscount = calculateWindowDiscount();
+  const cleaningBundleDiscount = calculateCleaningBundle();
+  const windowBundleDiscount = calculateWindowBundle();
   const discount = calculateDiscount();
 
   const totalGross = useMemo(() => 
@@ -396,7 +428,9 @@ const GetService = () => {
                 Phone
               </label>
               <input name="phone" value={formData.phone}
+                style={{ border: errors.phone ? "2px solid red" : "1px solid black" }}
                 onChange={handleChange} />
+                {errors.phone && <p style={{ color: "red" }}>{errors.phone}</p>}
             </div>
           </div>
 
@@ -520,6 +554,7 @@ const GetService = () => {
                   Beds:
                 </label>
                 <select 
+                style={{ border: errors.beds_temp ? "2px solid red" : "1px solid black" }}
                 name="beds_temp" value={formData.beds_temp} onChange={handleDetailedChange}>
                   <option value="">Select</option>
                   <option value="1">1 Bed</option>
@@ -533,12 +568,15 @@ const GetService = () => {
                   <option value="9">9 Beds</option>
                   <option value="10">10 Beds</option>
                 </select>
+                {errors.beds_temp && <p style={{ color: "red" }}>{errors.beds_temp}</p>}
               </div>
               <div className={styles.labelAndSelect}>
                 <label for="baths">
                   Baths:
                 </label>
-                <select name="baths_temp" value={formData.cleaning.baths_temp} onChange={handleDetailedChange}>
+                <select 
+                style={{ border: errors.baths_temp ? "2px solid red" : "1px solid black" }}
+                name="baths_temp" value={formData.cleaning.baths_temp} onChange={handleDetailedChange}>
                   <option value="">Select</option>
                   <option value="1">1 Bath</option>
                   <option value="2">2 Baths</option>
@@ -551,6 +589,7 @@ const GetService = () => {
                   <option value="9">9 Baths</option>
                   <option value="10">10 Baths</option>
                 </select>
+                {errors.baths_temp && <p style={{ color: "red" }}>{errors.baths_temp}</p>}
               </div>
               <div className={styles.labelAndCheck}>
                 <input
@@ -563,6 +602,9 @@ const GetService = () => {
                   Deep Cleaning
                 </label>
               </div>
+              <p>Our <b>Maintenance Clean</b> is a routine cleaning designed to keep your home looking fresh and tidy—perfect for regular upkeep and subscription customers.</p>
+              <p>Our <b>Deep Clean</b> goes beyond the basics, tackling built-up grime and hard-to-reach areas for a more detailed, intensive clean. If your home needs extra attention, this is the option for you!</p>
+              <p><i>By leaving the "Deep Clean" box unchecked, your cleaning will default to our Maintenance Clean.</i></p>
               <div className={styles.labelAndSelect}>
                 <label for="cleaning_frequency">
                   Frequency:
@@ -594,6 +636,7 @@ const GetService = () => {
               </div>
             </div>
           )}
+
           {formData.cleaningDetails && formData.cleaningService && (
             <div className={`${styles.cleaningDetails}`}>
 
@@ -746,8 +789,8 @@ const GetService = () => {
               <img src={cchWindow} />
               <div className={styles.labelAndInput}>
                 <label for="groundFloorWindows">
-                  Ground Floor Windows:
-                  <span className={styles.infoIcon} data-tooltip="These are windows that can be reached from a standing position (this would include windows that can be accessed from a back deck or tall ground level windows which are at least partially accessible from a standing position)">
+                  Standard Window Panes (Ground Floor):
+                  <span className={styles.infoIcon} data-tooltip="These are standard window panes that can be reached from the ground without a ladder, including those accessible from a deck or at a comfortable standing height.">
                     ℹ️
                   </span>
                 </label>
@@ -756,15 +799,18 @@ const GetService = () => {
               </div>
               <div className={styles.labelAndInput}>
                 <label for="highWindows">
-                  2(+) story windows:
+                  Standard Window Panes (2+ Story):
+                  <span className={styles.infoIcon} data-tooltip="These are standard window panes located on the second floor or higher, requiring a ladder or special equipment to reach.">
+                    ℹ️
+                  </span>
                 </label>
                 <input name="highWindows" value={formData.highWindows}
                   onChange={handleChange} />
               </div>
               <div className={styles.labelAndInput}>
                 <label for="wellWindows">
-                  Window Well Windows:
-                  <span className={styles.infoIcon} data-tooltip="Any windows that are down in a window well, below or partially below ground level">
+                  Standard Window Panes (Window Well):
+                  <span className={styles.infoIcon} data-tooltip="These are standard window panes set within a window well, requiring access below ground level or in a recessed area.">
                     ℹ️
                   </span>
                 </label>
@@ -773,9 +819,8 @@ const GetService = () => {
               </div>
               <div className={styles.labelAndInput}>
                 <label for="frenchWindows">
-                  {/* TODO: Include info toast */}
-                  French Pane Ground Floor:
-                  <span className={styles.infoIcon} data-tooltip="French windows are windows with grids that divide the window into smaller panes of glass (also known as muntins, mullions, or divided windows)">
+                  French Window Panes (Ground Floor):
+                  <span className={styles.infoIcon} data-tooltip="These are French window panes on the ground floor, counted as a single pane rather than each individual small section of glass.">
                     ℹ️
                   </span>
                 </label>
@@ -785,17 +830,12 @@ const GetService = () => {
               <div className={styles.labelAndInput}>
                 <label for="highFrenchWindows">
                   {/* TODO: Include info toast */}
-                  French Pane (2+ story):
+                  French Window Panes (2+ Story):
+                  <span className={styles.infoIcon} data-tooltip="These are French window panes on the second floor or higher, counted as a single pane rather than each small section, requiring a ladder or special equipment to reach.">
+                    ℹ️
+                  </span>
                 </label>
                 <input name="highFrenchWindows" value={formData.highFrenchWindows}
-                  onChange={handleChange} />
-              </div>
-              <div className={styles.labelAndInput}>
-                <label for="wellFrenchWindows">
-                  {/* TODO: Include info toast */}
-                  French Pane (window well):
-                </label>
-                <input name="wellFrenchWindows" value={formData.wellFrenchWindows}
                   onChange={handleChange} />
               </div>
               <div className={styles.labelAndCheck}>
@@ -894,10 +934,10 @@ const GetService = () => {
             style={{ border: errors.window_frequency_exterior ? "2px solid red" : "1px solid black" }}
             onChange={handleDetailedChange}>
               <option value="">Select (GET DISCOUNTS!)</option>
-              <option value="one-time">One time ($0 OFF)</option>
-              <option value="bi-annually">Bi-Annually ($25 OFF PER CLEANING)</option>
-              <option value="quarterly">Quarterly ($50 OFF PER CLEANING)</option>
-              <option value="monthly">Monthly ($75 OFF PER CLEANING)</option>
+              <option value="one-time">One time (Same as exterior frequency discount)</option>
+              <option value="bi-annually">Bi-Annually (Same as exterior frequency discount)</option>
+              <option value="quarterly">Quarterly (Same as exterior frequency discount)</option>
+              <option value="monthly">Monthly (Same as exterior frequency discount)</option>
             </select>
             {errors.window_frequency_exterior && <p style={{ color: "red" }}>{errors.window_frequency_exterior}</p>}
           </div>
@@ -1007,6 +1047,10 @@ const GetService = () => {
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning Frequency Discount</td>
               <td>-${cleaningDiscount}.00</td>
             </tr>)}
+            {(cleaningBundleDiscount > 0 && <tr>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning Bundle Discount</td>
+              <td>-${cleaningBundleDiscount}.00</td>
+            </tr>)}
             {(formData.cleaningService && <tr className={styles.total}>
               <td>Cleaning Total</td>
               <td>${(calculateCleaning()-cleaningDiscount).toFixed(2)}</td>
@@ -1022,6 +1066,10 @@ const GetService = () => {
             {(windowDiscount > 0 && <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Window Frequency Discount</td>
               <td>-${windowDiscount}.00</td>
+            </tr>)}
+            {(windowBundleDiscount > 0 && <tr>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Window Bundle Discount</td>
+              <td>-${windowBundleDiscount}.00</td>
             </tr>)}
             {(formData.window && <tr className={styles.total}>
               <td>Window Total</td>

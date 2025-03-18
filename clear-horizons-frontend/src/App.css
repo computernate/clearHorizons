@@ -236,4 +236,9 @@ h5 {
     max-width: 80vw; /* Prevents it from exceeding screen width */
     word-wrap: break-word;
   }
-  
+  button.slick-prev{
+    left:-10px;
+  }
+  button.slick-next{
+    right:-10px;
+  }

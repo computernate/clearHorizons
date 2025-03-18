@@ -5,17 +5,17 @@ import Footer from 'components/general/Footer'
 import {NavLink} from 'react-router-dom'
 
 import drops from 'assets/pages/drops.jpg'
-import lake from 'assets/pages/lake.jpg'
+import bundleAndSave from 'assets/pages/bundleAndSave.jpg'
 import mountainClose from 'assets/pages/mountain-close.jpg'
 import mountainHome from 'assets/pages/mountain-home.jpg'
-import mountainFar from 'assets/pages/mountains-far.jpg'
+import trustedAndScreened from 'assets/pages/trustedAndScreened.jpg'
 import screen from 'assets/pages/screen.jpg'
 import wfp from 'assets/pages/wfp.jpg'
 import cleaningSupplies from 'assets/pages/cleaningSupplies.png'
 import homeCleaning from 'assets/pages/home-cleaning.JPG'
 import windowCleaning from 'assets/pages/window-cleaning.JPG'
 import customizedCleaning from 'assets/pages/customized-cleaning.JPG'
-import satisfaction from 'assets/pages/satisfaction.jpg'
+import satisfactionGurantee from 'assets/pages/satisfactionGurantee.jpg'
 
 const Services = () => {
     return (
@@ -52,7 +52,7 @@ const Services = () => {
                     <p>Our team uses advanced equipment to ensure that every window shines, from the tallest, seemingly out of reach panes, to the below ground sills.</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src={satisfaction} />
+                    <img src={satisfactionGurantee} />
                     <h6>100% Satisfaction Guarantee</h6>
                     <p>Why settle for mediocrity? At Clear Horizon we provide a streak free guarantee and won’t leave until you are 100% satisfied with our work!</p>
                 </div>
@@ -80,7 +80,7 @@ const Services = () => {
                     <p>Don't settle for a one-size-fits-all approach to cleaning. Let us create a customized cleaning plan tailored to you and your needs.</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src={mountainFar} />
+                    <img src={trustedAndScreened} />
                     <h6>Trusted and Screened Cleaning Professionals</h6>
                     <p>Our employees are trained, insured and background checked for peace of mind. We are locally owned and operated.</p>
                 </div>
@@ -116,7 +116,7 @@ const Services = () => {
                 </text>
                 </svg>
                 <div className={styles.bundleContent}>
-                    <img src={mountainClose} />
+                    <img src={bundleAndSave} />
                     <div className={styles.bundleText}>
                         <p>Take advantage of both our window and home cleaning services to get exclusive discounts on your service!</p>
                         
