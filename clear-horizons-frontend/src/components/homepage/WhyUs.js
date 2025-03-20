@@ -1,12 +1,13 @@
 import React from 'react';
 import styles from 'css/homepage/WhyUs.module.css'
 import {NavLink} from 'react-router-dom'
+import whyUs from 'assets/homepage/why-us.jpg'
 
 const ProductsSummary = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.content}>
-                <div></div>
+                <div className={styles.img}><img src={whyUs} /></div>
                 <div>
                     <h2>Why Choose Us?</h2>
                     <ul>

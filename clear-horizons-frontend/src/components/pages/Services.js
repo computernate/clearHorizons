@@ -6,8 +6,8 @@ import {NavLink} from 'react-router-dom'
 
 import drops from 'assets/pages/drops.jpg'
 import bundleAndSave from 'assets/pages/bundleAndSave.jpg'
-import mountainClose from 'assets/pages/mountain-close.jpg'
-import mountainHome from 'assets/pages/mountain-home.jpg'
+import wideRange from 'assets/pages/wide-range.jpg'
+import satisfaction from 'assets/pages/satisfaction.jpg'
 import trustedAndScreened from 'assets/pages/trustedAndScreened.jpg'
 import screen from 'assets/pages/screen.jpg'
 import wfp from 'assets/pages/wfp.jpg'
@@ -52,7 +52,7 @@ const Services = () => {
                     <p>Our team uses advanced equipment to ensure that every window shines, from the tallest, seemingly out of reach panes, to the below ground sills.</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src={satisfactionGurantee} />
+                    <img src={satisfaction} />
                     <h6>100% Satisfaction Guarantee</h6>
                     <p>Why settle for mediocrity? At Clear Horizon we provide a streak free guarantee and won’t leave until you are 100% satisfied with our work!</p>
                 </div>
@@ -85,12 +85,12 @@ const Services = () => {
                     <p>Our employees are trained, insured and background checked for peace of mind. We are locally owned and operated.</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src={mountainHome} />
+                    <img src={satisfactionGurantee} />
                     <h6>100% Satisfaction Guarantee</h6>
                     <p>We are so confident in our professional  service that if for any reason you are unsatisfied with a job, we will come back to your home and make things right. Just notify us within 24 hours of the original cleaning service with the details of the issue and we will take care of the rest!</p>
                 </div>
                 <div className={styles.quadricle}>
-                    <img src={mountainClose} />
+                    <img src={wideRange} />
                     <h6>Wide Range of Services</h6>
                     <p>We clean bedrooms, bathrooms, kitchens and more! Whether you need a one time clean or are looking for a longer term solution we will be able to help you take your time back!</p>
                 </div>
@@ -123,7 +123,7 @@ const Services = () => {
                         <NavLink
                             to={'/quote'}
                             className="quotelink">
-                            Get 25% Off
+                            Get $100 Off
                         </NavLink>
                     </div>
                 </div>

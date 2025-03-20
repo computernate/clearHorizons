@@ -119,8 +119,6 @@ const GetService = () => {
   const handleCleaningChange = (e) => {
     const { name, value, type, checked } = e.target;
     let trueValue=value
-    console.log(name)
-    console.log(name!="specialInstructions")
     if(name!="specialInstructions")
       trueValue = value.replace(/\D+/g, '')
     setFormData((prevFormData) => ({ 
@@ -130,6 +128,15 @@ const GetService = () => {
         [name]: type === 'checkbox' ? checked : trueValue,
       },
     }));
+    setErrors(prevErrors => {
+      // Check if there's an existing error for this field
+      if (prevErrors[name]) {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[name]; // remove the specific field error
+        return updatedErrors;
+      }
+      return prevErrors; // no change if no error for this field
+    });
   };
 
   const validate = () => {
@@ -145,15 +152,13 @@ const GetService = () => {
     if (!formData.state.trim()) newErrors.state = "This is required";
     if (!formData.zipCode.trim()) newErrors.zipCode = "This is required";
     if (formData.cleaningService && !formData.cleaning_frequency.trim()) newErrors.cleaning_frequency = "This is required";
-    if (formData.window &&!formData.window_frequency_interior.trim()) newErrors.window_frequency_interior = "This is required";
-    if (formData.window &&!formData.window_frequency_exterior.trim()) newErrors.window_frequency_exterior = "This is required";
+    if (formData.window && formData.windowInterior && !formData.window_frequency_interior.trim()) newErrors.window_frequency_interior = "This is required";
+    if (formData.window && formData.windowExterior &&!formData.window_frequency_exterior.trim()) newErrors.window_frequency_exterior = "This is required";
     return newErrors;
   };
 
   const handleDetailedChange = (e) => {
-
     const { name, value, type, checked } = e.target;
-    console.log(name, value, type, checked)
     let additional_change=formData.cleaning
     if(name=="beds_temp"){
       additional_change.beds=value
@@ -166,6 +171,15 @@ const GetService = () => {
       ...formData,
       cleaning: additional_change,
       [name]: type === 'checkbox' ? checked : value,
+    });
+    setErrors(prevErrors => {
+      // Check if there's an existing error for this field
+      if (prevErrors[name]) {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[name]; // remove the specific field error
+        return updatedErrors;
+      }
+      return prevErrors; // no change if no error for this field
     });
   };
 
@@ -274,17 +288,13 @@ const GetService = () => {
     let discount = 0; 
     discount += calculateCleaningDiscount()
     discount += calculateWindowDiscount()
+    discount += calculateCleaningBundle()
+    discount += calculateWindowBundle()
 
     return discount;
   };
 
   const calculateCleaningDiscount = () => {
-    if(formData.window && formData.cleaningService){
-      if(formData.cleaningService && formData.cleaning_frequency=='monthly') return 100
-      if(formData.cleaningService && formData.cleaning_frequency=='bi-monthly') return 150
-      if(formData.cleaningService && formData.cleaning_frequency=='weekly') return 200
-      return 50
-    }
     if(formData.cleaningService && formData.cleaning_frequency=='monthly') return 50
     if(formData.cleaningService && formData.cleaning_frequency=='bi-monthly') return 100
     if(formData.cleaningService && formData.cleaning_frequency=='weekly') return 150
@@ -481,7 +491,7 @@ const GetService = () => {
               </label>
             </div> */}
             </div>
-            <p>Get $50 off each service for house and window cleaning when you let us take care of both for you!</p>
+            <p className={styles.center}>Get $50 off each service for house and window cleaning when you let us take care of both for you!</p>
           </div>
 
           {/* Square Feet/Floors */}
@@ -1053,7 +1063,7 @@ const GetService = () => {
             </tr>)}
             {(formData.cleaningService && <tr className={styles.total}>
               <td>Cleaning Total</td>
-              <td>${(calculateCleaning()-cleaningDiscount).toFixed(2)}</td>
+              <td>${(calculateCleaning()-cleaningDiscount-cleaningBundleDiscount).toFixed(2)}</td>
             </tr>)}
             {(formData.window && formData.windowInterior && <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Window (Interior)</td>
@@ -1073,7 +1083,7 @@ const GetService = () => {
             </tr>)}
             {(formData.window && <tr className={styles.total}>
               <td>Window Total</td>
-              <td>${(calculateWindowInterior() + calculateWindowExterior() - windowDiscount).toFixed(2)}</td>
+              <td>${(calculateWindowInterior() + calculateWindowExterior() - windowDiscount - windowBundleDiscount).toFixed(2)}</td>
             </tr>)}
             {(formData.pest && <tr>
               <td>Pest</td>
