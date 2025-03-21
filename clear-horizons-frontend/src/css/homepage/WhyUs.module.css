@@ -86,4 +86,7 @@
     .careWrapper h2{
         font-size:calc(3* calc(.012* min(100vh, 900px)) + 1rem);
     }
+    .img img{
+        margin-top:50px;
+    }
 }

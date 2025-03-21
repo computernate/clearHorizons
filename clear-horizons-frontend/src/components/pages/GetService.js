@@ -145,8 +145,8 @@ const GetService = () => {
     if (!formData.email.trim()) newErrors.email = "Email is required";
     if (!formData.phone.trim()) newErrors.phone = "Phone is required";
     if (!formData.squareFeet.trim()) newErrors.squareFeet = "This is required";
-    if (!formData.beds_temp) newErrors.beds_temp = "This is required";
-    if (!formData.baths_temp) newErrors.baths_temp = "This is required";
+    if (formData.cleaningService && !formData.beds_temp) newErrors.beds_temp = "This is required";
+    if (formData.cleaningService && !formData.baths_temp) newErrors.baths_temp = "This is required";
     if (!formData.streetAddress.trim()) newErrors.streetAddress = "This is required";
     if (!formData.city.trim()) newErrors.city = "This is required";
     if (!formData.state.trim()) newErrors.state = "This is required";
@@ -922,8 +922,8 @@ const GetService = () => {
                 Interior Frequency:
               </label>
               <select 
-              name="window_frequency_interior" value={formData.window_frequency_interior} 
-              style={{ border: errors.window_frequency_interior ? "2px solid red" : "1px solid black" }}
+              name="window_frequency_exterior" value={formData.window_frequency_exterior} 
+              style={{ border: errors.window_frequency_exterior ? "2px solid red" : "1px solid black" }}
               onChange={handleDetailedChange}>
                 <option value="">Select (GET DISCOUNTS!)</option>
                 <option value="one-time">One time ($0 OFF)</option>
@@ -931,17 +931,17 @@ const GetService = () => {
                 <option value="quarterly">Quarterly ($50 OFF PER CLEANING)</option>
                 <option value="monthly">Monthly ($75 OFF PER CLEANING)</option>
               </select>
-              {errors.window_frequency_interior && <p style={{ color: "red" }}>{errors.window_frequency_interior}</p>}
+              {errors.window_frequency_interior && <p style={{ color: "red" }}>{errors.window_frequency_exterior}</p>}
             </div>
           )}
           {(formData.windowExterior) && (
           <div className={styles.labelAndSelect}>
-            <label for="window_frequency_exterior">
-              Exterior Frequency:
+            <label for="window_frequency_interior">
+              Interior Frequency:
             </label>
             <select 
-            name="window_frequency_exterior" value={formData.window_frequency_exterior} 
-            style={{ border: errors.window_frequency_exterior ? "2px solid red" : "1px solid black" }}
+            name="window_frequency_interior" value={formData.window_frequency_interior} 
+            style={{ border: errors.window_frequency_interior ? "2px solid red" : "1px solid black" }}
             onChange={handleDetailedChange}>
               <option value="">Select (GET DISCOUNTS!)</option>
               <option value="one-time">One time (Same as exterior frequency discount)</option>
@@ -949,7 +949,7 @@ const GetService = () => {
               <option value="quarterly">Quarterly (Same as exterior frequency discount)</option>
               <option value="monthly">Monthly (Same as exterior frequency discount)</option>
             </select>
-            {errors.window_frequency_exterior && <p style={{ color: "red" }}>{errors.window_frequency_exterior}</p>}
+            {errors.window_frequency_interior && <p style={{ color: "red" }}>{errors.window_frequency_interior}</p>}
           </div>
           )}
             </div>

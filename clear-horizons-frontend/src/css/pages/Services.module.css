@@ -237,8 +237,12 @@
     .home p{
         width:100%;
     }
+    .bundleContent{
+        flex-direction: column;
+    }
     .bundleContent img{
-        display:none;
+        width:80%;
+        height:auto;
     }
     .bundleText{
         width:90%;
