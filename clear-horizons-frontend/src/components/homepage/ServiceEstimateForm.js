@@ -6,13 +6,13 @@ import cchWindow from "assets/homepage/CCHwindow.png"
 
 const ServiceEstimateForm = () => {
   const [formData, setFormData] = useState({
-    squareFeet: '',
-    floors: '',
     cleaning: false,
     window: false,
-    pest: false,
-    beds: '',
-    baths: '',
+    windowIn:true,
+    windowEx:true,
+    windowInFreq:'monthly',
+    windowExFreq:'monthly',
+    cleaningFreq:'weekly'
   });
 
   const handleChange = (e) => {
@@ -23,98 +23,55 @@ const ServiceEstimateForm = () => {
     });
   };
 
-  const calculateCleaning = () => {
-    if(!formData.cleaning) return 0
-    let bathCharge = 40*formData.baths 
-    let bedCharge = 27 * formData.beds 
-    let mainFloorCharge = 128 
-    let basementCharge = (formData.floors>10)?41:0
-    let moreFloorsCharge = ((formData.floors%10) - 1) *14
-    return bathCharge + bedCharge + mainFloorCharge + basementCharge + moreFloorsCharge;
-  };
 
-  const calculateWindowInterior = () => {
-    if(!formData.window)return 0
-    let windows = formData.squareFeet/100 + formData.squareFeet/1000
-    return Math.floor((2.71*windows)*100)/100;
-  };
+  const calculateCleaningDiscount = () => {
+    if(formData.cleaning && formData.cleaningFreq=='monthly') return 50
+    if(formData.cleaning && formData.cleaningFreq=='bi-monthly') return 100
+    if(formData.cleaning && formData.cleaningFreq=='weekly') return 150
+    return 0
+  }
+  const cleaningDiscount = calculateCleaningDiscount();
 
-  const calculateWindowExterior = () => {
-    if(!formData.window)return 0
-    let windows = formData.squareFeet/100 + formData.squareFeet/1000
-    return Math.floor((5.25*windows)*100)/100;
-  };
+  const calculateWindowDiscount = () => {
+    let winDiscount=0
+    if(formData.window && formData.windowIn && formData.windowEx){
+      if(formData.window && formData.windowExFreq=='bi-annually') return 50
+      if(formData.window && formData.windowExFreq=='quarterly') return 100
+      if(formData.window && formData.windowExFreq=='monthly') return 150
+    }
+    if(formData.window && formData.windowIn && !formData.windowEx){
+      if(formData.window && formData.windowExFreq=='bi-annually') return 25
+      if(formData.window && formData.windowExFreq=='quarterly') return 50
+      if(formData.window && formData.windowExFreq=='monthly') return 75
+    }
+    if(formData.window && !formData.windowIn && formData.windowEx){
+      if(formData.window && formData.windowInFreq=='bi-annually') return 25
+      if(formData.window && formData.windowInFreq=='quarterly') return 50
+      if(formData.window && formData.windowInFreq=='monthly') return 75
+    }
+    return winDiscount
+  }
+  const windowDiscount = calculateWindowDiscount();
 
-  const calculatePest = () => {
-    if(!formData.pest) return 0
-    if(formData.squareFeet < 2000) return 99
-    if(formData.squareFeet < 4000) return 119
-    if(formData.squareFeet < 5500) return 129
-    return 139;
-  };
+  const calculateTotalDiscount = () =>{
+    let discount = calculateWindowDiscount() + calculateCleaningDiscount()
+    if(formData.window && formData.cleaning) discount += 50
+    return discount
+  }
+  const totalDiscount = calculateTotalDiscount()
 
-  const calculateDiscount = () => {
-    let discount = 0;
-    if(formData.pest) discount++;
-    if(formData.window) discount++;
-    if(formData.cleaning) discount++;
-    return 10*discount;
-  };
-
-  const calculateTotal = () => {
-    let total = calculateCleaning() + calculateWindowInterior() + calculatePest() + calculateWindowExterior()
-    let discount = total * calculateDiscount()/100
-    return Math.floor((total - discount)*100)/100;
-  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
 
     <div className={styles.description}>
-      <h3>Get a service Estimate</h3>
-      <p>Want to get a general idea of what a home or window cleaning might run you without filling out the quote? Try out our service estimate calculator! </p>
+      <h3>See your discounts</h3>
+      <p>Use our estimator form to see how much you could SAVE! </p>
     </div>
     <div className={styles.estimateForm}>
       {/* Initial Selection */}
       <form>
-        <div className={styles.labelAndSelect}>
-          <label for="squareFeet">
-            Square Feet:
-          </label>
-          <select name="squareFeet" value={formData.squareFeet} onChange={handleChange}>
-            <option value="">Select</option>
-            <option value="500">Up to 500 sq ft</option>
-            <option value="1000">500-1000 sq ft</option>
-            <option value="2000">1000-2000 sq ft</option>
-            <option value="3000">2000-3000 sq ft</option>
-            <option value="4000">3000-4000 sq ft</option>
-            <option value="5000">4000-5000 sq ft</option>
-            <option value="6000">5000-6000 sq ft</option>
-            <option value="7000">6000-7000 sq ft</option>
-            <option value="8000">7000-8000 sq ft</option>
-            <option value="9000">8000-9000 sq ft</option>
-            <option value="10000">9000-10000 sq ft</option>
-            <option value="11000">10000-11000 sq ft</option>
-          </select>
-        </div>
-        <div className={styles.labelAndSelect}>
-        <label for="floors">
-          Number of Floors:
-        </label>
-          <select name="floors" value={formData.floors} onChange={handleChange}>
-            <option value="">Select</option>
-            <option value="1">1 floor</option>
-            <option value="2">2 floors</option>
-            <option value="3">3 floors</option>
-            <option value="4">4+ floors</option>
-            <option value="11">1 floor (+ basement)</option>
-            <option value="12">2 floors (+ basement)</option>
-            <option value="13">3 floors (+ basement)</option>
-            <option value="14">4+ floors (+ basement)</option>
-          </select>
-          </div>
-
         <div className={styles.checkboxes}>
           <div className={styles.checkbox}>
             <img
@@ -146,44 +103,89 @@ const ServiceEstimateForm = () => {
           </div>
         </div>
 
-        {/* Detailed Selection for Cleaning */}
+        
+      {/* Window */}
+      {formData.window && (
+        <div className={styles.checkboxes}>
+        <div className={styles.checkbox}>
+            <label>
+              <input
+                type="checkbox"
+                name="windowEx"
+                checked={formData.windowEx}
+                onChange={handleChange}
+              />
+              Exterior Window Cleaning
+            </label>
+          </div>
+          <div className={styles.checkbox}>
+            <label>
+              <input
+                  type="checkbox"
+                  name="windowIn"
+                  checked={formData.windowIn}
+                  onChange={handleChange}
+                />
+              Interior Window cleaning
+            </label>
+          </div>
+        </div>
+      )}
+
+          
+      {formData.window && formData.windowEx && (
+            <div>
+                <div className={styles.labelAndSelect}>
+                  <label for="windowExFreq">
+                    Window Cleaning Frequency (Exterior):
+                  </label>
+                  <select 
+                    name="windowExFreq" value={formData.windowExFreq}
+                    onChange={handleChange}>
+                    <option value="">Select (GET DISCOUNTS!)</option>
+                    <option value="one-time">One time ($0 OFF)</option>
+                    <option value="bi-annually">Bi-Annually ($25 OFF PER CLEANING)</option>
+                    <option value="quarterly">Quarterly ($50 OFF PER CLEANING)</option>
+                    <option value="monthly">Monthly ($75 OFF PER CLEANING)</option>
+                  </select>
+                </div>
+            </div>
+          )}
+          
+          {formData.window && formData.windowIn && (
+            <div>
+                <div className={styles.labelAndSelect}>
+                  <label for="windowInFreq">
+                    Window Cleaning Frequency (Interior):
+                  </label>
+                  <select 
+                    name="windowInFreq" value={formData.windowInFreq}
+                    onChange={handleChange}>
+                    <option value="">Select (GET DISCOUNTS!)</option>
+                    <option value="one-time">One time (SAME AS EXTERIOR)</option>
+                    <option value="bi-annually">Bi-Annually (SAME AS EXTERIOR)</option>
+                    <option value="quarterly">Quarterly (SAME AS EXTERIOR)</option>
+                    <option value="monthly">Monthly (SAME AS EXTERIOR)</option>
+                  </select>
+                </div>
+            </div>
+          )}
+          
         {formData.cleaning && (
-          <div className={`${styles.cleaningDetails} ${styles.animateDropdown}`}>
-          <div className={styles.labelAndSelect}>
-            <label for="beds">
-              Beds:
-            </label>
-              <select name="beds" value={formData.beds} onChange={handleChange}>
-                <option value="">Select</option>
-                <option value="1">1 Bed</option>
-                <option value="2">2 Beds</option>
-                <option value="3">3 Beds</option>
-                <option value="4">4 Beds</option>
-                <option value="5">5 Beds</option>
-                <option value="6">6 Beds</option>
-                <option value="7">7 Beds</option>
-                <option value="8">8 Beds</option>
-                <option value="9">9 Beds</option>
-                <option value="10">10 Beds</option>
-              </select>
-              </div>
+          <div>
               <div className={styles.labelAndSelect}>
-            <label for="baths">
-              Baths:
-            </label>
-              <select name="baths" value={formData.baths} onChange={handleChange}>
-                <option value="">Select</option>
-                <option value="1">1 Bath</option>
-                <option value="2">2 Baths</option>
-                <option value="3">3 Baths</option>
-                <option value="4">4 Baths</option>
-                <option value="5">5 Baths</option>
-                <option value="6">6 Baths</option>
-                <option value="7">7 Baths</option>
-                <option value="8">8 Baths</option>
-                <option value="9">9 Baths</option>
-                <option value="10">10 Baths</option>
-              </select>
+                <label for="cleaningFreq">
+                  Cleaning Frequency:
+                </label>
+                <select 
+                name="cleaningFreq" value={formData.cleaningFreq}
+                 onChange={handleChange}>
+                  <option value="">Select (GET DISCOUNTS!)</option>
+                  <option value="one-time">One time ($0 OFF)</option>
+                  <option value="monthly">Monthly ($50 OFF PER CLEANING)</option>
+                  <option value="bi-monthly">Bi-Monthly ($100 OFF PER CLEANING)</option>
+                  <option value="weekly">Weekly ($150 OFF PER CLEANING)</option>
+                </select>
               </div>
           </div>
         )}
@@ -193,29 +195,21 @@ const ServiceEstimateForm = () => {
       <h3>Estimate</h3>
       <table>
         <tbody>
-        {(formData.cleaning && <tr>
-            <td>Cleaning</td>
-            <td>${calculateCleaning()}</td>
+          {formData.window && formData.cleaning && (<tr>
+            <td>Bundle Discount</td>
+            <td>-$50.00</td>
           </tr>)}
-          {(formData.window && <tr>
-            <td>Window (Interior)</td>
-            <td>${calculateWindowInterior()}</td>
+          {formData.cleaning &&(cleaningDiscount > 0 && <tr>
+            <td>Cleaning Frequency Discount</td>
+            <td>-${cleaningDiscount}.00</td>
           </tr>)}
-          {(formData.window && <tr>
-            <td>Window (Exterior)</td>
-            <td>${calculateWindowExterior()}</td>
+          {formData.window &&(windowDiscount > 0 && <tr>
+            <td>Window Frequency Discount</td>
+            <td>-${windowDiscount}.00</td>
           </tr>)}
-          {(formData.pest && <tr>
-            <td>Pest</td>
-            <td>${calculatePest()}</td>
-          </tr>)}
-          <tr>
-            <td>Discount</td>
-            <td>{calculateDiscount()}%</td>
-          </tr>
           <tr>
             <td>Total</td>
-            <td>${calculateTotal()}</td>
+            <td>-${totalDiscount.toFixed(2)}</td>
           </tr>
         </tbody>
       </table>

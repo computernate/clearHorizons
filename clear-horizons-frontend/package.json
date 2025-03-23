@@ -15,6 +15,7 @@
     "react-ga4": "^2.1.0",
     "react-google-autocomplete": "^2.7.3",
     "react-gtag": "^0.0.0",
+    "react-input-mask": "^2.0.4",
     "react-router-dom": "^6.21.1",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",

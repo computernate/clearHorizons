@@ -3,6 +3,7 @@ import styles from 'css/homepage/ServiceEstimateForm.module.css'
 import { Link } from "react-router-dom";
 import cchHome from 'assets/homepage/CCHhome.png'
 import cchWindow from 'assets/homepage/CCHwindow.png'
+import InputMask from 'react-input-mask';
 
 const GetService = () => {
   const [formData, setFormData] = useState({
@@ -70,6 +71,8 @@ const GetService = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    console.log(name)
+    console.log(value)
     let additional_change=formData.cleaning
     if(name=='basement' && checked){
       additional_change.staircase++
@@ -98,6 +101,10 @@ const GetService = () => {
     }
     if(name=='secondFloor' && !checked){
       additional_change.staircase=Math.max(0,additional_change.staircase-1)
+    }
+    if(name=='phone'){
+      const rawValue = e.target.value.replace(/\D/g, '');
+      console.log(rawValue)
     }
     setFormData({
       ...formData,
@@ -143,6 +150,8 @@ const GetService = () => {
     let newErrors = {};
     if (!formData.clientName.trim()) newErrors.clientName = "Name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) newErrors.email = "Email invalid"; 
     if (!formData.phone.trim()) newErrors.phone = "Phone is required";
     if (!formData.squareFeet.trim()) newErrors.squareFeet = "This is required";
     if (formData.cleaningService && !formData.beds_temp) newErrors.beds_temp = "This is required";
@@ -437,9 +446,16 @@ const GetService = () => {
               <label for="phone">
                 Phone
               </label>
-              <input name="phone" value={formData.phone}
-                style={{ border: errors.phone ? "2px solid red" : "1px solid black" }}
-                onChange={handleChange} />
+              <InputMask
+                mask="(999) 999-9999"
+                value={formData.phone}
+                onChange={handleChange}
+                maskChar="_"
+               placeholder="(___) ___-____" 
+               name="phone"
+               style={{ border: errors.phone ? "2px solid red" : "1px solid black" }}
+              >
+                </InputMask>
                 {errors.phone && <p style={{ color: "red" }}>{errors.phone}</p>}
             </div>
           </div>
@@ -851,23 +867,23 @@ const GetService = () => {
               <div className={styles.labelAndCheck}>
                 <input
                   type="checkbox"
-                  name="windowInterior"
-                  checked={formData.windowInterior}
-                  onChange={handleChange}
-                />
-                <label for="windowInterior">
-                  Interior
-                </label>
-              </div>
-              <div className={styles.labelAndCheck}>
-                <input
-                  type="checkbox"
                   name="windowExterior"
                   checked={formData.windowExterior}
                   onChange={handleChange}
                 />
                 <label for="windowExterior">
                   Exterior
+                </label>
+              </div>
+              <div className={styles.labelAndCheck}>
+                <input
+                  type="checkbox"
+                  name="windowInterior"
+                  checked={formData.windowInterior}
+                  onChange={handleChange}
+                />
+                <label for="windowInterior">
+                  Interior
                 </label>
               </div>
               {/* <div className={styles.labelAndCheck}>
@@ -916,10 +932,10 @@ const GetService = () => {
               </div>
             </div>
           )}
-          {(formData.windowInterior) && (
+          {(formData.windowExterior) && (
             <div className={styles.labelAndSelect}>
-              <label for="window_frequency_interior">
-                Interior Frequency:
+              <label for="window_frequency_exterior">
+                Exterior Frequency:
               </label>
               <select 
               name="window_frequency_exterior" value={formData.window_frequency_exterior} 
@@ -934,7 +950,7 @@ const GetService = () => {
               {errors.window_frequency_interior && <p style={{ color: "red" }}>{errors.window_frequency_exterior}</p>}
             </div>
           )}
-          {(formData.windowExterior) && (
+          {(formData.windowInterior) && (
           <div className={styles.labelAndSelect}>
             <label for="window_frequency_interior">
               Interior Frequency:
