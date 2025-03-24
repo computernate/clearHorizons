@@ -68,11 +68,11 @@ const GetService = () => {
   const [errors, setErrors] = useState({});
   const [discountMessage, setDiscountMessage] = useState('')
 
+  let numberOnly = ['groundFloorWindows', 'highWindows', 'wellWindows', 'frenchWindows', 'highFrenchWindows', 'screens']
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(name)
-    console.log(value)
+    let realValue = value
     let additional_change=formData.cleaning
     if(name=='basement' && checked){
       additional_change.staircase++
@@ -102,14 +102,14 @@ const GetService = () => {
     if(name=='secondFloor' && !checked){
       additional_change.staircase=Math.max(0,additional_change.staircase-1)
     }
-    if(name=='phone'){
-      const rawValue = e.target.value.replace(/\D/g, '');
-      console.log(rawValue)
+    console.log(numberOnly.indexOf(name))
+    if(numberOnly.indexOf(name)>=0){
+      realValue = e.target.value.replace(/\D/g, '');
     }
     setFormData({
       ...formData,
       cleaning: additional_change,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? checked : realValue,
     });
     setErrors(prevErrors => {
       // Check if there's an existing error for this field
@@ -128,7 +128,7 @@ const GetService = () => {
     let trueValue=value
     if(name!="specialInstructions")
       trueValue = value.replace(/\D+/g, '')
-    setFormData((prevFormData) => ({ 
+    setFormData((prevFormData) => ({
       ...prevFormData,
       cleaning: {
         ...prevFormData.cleaning,
@@ -151,7 +151,7 @@ const GetService = () => {
     if (!formData.clientName.trim()) newErrors.clientName = "Name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) newErrors.email = "Email invalid"; 
+    if (!emailRegex.test(formData.email.trim())) newErrors.email = "Email invalid";
     if (!formData.phone.trim()) newErrors.phone = "Phone is required";
     if (!formData.squareFeet.trim()) newErrors.squareFeet = "This is required";
     if (formData.cleaningService && !formData.beds_temp) newErrors.beds_temp = "This is required";
@@ -213,7 +213,7 @@ const GetService = () => {
       let oven = 1 * formData.cleaning.oven
       let fridge = 1 * formData.cleaning.fridge
       let other = .5 * formData.cleaning.other
-      return bed + fullBath + masterBath + halfBath + kitchen + diningRoom + familyRoom + livingRoom + office + 
+      return bed + fullBath + masterBath + halfBath + kitchen + diningRoom + familyRoom + livingRoom + office +
       mudRoom + laundryRoom + gym + staircase + homeTheater + gameRoom + storageRoom + oven + fridge + other
     }
     else{
@@ -236,7 +236,7 @@ const GetService = () => {
       let oven = 1 * formData.cleaning.oven
       let fridge = 1 * formData.cleaning.fridge
       let other = .25 * formData.cleaning.other
-      return bed + fullBath + masterBath + halfBath + kitchen + diningRoom + familyRoom + livingRoom + office + 
+      return bed + fullBath + masterBath + halfBath + kitchen + diningRoom + familyRoom + livingRoom + office +
       mudRoom + laundryRoom + gym + staircase + homeTheater + gameRoom + storageRoom + oven + fridge + other
     }
   }
@@ -294,7 +294,7 @@ const GetService = () => {
   };
 
   const calculateDiscount = () => {
-    let discount = 0; 
+    let discount = 0;
     discount += calculateCleaningDiscount()
     discount += calculateWindowDiscount()
     discount += calculateCleaningBundle()
@@ -354,7 +354,7 @@ const GetService = () => {
   const windowBundleDiscount = calculateWindowBundle();
   const discount = calculateDiscount();
 
-  const totalGross = useMemo(() => 
+  const totalGross = useMemo(() =>
     calculateCleaning() + calculateWindowInterior() + calculatePest() + calculateWindowExterior(),
     [calculateCleaning, calculateWindowInterior, calculatePest, calculateWindowExterior]
   );
@@ -384,7 +384,7 @@ const GetService = () => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return
-    } 
+    }
     try {
       const updatedData = {
         ...formData,
@@ -451,7 +451,7 @@ const GetService = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 maskChar="_"
-               placeholder="(___) ___-____" 
+               placeholder="(___) ___-____"
                name="phone"
                style={{ border: errors.phone ? "2px solid red" : "1px solid black" }}
               >
@@ -516,9 +516,9 @@ const GetService = () => {
               <label for="squareFeet">
                 Square Feet:
               </label>
-              <select 
-              name="squareFeet" 
-              value={formData.squareFeet} 
+              <select
+              name="squareFeet"
+              value={formData.squareFeet}
               style={{ border: errors.squareFeet ? "2px solid red" : "1px solid black" }}
               onChange={handleChange}
               >
@@ -579,7 +579,7 @@ const GetService = () => {
                 <label for="beds">
                   Beds:
                 </label>
-                <select 
+                <select
                 style={{ border: errors.beds_temp ? "2px solid red" : "1px solid black" }}
                 name="beds_temp" value={formData.beds_temp} onChange={handleDetailedChange}>
                   <option value="">Select</option>
@@ -600,7 +600,7 @@ const GetService = () => {
                 <label for="baths">
                   Baths:
                 </label>
-                <select 
+                <select
                 style={{ border: errors.baths_temp ? "2px solid red" : "1px solid black" }}
                 name="baths_temp" value={formData.cleaning.baths_temp} onChange={handleDetailedChange}>
                   <option value="">Select</option>
@@ -635,7 +635,7 @@ const GetService = () => {
                 <label for="cleaning_frequency">
                   Frequency:
                 </label>
-                <select 
+                <select
                 name="cleaning_frequency" value={formData.cleaning_frequency}
                 style={{ border: errors.cleaning_frequency ? "2px solid red" : "1px solid black" }}
                  onChange={handleDetailedChange}>
@@ -820,7 +820,7 @@ const GetService = () => {
                     ℹ️
                   </span>
                 </label>
-                <input name="groundFloorWindows" value={formData.groundFloorWindows}
+                <input name="groundFloorWindows" value={formData.groundFloorWindows} placeholder="0"
                   onChange={handleChange} />
               </div>
               <div className={styles.labelAndInput}>
@@ -830,7 +830,7 @@ const GetService = () => {
                     ℹ️
                   </span>
                 </label>
-                <input name="highWindows" value={formData.highWindows}
+                <input name="highWindows" value={formData.highWindows} placeholder="0"
                   onChange={handleChange} />
               </div>
               <div className={styles.labelAndInput}>
@@ -840,7 +840,7 @@ const GetService = () => {
                     ℹ️
                   </span>
                 </label>
-                <input name="wellWindows" value={formData.wellWindows}
+                <input name="wellWindows" value={formData.wellWindows} placeholder="0"
                   onChange={handleChange} />
               </div>
               <div className={styles.labelAndInput}>
@@ -850,7 +850,7 @@ const GetService = () => {
                     ℹ️
                   </span>
                 </label>
-                <input name="frenchWindows" value={formData.frenchWindows}
+                <input name="frenchWindows" value={formData.frenchWindows} placeholder="0"
                   onChange={handleChange} />
               </div>
               <div className={styles.labelAndInput}>
@@ -861,7 +861,7 @@ const GetService = () => {
                     ℹ️
                   </span>
                 </label>
-                <input name="highFrenchWindows" value={formData.highFrenchWindows}
+                <input name="highFrenchWindows" value={formData.highFrenchWindows} placeholder="0"
                   onChange={handleChange} />
               </div>
               <div className={styles.labelAndCheck}>
@@ -897,7 +897,7 @@ const GetService = () => {
                   See More Options
                 </label>
               </div> */}
-              
+
           {formData.windowDetail && (
             <div className={`${styles.cleaningDetails}`}>
 
@@ -937,8 +937,8 @@ const GetService = () => {
               <label for="window_frequency_exterior">
                 Exterior Frequency:
               </label>
-              <select 
-              name="window_frequency_exterior" value={formData.window_frequency_exterior} 
+              <select
+              name="window_frequency_exterior" value={formData.window_frequency_exterior}
               style={{ border: errors.window_frequency_exterior ? "2px solid red" : "1px solid black" }}
               onChange={handleDetailedChange}>
                 <option value="">Select (GET DISCOUNTS!)</option>
@@ -955,8 +955,8 @@ const GetService = () => {
             <label for="window_frequency_interior">
               Interior Frequency:
             </label>
-            <select 
-            name="window_frequency_interior" value={formData.window_frequency_interior} 
+            <select
+            name="window_frequency_interior" value={formData.window_frequency_interior}
             style={{ border: errors.window_frequency_interior ? "2px solid red" : "1px solid black" }}
             onChange={handleDetailedChange}>
               <option value="">Select (GET DISCOUNTS!)</option>
