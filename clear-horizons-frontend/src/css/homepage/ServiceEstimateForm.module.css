@@ -256,6 +256,13 @@
     margin-top:20px;
   }
 
+  .estimateWrap{
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   @keyframes slide-down {
     0% {
       max-height: 0;

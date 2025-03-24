@@ -134,7 +134,7 @@ const ServiceEstimateForm = () => {
 
           
       {formData.window && formData.windowEx && (
-            <div>
+            <div className={styles.estimateWrap}>
                 <div className={styles.labelAndSelect}>
                   <label for="windowExFreq">
                     Window Cleaning Frequency (Exterior):
@@ -153,7 +153,7 @@ const ServiceEstimateForm = () => {
           )}
           
           {formData.window && formData.windowIn && (
-            <div>
+            <div className={styles.estimateWrap}>
                 <div className={styles.labelAndSelect}>
                   <label for="windowInFreq">
                     Window Cleaning Frequency (Interior):
@@ -172,7 +172,7 @@ const ServiceEstimateForm = () => {
           )}
           
         {formData.cleaning && (
-          <div>
+          <div className={styles.estimateWrap}>
               <div className={styles.labelAndSelect}>
                 <label for="cleaningFreq">
                   Cleaning Frequency:
