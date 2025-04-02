@@ -5,11 +5,13 @@ import ChooseAddress from './ChooseAddress';
 import GenericService from './GenericService'
 import Discounts from './Discounts';
 import SubmitForm from './SubmitForm'
+import Thanks from './Thanks';
 
 import squeegee from 'assets/serviceQuote/squeegee.png'
 import pin from 'assets/serviceQuote/pin.png'
 import discount from 'assets/serviceQuote/discount.png'
 import arrow from 'assets/serviceQuote/arrow.png'
+import check from 'assets/serviceQuote/check.png'
 
 const ServiceQuoteManager = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -37,6 +39,7 @@ const ServiceQuoteManager = () => {
     })),
     { id: 'discount', icon: discount, label: 'Discount' },
     { id: 'submit', icon: arrow, label: 'Submit' },
+    { id: 'thanks', icon: check, label: 'Thanks' },
   ];
 
   const nextStep = () => {
@@ -94,7 +97,12 @@ const ServiceQuoteManager = () => {
       <SubmitForm 
         data={data}
         className={styles.contentWrapper}
+        nextStep={nextStep}
       />
+    );
+  }else if (currentStep === selectedServices.length + 4) {
+    content = (
+      <Thanks />
     );
   }
 

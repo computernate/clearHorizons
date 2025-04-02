@@ -3,7 +3,7 @@ import styles from 'css/ServiceQuote/SelectServices.module.css';
 import InputMask from 'react-input-mask';
 const API_URL = process.env.REACT_APP_API_URL;
 
-const SubmitForm = ({ data, className }) => {
+const SubmitForm = ({ data, className, nextStep }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -49,10 +49,10 @@ const SubmitForm = ({ data, className }) => {
         body: JSON.stringify(payload),
       });
       if (response.ok) {
-        // Optionally display a success message
-        console.log('Form submitted successfully');
+        console.log("OK")
+        nextStep()
       } else {
-        // Handle errors returned by the server
+        alert("ERROR: FORM NOT SUBMITTED")
         console.error('Error submitting form');
       }
     } catch (error) {
