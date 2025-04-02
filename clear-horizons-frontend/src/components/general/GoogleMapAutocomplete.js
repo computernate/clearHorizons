@@ -87,7 +87,6 @@ function GoogleMapAutocomplete({ setAddress }) {
         googleMapsApiKey="AIzaSyC9et5_WfSEq-uxAGLvEirLzbc4_ILCg3U" // Replace with your Google Maps API key
            libraries={["places"]}
       >
-        <h5 className={styles.header}>{selectedAddress}</h5>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}

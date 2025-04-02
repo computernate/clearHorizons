@@ -68,7 +68,7 @@
     box-sizing: border-box;
   }
   .labelAndCheck{
-    width:85%;
+    width:100%;
     display:flex;
     align-items:center;
     gap:10px;
@@ -132,6 +132,12 @@
   }
   
   
+  h2 {
+    color: var(--nav-background);
+    margin-bottom: 20px;
+    font-size: 25px;
+  }
+
   h3 {
     color: var(--nav-background);
     margin-bottom: 20px;
@@ -161,15 +167,6 @@
   }
   
   /* Button styling (if you add buttons later) */
-  button {
-    background-color: var(--nav-background);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-  }
   .center{
     text-align:center;
   }

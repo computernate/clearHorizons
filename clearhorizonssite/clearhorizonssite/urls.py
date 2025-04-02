@@ -9,8 +9,10 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ch_base/', include('ch_base.urls')),  # Include your API URLs
-    re_path(r'^.*$', index),
-    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico')),
+    path('price_configurations/', include('price_configurations.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [path('/', index)]

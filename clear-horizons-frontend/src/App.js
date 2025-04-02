@@ -14,6 +14,7 @@ import ProductPest from 'components/products/ProductPest'
 import ScrollToTop from 'components/general/ScrollToTop';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ReactGA from 'react-ga4';
+import ServiceQuoteManager from 'components/serviceQuote/ServiceQuoteManager';
 const measurementId = "G-8MZB7ETHCB";
 
 ReactGA.initialize(measurementId);
@@ -24,7 +25,7 @@ function App() {
     return (
         <Router>
             <ScrollToTop />
-            <div style={{height:"100%", display:"flex", flexFlow: 'column'}}>
+            <div style={{minHeight:"100%", display:"flex", flexFlow: 'column'}}>
                 <Header />
                 <Routes>
                     <Route path="/" element={<Homepage />} />
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/pest-control" element={<ProductPest />} />
                     <Route path="/schedule" element={<GetService />} />
                     <Route path="/quote" element={<GetService />} />
+                    <Route path="/service-quote" element={<ServiceQuoteManager />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/contact2" element={<Contact />} />
                     <Route path="/staff" element={<Staff />} />

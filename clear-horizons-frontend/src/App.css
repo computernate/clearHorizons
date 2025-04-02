@@ -135,13 +135,16 @@ h5 {
 .circleButton{
     color:black;
     border-radius:100px;
-    background-color:#5A8CA6;
+    background-color: var(--general-blue);
     width:35px;
     height:35px;
     display:flex;
     justify-content: center;
-    align-items: end;
+    align-items: center;
     font-size:35px;
+}
+.circleButton img{
+    width:65%;
 }
 
 .gradientButton{
@@ -189,6 +192,22 @@ h5 {
     text-decoration:none;
     color:black;
     padding:10px;
+}
+
+button {
+  background-color: var(--general-blue);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width:100%;
+  border: 1px solid black;
+}
+button.disabled{
+    background-color:#f0f0f5;
+    color:var(--general-blue);
 }
 
 .quotelink{
@@ -242,3 +261,20 @@ h5 {
   button.slick-next{
     right:-10px;
   }
+
+  
+.labelAndInput{
+    width:100%;
+}
+.labelAndInput input, .labelAndInput select{
+    border:1px solid black;
+    padding:10px;
+    width:100%;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+.striken{
+    text-decoration: line-through;
+    color:red;
+}

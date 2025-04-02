@@ -2,7 +2,7 @@ import json
 import os
 
 from django.core.mail import send_mail
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
@@ -122,3 +122,73 @@ def contact(request):
             return JsonResponse({"error": str(e)}, status=400)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+@csrf_exempt
+def submit_quote_form(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest("Only POST allowed")
+    try:
+        payload = json.loads(request.body)
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest("Invalid JSON")
+
+    name = payload.get('name')
+    email = payload.get('email')
+    phone = payload.get('phone')
+    data = payload.get('data')
+
+    # Basic validation
+    if not name or not email or not phone or data is None:
+        return HttpResponseBadRequest("Missing required fields")
+
+    # Extract data parts
+    totals = None
+    address = None
+    service_data = []
+
+    for item in data:
+        if 'totalBefore' in item and 'totalAfter' in item:
+            totals = item
+        elif 'address' in item:
+            address = item.get('address')
+        elif 'identifier' in item and 'data' in item:
+            service_data.append(item)
+
+    # Email content for the user
+    user_email_content = f"Name: {name}\nPhone: {phone}\n"
+    if address:
+        user_email_content += f"Address: {address}\n"
+    if totals:
+        user_email_content += (
+            f"Total Before: {totals.get('totalBefore')}\n"
+            f"Total After: {totals.get('totalAfter')}\n"
+        )
+    else:
+        user_email_content += "Totals not provided.\n"
+
+    internal_email_content = (
+        f"Name: {name}\nEmail: {email}\nPhone: {phone}\n\n"
+        f"Data Received:\n{json.dumps(payload, indent=2)}"
+    )
+
+    try:
+        send_mail(
+            "Your Quote Details",
+            user_email_content,
+            'clearhorizons.utah@gmail.com',
+            [email],
+            fail_silently=False,
+        )
+
+        send_mail(
+            "New Quote Submission",
+            internal_email_content,
+            'clearhorizons.utah@gmail.com',
+            ['clearhorizons.utah@gmail.com'],
+            fail_silently=False,
+        )
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'status': 'success'})

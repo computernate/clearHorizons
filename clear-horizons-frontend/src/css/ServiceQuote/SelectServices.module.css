@@ -1,0 +1,41 @@
+.wrapper{
+    display:flex;
+    flex-direction:column;
+    width:90%;
+    margin:auto;
+    gap:25px;
+    align-items: center;
+}
+
+.jobType{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    background-color:#f0f0f5;
+    border-radius:10px;
+    border:1px solid black;
+    width:100%;
+    gap:15px;
+    padding:15px;
+    box-sizing: border-box;
+}
+
+.jobType h3{
+    margin:0px;
+}
+.jobType.selected{
+    background-color:var(--general-blue);
+    color:white;
+}
+
+.jobType.selected h3{
+    background-color:var(--general-blue);
+    color:white;
+}
+
+
+@media (max-width: 768px) {
+    .jobType{
+        width:80%;
+    }
+}

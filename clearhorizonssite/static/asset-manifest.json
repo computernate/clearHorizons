@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.de360584.css",
-    "main.js": "/static/js/main.b1425f59.js",
+    "main.css": "/static/css/main.dbdfffd2.css",
+    "main.js": "/static/js/main.cc786910.js",
     "static/js/787.1053f2fc.chunk.js": "/static/js/787.1053f2fc.chunk.js",
     "static/media/window-video.mp4": "/static/media/window-video.3e911d223e6d497f3983.mp4",
     "static/media/satisfactionGurantee.jpg": "/static/media/satisfactionGurantee.7ef349615978c286226e.jpg",
@@ -28,18 +28,19 @@
     "static/media/Clear-Horizon-logo.png": "/static/media/Clear-Horizon-logo.d9804eb9a6add6af938c.png",
     "static/media/screen.jpg": "/static/media/screen.7aca47e5a8296b8113e1.jpg",
     "static/media/drops.jpg": "/static/media/drops.4c24ec9424fb11160d03.jpg",
+    "static/media/discount.png": "/static/media/discount.fe60a8b2a2ef2cf2d7c6.png",
     "static/media/wfp.jpg": "/static/media/wfp.87a4e223f0921f8a1251.jpg",
     "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/index.html",
-    "main.de360584.css.map": "/static/css/main.de360584.css.map",
-    "main.b1425f59.js.map": "/static/js/main.b1425f59.js.map",
+    "main.dbdfffd2.css.map": "/static/css/main.dbdfffd2.css.map",
+    "main.cc786910.js.map": "/static/js/main.cc786910.js.map",
     "787.1053f2fc.chunk.js.map": "/static/js/787.1053f2fc.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.de360584.css",
-    "static/js/main.b1425f59.js"
+    "static/css/main.dbdfffd2.css",
+    "static/js/main.cc786910.js"
   ]
 }
