@@ -132,13 +132,13 @@
   }
   
   
-  h2 {
+  .wrapper h2 {
     color: var(--nav-background);
     margin-bottom: 20px;
     font-size: 25px;
   }
 
-  h3 {
+  .wrapper h3 {
     color: var(--nav-background);
     margin-bottom: 20px;
     font-size: 20px;
