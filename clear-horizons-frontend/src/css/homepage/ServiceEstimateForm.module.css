@@ -132,13 +132,13 @@
   }
   
   
-  .wrapper h2 {
+  .estimateForm h2 {
     color: var(--nav-background);
     margin-bottom: 20px;
     font-size: 25px;
   }
 
-  .wrapper h3 {
+  .estimateForm h3 {
     color: var(--nav-background);
     margin-bottom: 20px;
     font-size: 20px;

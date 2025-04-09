@@ -1,6 +1,10 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import *
+from django.apps import apps
 
 from .models import JobType
 from .serializers import JobTypeSerializerList, JobTypeSerializer, JobTypeFrequencySerializer
@@ -27,3 +31,26 @@ class JobFrequenciesListView(APIView):
         job_types = JobType.objects.filter(id__in=job_type_ids).prefetch_related('jobfrequency_set')
         serializer = JobTypeFrequencySerializer(job_types, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@login_required
+def model_documentation(request):
+    """
+    View to display documentation for all models in the price_configurations app.
+    """
+    # Get all models from the price_configurations app
+    app_models = apps.get_app_config('price_configurations').get_models()
+    
+    # Create a list of model info including name and docstring
+    model_info = []
+    for model in app_models:
+        model_info.append({
+            'name': model.__name__,
+            'docstring': model.__doc__.strip() if model.__doc__ else 'No documentation available',
+            'fields': [field.name for field in model._meta.fields]
+        })
+    
+    context = {
+        'models': model_info
+    }
+    return render(request, 'price_configurations/documentation.html', context)

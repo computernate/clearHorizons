@@ -34,6 +34,11 @@ class JobLevel(models.Model):
 
 
 class JobDataGroup(models.Model):
+    """
+    Groups together JobData fields in the user-facing form.
+    If a JobData instance belongs to a group, it will appear within a collapsible section
+    in the form. Otherwise, it will be displayed at the top level.
+    """
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     image = models.ImageField(upload_to="extra_options/", blank=True, null=True)
@@ -44,6 +49,10 @@ class JobDataGroup(models.Model):
 
 
 class JobData(models.Model):
+    """
+    Represents a piece of data to collect from the user in the job configuration form.
+    This corresponds to a form field (e.g., text input, select dropdown, number input).
+    """
     name = models.CharField(max_length=255)
     internal_identifier = models.CharField(max_length=255)
     placeholder = models.CharField(max_length=255, blank=True, null=True)
@@ -57,6 +66,10 @@ class JobData(models.Model):
         return self.name
 
 class JobPriceOption(models.Model):
+    """
+    Defines the estimated time (in hours) required for a specific job data option
+    at a particular job level. This is used in calculating the total job duration and cost.
+    """
     time = models.FloatField()
     job_level = models.ForeignKey(JobLevel, on_delete=models.CASCADE, related_name="job_price_options")
     job_data = models.ForeignKey(JobData, on_delete=models.CASCADE, related_name="job_price_options")
@@ -65,6 +78,10 @@ class JobPriceOption(models.Model):
         return f"{self.job_data} - {self.job_level}"
 
 class JobDataSelectOption(models.Model):
+    """
+    Represents one possible choice for a JobData field of type 'select'.
+    It holds the display text and the corresponding value (often used in calculations).
+    """
     value = models.FloatField()
     display = models.CharField(max_length=255)
     job_data = models.ForeignKey(JobData, on_delete=models.CASCADE, related_name="job_data_select_options")
@@ -73,6 +90,11 @@ class JobDataSelectOption(models.Model):
         return self.display
 
 class JobFrequency(models.Model):
+    """
+    Represents recurring job frequency options (e.g., weekly, monthly) that a user can select.
+    It includes the time interval between jobs and any applicable discount for selecting
+    that frequency.
+    """
     day_interval = models.FloatField()
     display = models.CharField(max_length=255)
     discount = models.FloatField()
