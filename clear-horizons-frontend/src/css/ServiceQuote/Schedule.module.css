@@ -1,0 +1,203 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.wrapper h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.scheduleContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+}
+
+.calendarContainer {
+  flex: 1;
+  min-width: 300px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendarHeader h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.calendarHeader button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.calendarHeader button:hover {
+  background-color: #f0f0f0;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.day, .emptyDay {
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.day {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.day:hover:not(.disabled):not(.unavailable) {
+  background-color: #e6f7ff;
+}
+
+.today {
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.selected {
+  background-color: #1890ff !important;
+  color: white !important;
+}
+
+.available {
+  background-color: #f6ffed;
+}
+
+.unavailable {
+  color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.disabled {
+  color: #d9d9d9;
+  cursor: default;
+}
+
+.selectionContainer {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timeSlots, .employees {
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.timeSlots h3, .employees h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.timeSlotList, .employeeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.timeSlot, .employee {
+  padding: 8px 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.timeSlot:hover, .employee:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.timeSlot.selected, .employee.selected {
+  background-color: #1890ff;
+  color: white;
+  border-color: #1890ff;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 24px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover:not(.disabled) {
+  background-color: #40a9ff;
+}
+
+button.disabled {
+  background-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+}
+
+.error {
+  color: #f5222d;
+}
+
+@media (max-width: 768px) {
+  .scheduleContainer {
+    flex-direction: column;
+  }
+} 

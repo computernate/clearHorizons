@@ -26,6 +26,10 @@ class JobFrequencyInline(admin.TabularInline):
     model = JobFrequency
     extra = 0
 
+class TimeBlockInline(admin.TabularInline):
+    model = TimeBlock
+    extra = 0
+
 @admin.register(JobType)
 class JobTypeAdmin(admin.ModelAdmin):
     list_display = ("name", "base_pay", "inflation", "fixed_cost")
@@ -69,3 +73,16 @@ class JobFrequencyAdmin(admin.ModelAdmin):
     list_display = ("display", "day_interval", "discount", "job_type")
     search_fields = ("display", "job_type__name")
     list_filter = ("job_type",)
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+    filter_horizontal = ("job_types",)
+    inlines = [TimeBlockInline]
+
+@admin.register(TimeBlock)
+class TimeBlockAdmin(admin.ModelAdmin):
+    list_display = ("employee", "get_day_of_week_display", "start_time", "end_time")
+    search_fields = ("employee__name",)
+    list_filter = ("employee", "day_of_week")

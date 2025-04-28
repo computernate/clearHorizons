@@ -4,12 +4,14 @@ import SelectServices from './SelectServices';
 import ChooseAddress from './ChooseAddress';
 import GenericService from './GenericService'
 import Discounts from './Discounts';
+import Schedule from './Schedule';
 import SubmitForm from './SubmitForm'
 import Thanks from './Thanks';
 
 import squeegee from 'assets/serviceQuote/squeegee.png'
 import pin from 'assets/serviceQuote/pin.png'
 import discount from 'assets/serviceQuote/discount.png'
+import { ReactComponent as CalendarIcon } from 'assets/serviceQuote/calendar.svg'
 import arrow from 'assets/serviceQuote/arrow.png'
 import check from 'assets/serviceQuote/check.png'
 
@@ -38,6 +40,7 @@ const ServiceQuoteManager = () => {
       label: service.name,
     })),
     { id: 'discount', icon: discount, label: 'Discount' },
+    { id: 'schedule', icon: CalendarIcon, label: 'Schedule', isSvg: true },
     { id: 'submit', icon: arrow, label: 'Submit' },
     { id: 'thanks', icon: check, label: 'Thanks' },
   ];
@@ -53,7 +56,7 @@ const ServiceQuoteManager = () => {
         key={step.id} 
         className={`circleButton ${idx > currentStep ? styles.deactivated : ''}`}
       >
-        <img src={step.icon} alt={step.label} />
+        {step.isSvg ? <step.icon className={styles.svgIcon} /> : <img src={step.icon} alt={step.label} />}
       </div>
     ));
   };
@@ -94,13 +97,21 @@ const ServiceQuoteManager = () => {
     );
   } else if (currentStep === selectedServices.length + 3) {
     content = (
+      <Schedule 
+        selectedServices={selectedServices}
+        onNext={addDataAndNext}
+        className={styles.contentWrapper}
+      />
+    );
+  } else if (currentStep === selectedServices.length + 4) {
+    content = (
       <SubmitForm 
         data={data}
         className={styles.contentWrapper}
         nextStep={nextStep}
       />
     );
-  }else if (currentStep === selectedServices.length + 4) {
+  } else if (currentStep === selectedServices.length + 5) {
     content = (
       <Thanks />
     );

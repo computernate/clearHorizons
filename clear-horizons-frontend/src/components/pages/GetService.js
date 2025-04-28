@@ -330,9 +330,9 @@ const GetService = () => {
   const calculateWindowDiscount = () => {
     let winDiscount=0
     if(formData.window && formData.windowInterior && formData.windowExterior){
-      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='bi-annually') return 50
-      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='quarterly') return 100
-      if(formData.window && formData.windowInterior && formData.window_frequency_interior=='monthly') return 150
+      if(formData.window && formData.windowInterior && formData.window_frequency_exterior=='bi-annually') return 50
+      if(formData.window && formData.windowInterior && formData.window_frequency_exterior=='quarterly') return 100
+      if(formData.window && formData.windowInterior && formData.window_frequency_exterior=='monthly') return 150
     }
     if(formData.window && formData.windowInterior && !formData.windowExterior){
       if(formData.window && formData.windowInterior && formData.window_frequency_interior=='bi-annually') return 25

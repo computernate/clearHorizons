@@ -92,3 +92,46 @@ class JobTypeFrequencySerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'logo', 'job_frequencies'
         ]
+
+
+class TimeBlockSerializer(serializers.ModelSerializer):
+    day_name = serializers.CharField(source='get_day_of_week_display', read_only=True)
+    start_time_formatted = serializers.SerializerMethodField()
+    end_time_formatted = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = TimeBlock
+        fields = ['id', 'day_of_week', 'day_name', 'start_time', 'end_time', 'start_time_formatted', 'end_time_formatted']
+    
+    def get_start_time_formatted(self, obj):
+        return obj.start_time.strftime('%I:%M %p')
+    
+    def get_end_time_formatted(self, obj):
+        return obj.end_time.strftime('%I:%M %p')
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    job_types = JobTypeSerializerList(many=True, read_only=True)
+    
+    class Meta:
+        model = Employee
+        fields = ['id', 'name', 'job_types']
+
+
+class EmployeeDetailSerializer(serializers.ModelSerializer):
+    job_types = JobTypeSerializerList(many=True, read_only=True)
+    time_blocks = TimeBlockSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Employee
+        fields = ['id', 'name', 'job_types', 'time_blocks']
+
+
+class AvailableTimeSlotSerializer(serializers.Serializer):
+    time = serializers.TimeField()
+    available_employees = EmployeeSerializer(many=True)
+
+
+class DateAvailabilitySerializer(serializers.Serializer):
+    date = serializers.DateField()
+    available_time_slots = AvailableTimeSlotSerializer(many=True)
