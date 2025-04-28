@@ -1083,19 +1083,19 @@ const GetService = () => {
             </tr>)}
             {(formData.window && formData.windowInterior && <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Window (Interior)</td>
-              <td>${calculateWindowInterior().toFixed(2)}</td>
+              <td style={{ whiteSpace: 'nowrap' }}>${calculateWindowInterior().toFixed(2)}</td>
             </tr>)}
             {(formData.window && formData.windowExterior && <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Window (Exterior)</td>
-              <td>${calculateWindowExterior().toFixed(2)}</td>
+              <td style={{ whiteSpace: 'nowrap' }}>${calculateWindowExterior().toFixed(2)}</td>
             </tr>)}
             {(windowDiscount > 0 && <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Window Frequency Discount</td>
-              <td>-${windowDiscount}.00</td>
+              <td style={{ whiteSpace: 'nowrap' }}>-${windowDiscount}.00</td>
             </tr>)}
             {(windowBundleDiscount > 0 && <tr>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;Window Bundle Discount</td>
-              <td>-${windowBundleDiscount}.00</td>
+              <td style={{ whiteSpace: 'nowrap' }}>-${windowBundleDiscount}.00</td>
             </tr>)}
             {(formData.window && <tr className={styles.total}>
               <td>Window Total</td>
@@ -1120,7 +1120,7 @@ const GetService = () => {
             </tr>
             <tr className={styles.total}>
               <td>Total</td>
-              <td>${total.toFixed(2)}</td>
+              <td style={{ whiteSpace: 'nowrap' }}>${total.toFixed(2)}</td>
             </tr>
           </tbody>
         </table>
