@@ -475,7 +475,7 @@ const GetService = () => {
                     checked={formData.cleaningService}
                     onChange={handleChange}
                   />
-                  Cleaning
+                  Housekeeping
                 </label>
               </div>
               <div className={styles.checkbox}>
@@ -1066,19 +1066,19 @@ const GetService = () => {
         <table>
           <tbody>
             {(formData.cleaningService && <tr>
-              <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Housekeeping</td>
               <td>${calculateCleaning().toFixed(2)}</td>
             </tr>)}
             {(cleaningDiscount > 0 && <tr>
-              <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning Frequency Discount</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Housekeeping Frequency Discount</td>
               <td>-${cleaningDiscount}.00</td>
             </tr>)}
             {(cleaningBundleDiscount > 0 && <tr>
-              <td>&nbsp;&nbsp;&nbsp;&nbsp;Cleaning Bundle Discount</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;Housekeeping Bundle Discount</td>
               <td>-${cleaningBundleDiscount}.00</td>
             </tr>)}
             {(formData.cleaningService && <tr className={styles.total}>
-              <td>Cleaning Total</td>
+              <td>Housekeeping Total</td>
               <td>${(calculateCleaning()-cleaningDiscount-cleaningBundleDiscount).toFixed(2)}</td>
             </tr>)}
             {(formData.window && formData.windowInterior && <tr>
